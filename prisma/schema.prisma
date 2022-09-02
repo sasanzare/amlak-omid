@@ -1,0 +1,170 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+generator jsonSchema {
+  provider = "prisma-json-schema-generator"
+  output   = "./json-schema"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum requestStatus {
+  accepted
+  pending
+  denied
+}
+
+enum role {
+  admin
+  agencyOwner
+  agencyAgent
+  normal
+}
+
+enum assignmentType {
+  rental
+  forSale
+  fastSale
+}
+
+enum propertyType {
+  commercial
+  apartment
+  villaGarden
+  land
+  independents
+}
+
+model tempUser {
+  id               String @id @unique @default(cuid())
+  phoneNumber      String @unique
+  verificationCode String
+}
+
+model user {
+  id           String                  @id @unique @default(cuid())
+  firstName    String?
+  lastName     String?
+  name         String?
+  email        String?
+  phoneNumber  String                  @unique
+  nationalCode Int?
+  address      String?
+  lastLogin    DateTime                @default(now())
+  role         role
+  agency       agency[]
+  agentOf      agentInterface[]
+  agencyRate   agencyRatingInterface[]
+  createdAt    DateTime                @default(now())
+  updatedAt    DateTime                @updatedAt
+  isActive     Boolean                 @default(true)
+  realEstate   realEstate[]
+  // AgencyRequest agencyRequest[]
+}
+
+model agencyRatingInterface {
+  id        String   @id @unique @default(cuid())
+  User      user?    @relation(fields: [userId], references: [id])
+  userId    String?
+  agency    agency?  @relation(fields: [agencyId], references: [id])
+  agencyId  String?
+  rate      Int
+  createdAt DateTime @default(now())
+}
+
+model agentInterface {
+  id        String   @id @unique @default(cuid())
+  user      user     @relation(fields: [userId], references: [id])
+  userId    String
+  agency    agency   @relation(fields: [agencyId], references: [id])
+  agencyId  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  isActive  Boolean  @default(false)
+}
+
+model agency {
+  id         String                  @id @unique @default(cuid())
+  name       String?
+  owner      user                    @relation(fields: [ownerId], references: [id])
+  ownerId    String
+  cityArea   cityArea                @relation(fields: [cityAreaId], references: [id])
+  agents     agentInterface[]
+  rate       agencyRatingInterface[]
+  createdAt  DateTime                @default(now())
+  updatedAt  DateTime                @updatedAt
+  isActive   Boolean                 @default(false)
+  RealEstate realEstate[]
+  status     requestStatus           @default(pending)
+  cityAreaId String
+}
+
+model city {
+  id        String     @id @unique @default(cuid())
+  name      String
+  cityArea  cityArea[]
+  createdAt DateTime   @default(now())
+}
+
+model cityArea {
+  id         String       @id @unique @default(cuid())
+  name       String
+  city       city         @relation(fields: [cityId], references: [id])
+  cityId     String
+  realEstate realEstate[]
+  agency     agency[]
+  createdAt  DateTime     @default(now())
+}
+
+model realEstate {
+  id             String         @id @unique @default(cuid())
+  agency         agency?        @relation(fields: [agencyId], references: [id])
+  agencyId       String?
+  user           user           @relation(fields: [userId], references: [id])
+  userId         String
+  name           String
+  phoneNumber    String
+  description    String
+  roomCount      Int
+  Photos         String[]
+  assignmentType assignmentType
+  type           propertyType
+  price          BigInt
+  areaName       String
+  cityName       String
+  cityArea       cityArea       @relation(fields: [cityAreaId], references: [id])
+  cityAreaId     String
+  longitude      String
+  latitude       String
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+  isActive       Boolean        @default(false)
+
+  // @@index([cityName, areaName, roomCount, price(sort: Asc), type, createdAt(sort: Asc)])
+}
+
+model article {
+  id           String   @id @unique @default(cuid())
+  title        String
+  summary      String?
+  text         String
+  normalName   String?
+  articleImage String?
+  createdAt    DateTime @default(now())
+}
+
+model contactFrom {
+  id          String   @id @unique @default(cuid())
+  fullName    String
+  email       String
+  title       String
+  description String
+  createdAt   DateTime @default(now())
+}

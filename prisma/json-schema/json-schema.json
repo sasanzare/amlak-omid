@@ -1,0 +1,466 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "definitions": {
+    "tempUser": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "phoneNumber": {
+          "type": "string"
+        },
+        "verificationCode": {
+          "type": "string"
+        }
+      }
+    },
+    "user": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "firstName": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "lastName": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "name": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "email": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "phoneNumber": {
+          "type": "string"
+        },
+        "nationalCode": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "address": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "lastLogin": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "role": {
+          "type": "string",
+          "enum": [
+            "admin",
+            "agencyOwner",
+            "agencyAgent",
+            "normal"
+          ]
+        },
+        "agency": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/agency"
+          }
+        },
+        "agentOf": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/agentInterface"
+          }
+        },
+        "agencyRate": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/agencyRatingInterface"
+          }
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "isActive": {
+          "type": "boolean",
+          "default": true
+        },
+        "realEstate": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/realEstate"
+          }
+        }
+      }
+    },
+    "agencyRatingInterface": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "User": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/user"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "agency": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/agency"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "rate": {
+          "type": "integer"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "agentInterface": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "user": {
+          "$ref": "#/definitions/user"
+        },
+        "agency": {
+          "$ref": "#/definitions/agency"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "isActive": {
+          "type": "boolean",
+          "default": false
+        }
+      }
+    },
+    "agency": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "owner": {
+          "$ref": "#/definitions/user"
+        },
+        "cityArea": {
+          "$ref": "#/definitions/cityArea"
+        },
+        "agents": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/agentInterface"
+          }
+        },
+        "rate": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/agencyRatingInterface"
+          }
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "isActive": {
+          "type": "boolean",
+          "default": false
+        },
+        "RealEstate": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/realEstate"
+          }
+        },
+        "status": {
+          "type": "string",
+          "default": "pending",
+          "enum": [
+            "accepted",
+            "pending",
+            "denied"
+          ]
+        }
+      }
+    },
+    "city": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "cityArea": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/cityArea"
+          }
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "cityArea": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "city": {
+          "$ref": "#/definitions/city"
+        },
+        "realEstate": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/realEstate"
+          }
+        },
+        "agency": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/agency"
+          }
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "realEstate": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "agency": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/agency"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "user": {
+          "$ref": "#/definitions/user"
+        },
+        "name": {
+          "type": "string"
+        },
+        "phoneNumber": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "roomCount": {
+          "type": "integer"
+        },
+        "Photos": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "assignmentType": {
+          "type": "string",
+          "enum": [
+            "rental",
+            "forSale",
+            "fastSale"
+          ]
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "commercial",
+            "apartment",
+            "villaGarden",
+            "land",
+            "independents"
+          ]
+        },
+        "price": {
+          "type": "integer"
+        },
+        "areaName": {
+          "type": "string"
+        },
+        "cityName": {
+          "type": "string"
+        },
+        "cityArea": {
+          "$ref": "#/definitions/cityArea"
+        },
+        "longitude": {
+          "type": "string"
+        },
+        "latitude": {
+          "type": "string"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "isActive": {
+          "type": "boolean",
+          "default": false
+        }
+      }
+    },
+    "article": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "summary": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "text": {
+          "type": "string"
+        },
+        "normalName": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "articleImage": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "contactFrom": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "fullName": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    }
+  },
+  "type": "object",
+  "properties": {
+    "tempUser": {
+      "$ref": "#/definitions/tempUser"
+    },
+    "user": {
+      "$ref": "#/definitions/user"
+    },
+    "agencyRatingInterface": {
+      "$ref": "#/definitions/agencyRatingInterface"
+    },
+    "agentInterface": {
+      "$ref": "#/definitions/agentInterface"
+    },
+    "agency": {
+      "$ref": "#/definitions/agency"
+    },
+    "city": {
+      "$ref": "#/definitions/city"
+    },
+    "cityArea": {
+      "$ref": "#/definitions/cityArea"
+    },
+    "realEstate": {
+      "$ref": "#/definitions/realEstate"
+    },
+    "article": {
+      "$ref": "#/definitions/article"
+    },
+    "contactFrom": {
+      "$ref": "#/definitions/contactFrom"
+    }
+  }
+}

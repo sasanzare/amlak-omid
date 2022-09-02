@@ -1,0 +1,17 @@
+.dashback {
+    height: 120px;
+    text-align: center;
+    width: 100%;
+    left: 0;
+    background: url('/img/userpanel/user-panel-back.png');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 103%;
+    position: absolute;
+    z-index: 0;
+}
+
+.dashmain {
+    position: relative;
+    z-index: 1;
+}
