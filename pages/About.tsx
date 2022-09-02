@@ -1,6 +1,6 @@
 import { Container,Row,Col,ListGroup } from 'react-bootstrap';
 import BgTop from '../components/bgTop/BgTop';
-import Clip from '../components/clip/Clip';
+import Clip from '../components/clip';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {faCheckSquare} from '@fortawesome/free-solid-svg-icons'
 function About() { 
@@ -25,7 +25,7 @@ function About() {
                 </Col>
                 <Col sm={12} className='pt-5 px-md-0 px-3'>
                     <h5 className='fw-bold text-md-end text-center'>با دیدن ویدیوی زیر، ما را بیشتر بشناسید!</h5>
-                    <Clip src="./video/video.mp4" cover="./img/cover-about.png"/>
+                    <Clip src="/video/video.mp4" cover="/img/cover-about.png"/>
                 </Col>
             </Row>
             <Row className='pt-5 mt-5'>
