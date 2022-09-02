@@ -6,19 +6,19 @@ function Footer() {
   const list1 = [
         {
           'title': 'درباره ما',
-          'href' : '/about',
+          'href' : '/About',
         },
         {
           'title': 'ارتباط‌ باما',
-          'href' : '/contact',
+          'href' : '/Contact',
         },
         {
           'title': 'مجله املاک',
-          'href' : '/blog',
+          'href' : '/Blog',
         },
         {
           'title': 'تبلیغات',
-          'href' : '/advisorDetail',
+          'href' : '/AdvisorDetail',
         },
       
   ];
