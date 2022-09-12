@@ -1,0 +1,99 @@
+.esElevator {
+    width: 100%;
+    height: 430px;
+    position: relative;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border-left: 1px solid #dee2e6;
+    border-right: 1px solid #dee2e6;
+    border-top: 1px solid #dee2e6;
+    border-bottom: 1px solid #dee2e6;
+}
+.esFloor h3 {
+    box-shadow: 0 .5rem 1rem rgba(0,0,0,.1)!important;
+}
+.esDoors {
+    z-index: 1;
+    width: 73%;
+    height: 370px;
+    position: absolute;
+    bottom: 0;
+    left: 13.2%;
+    overflow: hidden;
+    border-left: 1px solid #dee2e6;
+    border-right: 1px solid #dee2e6;
+    border-top: 1px solid #dee2e6;
+}
+
+.esDoors:before {
+    content: '';
+    background: #f8f8f8;
+    border-right: 1px solid #dee2e6;
+    width: 52%;
+    height: 370px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    animation: left 1s linear .7s forwards;
+}
+
+.esDoors:after {
+    content: '';
+    background: #f8f8f8;
+    border-left: 1px solid #dee2e6;
+    width: 52%;
+    height: 370px;
+    position: absolute;
+    top: 0;
+    right: 0;
+    animation: right 1s linear .7s forwards;
+}
+.esSwitch {
+    position: absolute;
+    background: #dadfe1;
+    top: 45%;
+    left: 89%;
+    height: 50px;
+    width: 30px;
+    border: 1px solid #abb7b7;
+}
+
+.esSwitch a:nth-child(1) {
+    position: absolute;
+    top: 15%;
+    left: 12%;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-bottom: 10px solid #5657ac;
+}
+
+.esSwitch a:nth-child(2) {
+    content: '';
+    position: absolute;
+    bottom: 15%;
+    left: 12%;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-top: 10px solid #5657ac;
+}
+@keyframes left {
+    0% {
+    left: 0;
+    }
+    100% {
+    left: -48%;
+    }
+}
+@keyframes right {
+    0% {
+    right: 0;
+    }
+    100% {
+    right: -48%;
+    }
+}
+
+.vh95{
+    height: 95vh;
+}
