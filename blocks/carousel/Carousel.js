@@ -82,7 +82,7 @@ function Carousel() {
       'title': 'آژانس املاک بهینه',
       'img': './img/card5.png'
     },
-  ]
+  ];
   return (
     <Slider {...settings}>
       {offices.map((office) => (
