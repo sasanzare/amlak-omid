@@ -7,7 +7,6 @@ import {
   faClock,
   faPhone,
 } from "@fortawesome/free-solid-svg-icons";
-import Btn from "../microComponents/Btn";
 import Link from "next/link";
 
 function Estate({
@@ -80,7 +79,7 @@ function Estate({
             </div>
             <a
               href={`tel:${phoneNumber}`}
-              className="btn fw-bold btn btn-es mb-lg-0 mt-lg-0 mt-4 mb-4 px-2  he-fit"
+              className="btn fw-bold btn btn-danger mb-lg-0 mt-lg-0 mt-4 mb-4 px-2  he-fit"
             >
               <FontAwesomeIcon icon={faPhone} className="ms-1" />
               تماس بگیرید

@@ -309,7 +309,9 @@ a:hover {
   font-weight: 900;
 }
 
-
+.head-faq .accordion-button::after{
+  display: none;
+}
 
 
 

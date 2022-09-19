@@ -6,7 +6,7 @@ import Loading from '../components/Loading/index';
 import type { AppProps } from 'next/app';
 import Backtotop from "../components/backtotop/Backtotop";
 import Header from '../blocks/header/Header.js';
-import Footer from '../blocks/footer/Footer';
+import Footer from '../blocks/footer/';
 import ContextProvider from '../context';
 import { Html } from 'next/document'
 import { SSRProvider } from 'react-bootstrap';

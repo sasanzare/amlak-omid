@@ -14,7 +14,7 @@ function Footer() {
         },
         {
           'title': 'مجله املاک',
-          'href' : '/Blog',
+          'href' : '/Articles',
         },
         {
           'title': 'تبلیغات',
@@ -37,7 +37,7 @@ function Footer() {
     },
     {
       'title': 'سوالات متداول',
-      'href' : '/faq'
+      'href' : '/Faq'
     },
   ];
   return (
