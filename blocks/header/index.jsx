@@ -31,9 +31,9 @@ function Header() {
       >
         <Container fluid>
           <Link href="/News">
-            <span className="btn btn-es fw-bold col-xl-1 col-lg-2 col-md-2 col-sm-3 col-4">
+            <a className="btn btn-es fw-bold col-xl-1 col-lg-2 col-md-2 col-sm-3 col-4">
               ثبت آگهی
-            </span>
+            </a>
           </Link>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
@@ -111,12 +111,12 @@ function Header() {
                     </Nav.Item>
 
                     <Nav.Item as="li">
-                      <Nav.Link href="/blog" eventKey="link-2">
+                      <Nav.Link href="/Arti" eventKey="link-2">
                         بلاگ
                       </Nav.Link>
                     </Nav.Item>
                     <Nav.Item as="li">
-                      <Nav.Link eventKey="link-2" style={{ color: "red" }}>
+                      <Nav.Link href="/SpecialSale" className="text-danger" eventKey="link-2">
                         ملک فروش فوری
                       </Nav.Link>
                     </Nav.Item>

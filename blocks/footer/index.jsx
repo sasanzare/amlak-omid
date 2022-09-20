@@ -13,7 +13,7 @@ function Footer() {
           'href' : '/Contact',
         },
         {
-          'title': 'مجله املاک',
+          'title': 'بلاگ',
           'href' : '/Articles',
         },
         {
