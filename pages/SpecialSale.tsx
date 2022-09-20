@@ -138,7 +138,7 @@ function SpecialSale() {
   ];
   return (
     <Container className="Home pt-5 mt-5 pb-4">
-      <Title title="املاک مزایده ای فروش فوری" />
+      <Title title="املاک فروش فوری" />
 
       <Col className="rounded-3 mt-4 overflow-hidden">
         <Row>
