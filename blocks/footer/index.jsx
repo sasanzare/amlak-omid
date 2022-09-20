@@ -25,11 +25,11 @@ function Footer() {
   const list2 = [
     {
       'title': 'ورود و ثبت‌‌نام مشاورین املاک',
-      'href' : '/signin'
+      'href' : '/signin?goTo=/profile/agency'
     },
     {
       'title':'ورود و ثبت‌نام کاربر',
-      'href' : '/signin'
+      'href' : '/signin?goTo=/'
     },
     {
       'title':'قوانین درج‌ ‌آگهی',

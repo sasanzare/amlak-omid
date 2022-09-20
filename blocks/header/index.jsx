@@ -107,11 +107,11 @@ function Header() {
                       <Nav.Link eventKey="link-1">رهن و اجاره</Nav.Link>
                     </Nav.Item>
                     <Nav.Item as="li">
-                      <Nav.Link eventKey="link-2">مشاورین املاک</Nav.Link>
+                      <Nav.Link href="/Agencies" eventKey="link-2">مشاورین املاک</Nav.Link>
                     </Nav.Item>
 
                     <Nav.Item as="li">
-                      <Nav.Link href="/Arti" eventKey="link-2">
+                      <Nav.Link href="/Articles" eventKey="link-2">
                         بلاگ
                       </Nav.Link>
                     </Nav.Item>
