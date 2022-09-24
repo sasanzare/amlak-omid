@@ -97,7 +97,7 @@ function Header() {
                 <Col lg={7}>
                   <Nav
                     defaultActiveKey="/home"
-                    className="dir-r pe-0 text-center"
+                    className="dir-r pe-0 text-center   justify-content-center"
                     as="ul"
                   >
                     <Nav.Item as="li">
@@ -125,7 +125,7 @@ function Header() {
                 <Col
                   lg={3}
                   md={12}
-                  className="dir-r pt-1 fw-bold h3 text-center px-0"
+                  className="dir-r pt-1 fw-bold h3 text-lg-end text-center px-0"
                 >
                   <Link href="/">
                     <a className="text-decoration-none text-es">Amlak Omid</a>
