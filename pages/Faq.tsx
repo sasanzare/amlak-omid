@@ -79,7 +79,18 @@ export default function Faq() {
         </Col>
         <Col md={4} className="ps-0 pe-3 d-md-block d-none">
           <SideBar>
-            <Link href="/">
+          <Col sm className="dir-r pt-1  fw-bold h3 text-center">
+          <Link href="/">
+            <span className="text-decoration-none text-es">Amlak Omid</span>
+          </Link>
+        </Col>
+        <h3 className="h6 text-secondary">آژانس مشاوره املاک امید</h3>
+        <p className="col-10 mx-auto pt-4">
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+          eiusmod tempor incididunt ut labore
+        </p>
+        <Col sm={12}>
+        <Link href="/">
               <a className="btn btn-es col-lg-8 col-10 mt-3">خرید ملک</a>
             </Link>
             <Link href="/">
@@ -95,6 +106,9 @@ export default function Faq() {
                 ثبت آگهی مشاورین املاک
               </a>
             </Link>
+
+        </Col>
+           
           </SideBar>
         </Col>
       </Row>
