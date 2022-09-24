@@ -8,17 +8,17 @@ export default function SearchRent() {
         navigate.push(`/buy?pageNumber=1&pageSize=8&city=${form.city.value}&type=${form.type.value}&location=${form.location.value}&room=${form.room.value}&area=${form.area.value}&assignment=${form.assignment.value}&price=${form.price.value}`)
     }
     return (
-        <Form className="Search row pt-5 mt-5 flex-lg-row flex-column" id='searchForm' >
+        <Form className="Search row pt-5 mt-5 " id='searchForm' >
             <SingleSelect val={[
                 "شیراز"
             ]}
                 name="city"
                 title="شهر"
-                myClass="col ps-0" />
+                myClass="col-xl col-sm-6 col-xs-6 col-11 mx-auto pe-xl-3 ps-xl-1 " />
             <SingleSelect val={['آب جوار', 'آبیاری', 'آرامستان دارالرحمه', 'ابونصر', 'ابیوردی', 'احمدآباد', 'احمدی', 'ارم', 'اسحاق بیگ', 'اصلاح‌نژاد', 'اطلسی', 'امام حسین', 'بازار', 'باغ تخت', 'بالا کفت', 'بریجستون', 'بعثت', 'بنکداران', 'پارک آزادی', 'پانصد دستگاه (بلوار رحمت)', 'پای کتا', 'پردیس ارم', 'پودنک', 'تاچارا', 'تپه تلویزیون', 'تحولی', 'ترکان', 'ترمینال باربری', 'تل حسین‌آباد', 'تلخ داش', 'تندگویان', 'جانبازان', 'جمهوری', 'جوادیه', 'چغا', 'چنچنه', 'چو گیاه', 'حافظیه', 'حسین‌آباد', 'خلدبرین', 'خلیلی', 'دانشگاه شهید باهنر', 'دباغ خانه', 'درکی', 'دروازه اصفهان', 'دروازه کازرون', 'دست خضر', 'دشت چنار', 'دوکوهک', 'ده پیاله', 'دینکان', 'رحمت‌آباد', 'رضوان', 'رکن‌آباد', 'ریشمک', 'زرگری', 'زرهی', 'زند', 'زیباشهر', 'سامان', 'سایت اداری', 'ستارخان', 'سجاد (بنی هاشم)', 'سر باغ', 'سعدیه', 'سهل‌آباد', 'سیلو', 'سینما سعدی', 'شاه قلی بیگی', 'شریف‌آباد', 'شهر صدرا', 'شهرک آرین', 'شهرک امام حسین', 'شهرک امام رضا (فرگاز)', 'شهرک امیر کبیر', 'شهرک ایثار', 'شهرک باهنر', 'شهرک برق', 'شهرک بزین', 'شهرک بوتان', 'شهرک پردیس', 'شهرک پرواز', 'شهرک جماران', 'شهرک حجت‌آباد', 'شهرک دارائی', 'شهرک سجادیه', 'شهرک سراج', 'شهرک سعدی', 'شهرک شهید بهشتی', 'شهرک شهید مطهری', 'شهرک عرفان', 'شهرک فجر', 'شهرک قصر قمشه', 'شهرک کوشکک', 'شهرک گلستان', 'شهرک گلستان شمالی', 'شهرک گلها', 'شهرک مخابرات', 'شهرک مدرس', 'شهرک مهدی‌آباد', 'شهرک مهرگان', 'شهرک نصر', 'شهرک نواب صفوی', 'شهرک نیروی انتظامی', 'شهرک والفجر', 'شهرک ولیعصر', 'شهید بهنام امیری', 'شیخ علی چوپان', 'شیشه‌گری', 'صاحب الزمان', 'صاحب دیوان', 'عادل‌آباد (بلوار عدالت)', 'عفیف‌آباد', 'علی‌آباد', 'فرزانگان', 'فرهنگ شهر', 'فرهنگیان', 'فضل‌آباد', 'فضیلت', 'قدوسی شرقی', 'قدوسی غربی', 'قصرالدشت', 'قلعه شاهزاده بیگم', 'قلعه قبله', 'قلعه نو', 'کاراندیش', 'کفترک', 'کوزه‌گری', 'کوی آزادی', 'کوی زهرا', 'کوی فرهنگیان', 'کوی قضات', 'کوی ولیعصر', 'کوی یاس', 'کیان شهر', 'گلدشت', 'گلدشت حافظ', 'گلدشت محمدی', 'گلدشت معالی‌آباد', 'گلشن', 'گلکوب', 'گود عربان', 'گویم', 'لاله', 'لب آب', 'لشکری', 'ماه فیروزان', 'محراب', 'محله انجیر (کلبه)', 'محله سر دزک', 'محله سنگ سیاه', 'محله طلاب (نیستان)', 'محمدیه', 'محمودیه', 'مسلم', 'مشیر غربی', 'معالی‌آباد', 'مقر', 'ملاصدرا', 'منصورآباد', 'منطقه هوایی دوران', 'مهدی‌آباد', 'مهدیه', 'میانرود', 'میدان شاه', 'نارنجستان', 'نشاط', 'نصرآباد', 'نیایش', 'وحدت (بلوار مدرس)', 'وزیرآباد', 'وصال', 'ویلاشهر کیمیا', 'هفت تنان', 'هویزه']}
                 name="location"
                 title="محدوده"
-                myClass="col ps-0" />
+                myClass="col-xl col-sm-6 col-xs-6 col-11 mx-auto px-xl-1" />
             <SingleSelect val={[
                 "اداری / تجاری",
                 "آپارتمان",
@@ -29,7 +29,7 @@ export default function SearchRent() {
             ]}
                 name="type"
                 title="نوع ملک"
-                myClass="col ps-0" />
+                myClass="col-xl col-sm-4 col-xs-6 col-11 mx-auto px-xl-1" />
             <SingleSelect val={[
                 "1",
                 "2",
@@ -39,7 +39,7 @@ export default function SearchRent() {
             ]}
                 name="room"
                 title="تعداد خواب"
-                myClass="col ps-0" />
+                myClass="col-xl col-sm-4 col-xs-6 col-11 mx-auto px-xl-1" />
             <SingleSelect val={[
                 "10 تا 90 متر",
                 "90 تا 150 متر",
@@ -48,7 +48,7 @@ export default function SearchRent() {
             ]}
                 name="area"
                 title="متراژ"
-                myClass="col ps-0" />
+                myClass="col-xl col-sm-4 col-xs-6 col-11 mx-auto px-xl-1" />
             <SingleSelect val={[
                 "رهن و اجاره",
                 "خرید",
@@ -56,7 +56,7 @@ export default function SearchRent() {
             ]}
                 name="assignment"
                 title="نوع واگذاری"
-                myClass="col ps-0" />
+                myClass="col-xl col-sm-6 col-xs-6 col-11 mx-auto px-xl-1" />
 
             <SingleSelect val={[
                 { title: "100,000,000 تا 500,000,000 تومان", val: '100000000-500000000' },
@@ -67,9 +67,9 @@ export default function SearchRent() {
             ]}
                 name="price"
                 title="قیمت"
-                myClass="col ps-0" />
+                myClass="col-xl col-sm-6 col-xs-6 col-11 mx-auto pe-xl-1 ps-xl-3" />
             <div className='text-center'>
-                <Button onClick={buy} className='btn mx-auto btn-es shadow-es col-lg-2 col-md-3 col-4'>
+                <Button onClick={buy} className='btn mx-auto btn-es shadow-es col-xl-2 col-md-3 col-4'>
                     جستجو
                 </Button>
             </div>
