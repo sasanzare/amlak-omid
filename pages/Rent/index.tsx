@@ -1,7 +1,7 @@
 import { Container,Row } from "react-bootstrap";
-import SearchRent from "../blocks/searchRent/";
+import SearchRent from "../../blocks/searchRent";
 import Link from "next/link";
-import Estate from "../components/Estate";
+import Estate from "../../components/Estate";
 
 export default function Rent() {
     const suggested = [
