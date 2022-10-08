@@ -50,9 +50,9 @@ function Footer() {
               <List lists={list2}/>
             </Col>
             <Col md={4} sm={12} className='border-3 d-flex justify-content-between align-items-center'>
-              <img src='./img/enamad1.png' className='w-100' />
-              <img src='./img/enamad2.png' className='w-100'/>
-              <img src='./img/enamad3.png' className='w-100'/>
+              <img src='/img/enamad1.png' className='w-100' />
+              <img src='/img/enamad2.png' className='w-100'/>
+              <img src='/img/enamad3.png' className='w-100'/>
             </Col>
             <Col sm={12} className='pt-3 px-4'>
               <div className='d-flex flex-md-row flex-column text-sm-center justify-content-md-between border-top border-3 pt-3'>
