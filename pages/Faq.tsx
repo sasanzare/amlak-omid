@@ -5,13 +5,13 @@ import { faLessThan } from "@fortawesome/free-solid-svg-icons";
 import SideBar from "../blocks/sidebar";
 export default function Faq() {
   return (
-    <Container className="Home pt-5 mt-5 pb-4">
+    <Container className=" pt-5 mt-5 pb-4">
       <Row>
-        <Col md={8} sm={12}>
+        <Col md={9} sm={11} xs={10} className="mx-auto">
           <Row>
             <Col
               sm={12}
-              className="shadow p-3 rounded-4 d-flex align-items-center"
+              className="shadow-sm p-3 rounded-4 d-flex align-items-center"
             >
               <Link href="/">
                 <a className="text-decoration-none text-dark ">خانه</a>
@@ -27,7 +27,7 @@ export default function Faq() {
             </Col>
             <Col
               sm={12}
-              className="text-center mt-3 shadow rounded-4 py-4"
+              className="text-center mt-3 shadow-sm rounded-4 py-4"
             >
               <h1 className="h5 pt-2 pb-4 ">سوالات متداول سامانه املاک امید</h1>
               <Accordion defaultActiveKey="0">
@@ -77,7 +77,7 @@ export default function Faq() {
             </Col>
           </Row>
         </Col>
-        <Col md={4} className="ps-0 pe-3 d-md-block d-none">
+        <Col md={3} className="ps-0 pe-3 d-md-block d-none">
           <SideBar>
           <Col sm className="dir-r pt-1  fw-bold h3 text-center">
           <Link href="/">
@@ -91,18 +91,18 @@ export default function Faq() {
         </p>
         <Col sm={12}>
         <Link href="/">
-              <a className="btn btn-es col-lg-8 col-10 mt-3">خرید ملک</a>
+              <a className="btn btn-es  col-10 mt-3">خرید ملک</a>
             </Link>
             <Link href="/">
-              <a className="btn btn-es col-lg-8 col-10 mt-3">رهن و اجار ملک</a>
+              <a className="btn btn-es  col-10 mt-3">رهن و اجار ملک</a>
             </Link>
             <Link href="/">
-              <a className="btn btn-es col-lg-8 col-10 mt-3">
+              <a className="btn btn-es col-10 mt-3">
                 ثبت آگهی رایگان ملک
               </a>
             </Link>
             <Link href="/">
-              <a className="btn btn-es col-lg-8 col-10 mt-3">
+              <a className="btn btn-es  col-10 mt-3">
                 ثبت آگهی مشاورین املاک
               </a>
             </Link>
