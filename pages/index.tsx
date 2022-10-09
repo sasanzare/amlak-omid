@@ -126,7 +126,7 @@ function Home() {
                 key={index}
                 img={office.img}
                 title={office.title}
-                myclass=" p-lg-1 p-sm-2 p-3 col-lg col-sm-4 col-11 mx-auto"
+                myclass="p-sm-2 p-3 col-lg col-sm-4 col-6 mx-auto"
               />
             ))}
           </Row>

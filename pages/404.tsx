@@ -13,7 +13,7 @@ export default function NotFound(){
                       <div className="es-floor  d-flex justify-content-center">
                           <h3 className='text-es text-center rounded-3  px-3 pt-2 mt-1 fw-bold border'>404</h3>
                       </div>
-                      <div id="doors" className={styles.esDoors + " bg-white rounded-4 shadow-lg d-flex justify-content-center align-items-center flex-column"}>
+                      <div id="doors" className={styles.esDoors + " bg-white rounded-4 shadow-sm d-flex justify-content-center align-items-center flex-column"}>
                           <p className='fw-bold'>
                           این راه به جایی نمی‌رسد!
                           </p>

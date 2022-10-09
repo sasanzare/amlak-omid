@@ -27,7 +27,7 @@ function Estate({
     <Link href={to}>
       <div className={myClass}>
         <div
-          className="shadow-es text-center pb-2 overflow-hidden rounded-3  d-block hover-zoom "
+          className="shadow-sm text-center pb-2 overflow-hidden rounded-3  d-block hover-zoom "
           style={{ textDecoration: "none" }}
         >
           <div className="p-0">

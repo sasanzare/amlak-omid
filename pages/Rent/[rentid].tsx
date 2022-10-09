@@ -8,7 +8,7 @@ import {
   faBookmark,
 } from "@fortawesome/free-solid-svg-icons";
 import SideBar from "../../blocks/sidebar";
-import RentSidebarDetails from "../../components/rentSidebarDetails";
+import RentSidebarDetails from "../../components/RentSidebarDetails";
 
 import ImageGallery from "react-image-gallery";
 import "react-image-gallery/styles/css/image-gallery.css";

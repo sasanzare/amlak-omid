@@ -2,7 +2,7 @@ import Btn from '../../microComponents/Btn'
 import styles from './ArticleCard.module.css';
 function ArticleCard({ img, title, content }) {
   return (
-    <div className="ArticleCard rounded-3 text-center shadow-es pb-3">
+    <div className="ArticleCard rounded-3 text-center shadow-sm pb-3">
       <img src={img} className="w-100" height={200} />
       <h6 className='pt-3 text-truncate fw-bold'>{title}</h6>
       <p className='px-3 f-15 lh-lg content d-inline-block' style={{ height: 120 }}>{content}</p>

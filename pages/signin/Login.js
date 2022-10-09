@@ -77,7 +77,7 @@ const Login = () => {
           <a className="btn btn-es col-lg-3 col-md-3 col-sm-5 col-6 mt-3"> دعوت به همکاری</a>
         </Link>
       </div>
-      <div className="shadow-es rounded-3   px-3 mt-3  text-center title-text border">
+      <div className="shadow-sm rounded-3   px-3 mt-3  text-center title-text border">
         <Title title="ورود" classes="" />
         <Row className="flex-column">
           <Form className="signIn-form mb-4 col-xl-5 col-lg-6 col-md-8 col-sm-9 col-11 mx-auto">
