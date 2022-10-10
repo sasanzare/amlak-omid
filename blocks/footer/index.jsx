@@ -33,7 +33,7 @@ function Footer() {
     },
     {
       'title':'قوانین درج‌ ‌آگهی',
-      'href' : '/rules'
+      'href' : '/Rules'
     },
     {
       'title': 'سوالات متداول',

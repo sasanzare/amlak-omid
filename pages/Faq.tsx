@@ -3,11 +3,12 @@ import Link from "next/link";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLessThan } from "@fortawesome/free-solid-svg-icons";
 import SideBar from "../blocks/sidebar";
+import SideBarLinks from "../components/SideBarLinks";
 export default function Faq() {
   return (
     <Container className=" pt-5 mt-5 pb-4">
       <Row>
-        <Col md={9} sm={11} xs={10} className="mx-auto">
+        <Col lg={9} md={8} sm={11} xs={10} className="mx-auto">
           <Row>
             <Col
               sm={12}
@@ -77,38 +78,10 @@ export default function Faq() {
             </Col>
           </Row>
         </Col>
-        <Col md={3} className="ps-0 pe-3 d-md-block d-none">
+        <Col lg={3} md={4} className="ps-0 pe-3 d-md-block d-none">
           <SideBar>
-          <Col sm className="dir-r pt-1  fw-bold h3 text-center">
-          <Link href="/">
-            <span className="text-decoration-none text-es">Amlak Omid</span>
-          </Link>
-        </Col>
-        <h3 className="h6 text-secondary">آژانس مشاوره املاک امید</h3>
-        <p className="col-10 mx-auto pt-4">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-          eiusmod tempor incididunt ut labore
-        </p>
-        <Col sm={12}>
-        <Link href="/">
-              <a className="btn btn-es  col-10 mt-3">خرید ملک</a>
-            </Link>
-            <Link href="/">
-              <a className="btn btn-es  col-10 mt-3">رهن و اجار ملک</a>
-            </Link>
-            <Link href="/">
-              <a className="btn btn-es col-10 mt-3">
-                ثبت آگهی رایگان ملک
-              </a>
-            </Link>
-            <Link href="/">
-              <a className="btn btn-es  col-10 mt-3">
-                ثبت آگهی مشاورین املاک
-              </a>
-            </Link>
-
-        </Col>
-           
+          
+           <SideBarLinks />
           </SideBar>
         </Col>
       </Row>

@@ -64,16 +64,16 @@ export default function RentSidebarDetails(props) {
         </div>
         <small>{props.price}</small>
       </div>
-      <div className="border-bottom py-3 text-secondary opacity-75">
+      <div className="border-bottom py-3 text-secondary opacity-75 ">
         <Link href={props.virtual}>
-          <a className="btn btn-es col-11 d-flex justify-content-between mx-auto">
+          <a className="btn btn-es  d-flex justify-content-between mx-auto col-md-12 col-sm-6 col-8 mx-auto">
           <FontAwesomeIcon icon={faCirclePlay} className="ms-1 mt-1" />
             بازدید مجازی
             
           </a>
         </Link>
       </div>
-      <div className="pt-3 text-secondary">
+      <div className="pt-3 text-secondary col-md-12 col-sm-6 col-8 mx-auto">
         <Link href={"tel:" +props.phone+""}>
           <a className=" px-2 py-1 rounded-3 text-decoration-none border btn-es col-10 d-flex justify-content-between mx-auto">
           <FontAwesomeIcon icon={faPhoneFlip} className="ms-1 mt-1" />

@@ -96,7 +96,7 @@ export default function RentId() {
   return (
     <Container className="Home pt-5 mt-5 pb-4">
       <Row>
-        <Col md={3} className="pe-0 ps-3 ">
+        <Col lg={3} md={4}  xs={11} className="pe-0 ps-md-3 ps-0 mx-auto">
           <SideBar>
             <RentSidebarDetails
               img={null}
@@ -120,33 +120,33 @@ export default function RentId() {
             <button className="btn btn-es col f-12  me-1">خرید و فروش خانه</button>
           </div>
         </Col>
-        <Col md={9} sm={12}>
+        <Col lg={9} md={8} xs={11} className="mx-auto">
           <Row>
             <Col
               sm={12}
-              className="shadow p-3 rounded-4 d-flex align-items-center"
+              className="shadow-sm p-3 rounded-4 d-flex align-items-center mt-md-0 mt-5"
             >
               <Link href="/">
-                <a className="text-decoration-none text-dark ">خرید ملک</a>
+                <a className="text-decoration-none text-dark f-14">خرید ملک</a>
               </Link>
-              <span className="me-2 pt-1">
-                <FontAwesomeIcon className="text-es" icon={faLessThan} />
+              <span className="me-2 ">
+                <FontAwesomeIcon className="text-es f-14" icon={faLessThan} />
               </span>
               <Link href="/">
-                <a className="text-decoration-none text-dark me-2">
+                <a className="text-decoration-none text-dark me-2 f-14">
                   محله معالی آباد
                 </a>
               </Link>
-              <span className="me-2 pt-1">
-                <FontAwesomeIcon className="text-es" icon={faLessThan} />
+              <span className="me-2 ">
+                <FontAwesomeIcon className="text-es f-14" icon={faLessThan} />
               </span>
-              <span className="text-decoration-none text-dark me-2">
+              <span className="text-decoration-none text-dark me-2 f-14">
                 آپارتمان ۱۰۰ متری دو خواب
               </span>
             </Col>
             <Col
               sm={12}
-              className="text-center mt-3 shadow rounded-4 py-4 px-md-5 px-4"
+              className="text-center mt-3 shadow-sm rounded-4 py-4 px-md-5 px-4"
             >
               <ImageGallery
                 items={images}
@@ -155,7 +155,7 @@ export default function RentId() {
                 lazyLoad={true}
               />
 
-              <div className="col-xl-7 col-md-9 col-sm-10 col-8 mx-auto d-flex flex-sm-row flex-column justify-content-around">
+              <div className="col-xl-7 col-md-12 col-sm-11 col-7 mx-auto d-flex flex-sm-row flex-column justify-content-around">
                 <button className="btn btn-border mt-3">
                   <FontAwesomeIcon icon={faBookmark} className="ms-2" />
                   گزارش اگهی
@@ -184,7 +184,7 @@ export default function RentId() {
             </Col>
           </Row>
         </Col>
-        <h6 className="col-12 pt-5 pb-4 fw-bold mt-4">آگهی های مشابه</h6>
+        <h6 className="col-md-12 col-11 mx-auto pt-5 pb-4 fw-bold mt-4">آگهی های مشابه</h6>
         {suggested.map((suggest, index) => (
               <Estate
                 key={index}

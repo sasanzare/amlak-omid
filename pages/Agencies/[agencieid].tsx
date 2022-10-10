@@ -79,7 +79,7 @@ export default function AgencieId() {
   return (
     <Container className="pt-5 mt-5 pb-4">
       <Row>
-        <Col md={3} className="pe-0 ps-3 ">
+        <Col lg={3} md={4}  xs={11} className="pe-0 ps-md-3 ps-0 mx-auto">
           <SideBar>
             <AgencieSidebarDetails
               img="/img/card1.png"
@@ -92,7 +92,7 @@ export default function AgencieId() {
             />
           </SideBar>
         </Col>
-        <Col md={9} sm={12}>
+        <Col lg={9} md={8} xs={11} className="mx-auto">
           <Row>
             <Col
               sm={12}

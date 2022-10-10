@@ -45,7 +45,7 @@ export default function AgencieSidebarDetails(props) {
         <small className="dir-l">{props.phone}</small>
       </div>
    
-      <div className="pt-3 text-secondary">
+      <div className="pt-3 text-secondary col-md-12 col-sm-6 col-7 mx-auto">
         <Link href={"tel:" +props.phone+""}>
           <a className=" px-2 py-1 rounded-3 text-decoration-none border btn-es col-10 d-flex justify-content-between mx-auto">
           <FontAwesomeIcon icon={faPhoneFlip} className="ms-1 mt-1" />
