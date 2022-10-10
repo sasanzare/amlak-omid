@@ -7,24 +7,22 @@ import styles from "./SignIn.module.css";
 import { ToastContainer, toast } from "react-toastify";
 import { context } from "../../context/index";
 import { useForm } from "react-hook-form";
+import { RealStateRegistrationApi } from "../../api/index";
 
-export default function AdvisorRegistration() {
+export default function RealStateRegistration() {
   ///context
   const { setShowLoading } = useContext(context);
 
-  ////state
+  //state
   const [name, setName] = useState();
+  const [lastName, setLastName] = useState();
   const [phone, setPhone] = useState();
   const [id, setId] = useState();
-  const [nationalCode, setNationalCode] = useState();
-  const [postalCode, setPostalCode] = useState();
   const [address, setaddress] = useState();
-  const [passport, setPassport] = useState();
   const [pic, setPic] = useState();
+  const [businessId, setBusinessId] = useState();
 
-  // controller
-
-  // validation
+  //controllers
   const {
     register,
     handleSubmit,
@@ -32,36 +30,32 @@ export default function AdvisorRegistration() {
     formState: { errors },
   } = useForm();
 
-  console.log(errors);
-
   async function BtnHandeller() {
     try {
-      // e.preventDefault();
       setShowLoading(true);
-      const AdvisorRegistration = new FormData();
-      AdvisorRegistration.append("name", name);
-      AdvisorRegistration.append("phoneNumber", phone);
-      AdvisorRegistration.append("businessId", businessId);
-      AdvisorRegistration.append("address", address);
-      AdvisorRegistration.append("nationalCode", id);
-      AdvisorRegistration.append("postalCode", PostalCode);
-      AdvisorRegistration.append("passport", passport);
-      AdvisorRegistration.append("pic", pic);
+      const RealStateRegistration = new FormData();
+      RealStateRegistration.append("name", name);
+      RealStateRegistration.append("family", lastName);
+      RealStateRegistration.append("phoneNumber", phone);
+      RealStateRegistration.append("address", address);
+      RealStateRegistration.append("nationalCode", id);
+      RealStateRegistration.append("passport", pic);
+      RealStateRegistration.append("certificate", businessId);
+      RealStateRegistration.append("lat", 2);
+      RealStateRegistration.append("lon", 2);
 
       const res = await axios({
         method: "post",
-        url: AdvisorRegistreApi,
-        data: AdvisorRegistration,
+        url: RealStateRegistrationApi,
+        data: RealStateRegistration,
         headers: { "Content-Type": "multipart/form-data" },
       });
-
-      // const res = await axios.post(AdvisorRegistreApi,AdvisorRegistration)
       if (res.status === 201) {
         toast.success("حساب شما با موفقیت ساخته شد");
         setShowLoading(false);
       }
     } catch (err) {
-      if (err.response?.data) {
+      if (err?.response?.data) {
         err?.response?.data?.errors?.map((issue) => toast.error(issue));
       } else {
         toast.error("مشکلی پیش آمده است !");
@@ -79,15 +73,19 @@ export default function AdvisorRegistration() {
           xs={11}
           className="shadow-sm mx-auto rounded-3 pb-3 px-3 mt-5  text-center"
         >
-          <Title title="دعوت به همکاری" />
-
-          <Col xl={8} md={9} xs={10} className="mx-auto pt-5">
+          <Title title="ثبت نام مشاور املاک" />
+          <p className="text-secondary col-xl-8 col-md-9 col-sm-10 col-9 mx-auto py-4 f-14">
+            این در حالت صاحب مشاور املاک می تواند بدون محدودیت آگهی عادی و فروش
+            ویژه اضافه کند هزینه دریافت اکانت مشاور ماهیانه دویست و پنجاه هزار
+            تومان می باشد.
+          </p>
+          <Col xl={8} md={9} xs={10} className="mx-auto">
             <Form onSubmit={handleSubmit(BtnHandeller)} className="row">
               <Form.Group className="col-sm-6 col-11 mx-auto mb-3 ps-sm-2">
                 <Form.Control
                   className=" shadow-es py-2 border-0 rounded-3 "
                   type="text"
-                  placeholder="نام و نام خانوادگی"
+                  placeholder="نام املاک"
                   {...register("name", {
                     required: "نام وارد نشده",
                     onChange: (e) => setName(e.target.value),
@@ -101,10 +99,25 @@ export default function AdvisorRegistration() {
               <Form.Group className="col-sm-6 col-11 mx-auto mb-3 pe-sm-2">
                 <Form.Control
                   className=" shadow-es py-2 border-0 rounded-3"
+                  type="text"
+                  placeholder="نام‌خانوادگی املاک"
+                  {...register("family", {
+                    required: "نام خانوادگی وارد نشده",
+                    onChange: (e) => setLastName(e.target.value),
+                  })}
+                />
+                <Form.Text className="text-warning form-validate position-absolute ">
+                  {errors?.family?.message}
+                </Form.Text>
+              </Form.Group>
+
+              <Form.Group className="col-sm-6 col-11 mx-auto mb-3 ps-sm-2">
+                <Form.Control
+                  className=" shadow-es py-2 border-0 rounded-3"
                   type="tel"
-                  placeholder="شماره تماس "
+                  placeholder="شماره تماس ثابت"
                   {...register("phone", {
-                    required:" شماره تماس وارد نشده است",
+                    // required:" شماره تماس وارد نشده است",
                     onChange: (e) => setPhone(e.target.value),
                   })}
                 />
@@ -113,33 +126,46 @@ export default function AdvisorRegistration() {
                 </Form.Text>
               </Form.Group>
 
+              <Form.Group className="col-sm-6 col-11 mx-auto mb-3 pe-sm-2">
+                <Form.Control
+                  className=" shadow-es py-2 border-0 rounded-3"
+                  type="tel"
+                  placeholder="شماره همراه"
+                  {...register("earPhone", {
+                    required: "شماره همراه وارد نشده است",
+                    onChange: (e) => setId(e.target.value),
+                  })}
+                />
+                <Form.Text className="text-warning form-validate position-absolute ">
+                  {errors?.id?.message}
+                </Form.Text>
+              </Form.Group>
               <Form.Group className="col-sm-6 col-11 mx-auto mb-3 ps-sm-2">
                 <Form.Control
                   className=" shadow-es py-2 border-0 rounded-3"
                   type="text"
                   placeholder="کد ملی"
-                  {...register("nationalCode", {
+                  {...register("id", {
                     required: "کد ملی وارد نشده است",
-                    onChange: (e) => setNationalCode(e.target.value),
+                    onChange: (e) => setId(e.target.value),
                   })}
                 />
                 <Form.Text className="text-warning form-validate position-absolute ">
-                  {errors?.nationalCode?.message}
+                  {errors?.id?.message}
                 </Form.Text>
               </Form.Group>
-
               <Form.Group className="col-sm-6 col-11 mx-auto mb-3 pe-sm-2">
                 <Form.Control
                   className=" shadow-es py-2 border-0 rounded-3"
                   type="text"
-                  placeholder="کد پستی"
-                  {...register("postalCode", {
+                  placeholder="کد پروانه کسب"
+                  {...register("businessId", {
                     required: "کد پروانه کسب وارد نشده است",
-                    onChange: (e) => setPostalCode(e.target.value),
+                    onChange: (e) => setId(e.target.value),
                   })}
                 />
                 <Form.Text className="text-warning form-validate position-absolute ">
-                  {errors?.postalCode?.message}
+                  {errors?.id?.message}
                 </Form.Text>
               </Form.Group>
 
@@ -163,20 +189,6 @@ export default function AdvisorRegistration() {
                   className=" shadow-es py-2 border-0 "
                   type="file"
                   placeholder="افزودن عکس کارت ملی"
-                  {...register("passport", {
-                    required: " عکس کارت ملی وارد نشده است",
-                    onChange: (e) => setPassport(e.target.files[0]),
-                  })}
-                />
-                <Form.Text className="text-warning form-validate position-absolute ">
-                  {errors?.passport?.message}
-                </Form.Text>
-              </Form.Group>
-              <Form.Group className="col-sm-10 col-11 mx-auto mb-3 pe-sm-2">
-                <Form.Control
-                  className=" shadow-es py-2 border-0 "
-                  type="file"
-                  placeholder="افزودن عکس پرسنلی "
                   {...register("pic", {
                     required: " عکس کارت ملی وارد نشده است",
                     onChange: (e) => setPic(e.target.files[0]),
@@ -184,6 +196,20 @@ export default function AdvisorRegistration() {
                 />
                 <Form.Text className="text-warning form-validate position-absolute ">
                   {errors?.pic?.message}
+                </Form.Text>
+              </Form.Group>
+              <Form.Group className="col-sm-10 col-11 mx-auto mb-3 ps-sm-2">
+                <Form.Control
+                  className=" shadow-es py-2 border-0 "
+                  type="file"
+                  placeholder="افزودن تصویر پروانه کسب"
+                  {...register("businessId", {
+                    required: " تصویر پروانه کسب وارد نشده است",
+                    onChange: (e) => setBusinessId(e.target.files[0]),
+                  })}
+                />
+                <Form.Text className="text-warning form-validate position-absolute ">
+                  {errors?.businessId?.message}
                 </Form.Text>
               </Form.Group>
 
