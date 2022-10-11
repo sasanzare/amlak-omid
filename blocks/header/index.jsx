@@ -30,7 +30,7 @@ function Header() {
         expand="lg"
       >
         <Container fluid>
-          <Link href="/News">
+          <Link href="/New">
             <a className="btn btn-es fw-bold col-xl-1 col-lg-2 col-md-2 col-sm-3 col-4">
               ثبت آگهی
             </a>
