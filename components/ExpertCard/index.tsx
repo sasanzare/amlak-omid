@@ -4,7 +4,8 @@ export default function ExpertCard(props) {
     <Col md={4} xs={6} className="px-lg-3 px-md-1 px-sm-3 px-1" >
       <div className="rounded-3 shadow-sm overflow-hidden mt-4 p-0">
         <img src={props.img} className="w-100" height={150} alt={props.title} />
-        <h6 className="pt-2 px-2">{props.title}</h6>
+        <h6 className="pt-2 px-2 text-secondary">{props.title}</h6>
+        {props.children}
       </div>
     </Col>
   );

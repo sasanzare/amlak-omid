@@ -4,6 +4,10 @@ import Link from "next/link";
 import SideBar from "../../blocks/sidebar";
 import BgTop from "../../components/bgTop/BgTop";
 import Estate from "../../components/Estate";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPencil } from "@fortawesome/free-solid-svg-icons";
+import ExpertCard from "../../components/ExpertCard";
+
 export default function Dashboard() {
   const suggested = [
     {
@@ -49,6 +53,20 @@ export default function Dashboard() {
       type: "مسکونی",
       time: "۳ روز پیش",
       meter: "200",
+    },
+  ];
+  const ExpertData = [
+    {
+      img: "/img/realState/user-pic1.png",
+      title: "سینا رحمان پور",
+    },
+    {
+      img: "/img/realState/user-pic2.png",
+      title: "فاطمه قاسمی",
+    },
+    {
+      img: "/img/realState/user-pic3.png",
+      title: "‌حمید فدایی",
     },
   ];
   return (
@@ -138,7 +156,10 @@ export default function Dashboard() {
                       className="px-1 pt-3  mx-auto"
                     >
                       <Link href="tel:">
-                        <a className="btn btn-border w-100 f-14 "> تماس با پشتیبانی</a>
+                        <a className="btn btn-border w-100 f-14 ">
+                          {" "}
+                          تماس با پشتیبانی
+                        </a>
                       </Link>
                     </Col>
                     <Col
@@ -149,7 +170,9 @@ export default function Dashboard() {
                       className="px-1 pt-3  mx-auto"
                     >
                       <Link href="/New">
-                        <a className="btn btn-border w-100 f-14 ">+ ملک فروش فوری</a>
+                        <a className="btn btn-border w-100 f-14 ">
+                          + ملک فروش فوری
+                        </a>
                       </Link>
                     </Col>
                     <Col
@@ -163,7 +186,7 @@ export default function Dashboard() {
                         eventKey="invite"
                         className="btn btn-border w-100 f-14 "
                       >
-                         فرم دعوت به همکاری
+                        فرم دعوت به همکاری
                       </Nav.Link>
                     </Col>
                     <Col
@@ -191,7 +214,7 @@ export default function Dashboard() {
                         eventKey="reports"
                         className="btn btn-border w-100 f-14 "
                       >
-                         دیدن گزارش‌ها
+                        دیدن گزارش‌ها
                       </Nav.Link>
                     </Col>
                   </Row>
@@ -225,7 +248,7 @@ export default function Dashboard() {
                       </Row>
                     </Tab.Pane>
                     <Tab.Pane eventKey="note">note</Tab.Pane>
-                   
+
                     <Tab.Pane eventKey="transactions">
                       <Table borderless hover className="text-end">
                         <thead>
@@ -255,38 +278,97 @@ export default function Dashboard() {
                     <Tab.Pane eventKey="invite">
                       <Row>
                         <Col lg={3} className="pe-lg-2 ">
-                          <img src="/img/realState/user-pic2.png" className="col-lg-12 col-sm-5 rounded-3 h-100" alt="" />
-                          <div className="col-lg-12 col-sm-5 col-6 mx-auto d-flex justify-content-between px-1" style={{ marginTop: "-33px"}}>
-                            <button className="rounded-5 btn-es col-6 f-13">پذیرش</button>
-                            <button className="rounded-5 btn-danger col-sm-5 col-6 f-13">رد کردن</button>
+                          <img
+                            src="/img/realState/user-pic2.png"
+                            className="col-lg-12 col-sm-5 rounded-3 h-100"
+                            alt=""
+                          />
+                          <div
+                            className="col-lg-12 col-sm-5 col-6 mx-auto d-flex justify-content-between px-1"
+                            style={{ marginTop: "-33px" }}
+                          >
+                            <button className="rounded-5 btn-es col-6 f-13">
+                              پذیرش
+                            </button>
+                            <button className="rounded-5 btn-danger col-sm-5 col-6 f-13">
+                              رد کردن
+                            </button>
                           </div>
                         </Col>
                         <Col lg={9}>
                           <Row>
-                            <Col lg={6} className="ps-lg-2 pe-lg-0 ps-2 pe-2 mt-lg-0 mt-3">
-                              <span className="btn shadow-es col-12 rounded-4 py-2 text-secondary text-end f-14"> نام و نام‌خانوادگی: پارمیدا زارع</span>
+                            <Col
+                              lg={6}
+                              className="ps-lg-2 pe-lg-0 ps-2 pe-2 mt-lg-0 mt-3"
+                            >
+                              <span className="btn shadow-es col-12 rounded-4 py-2 text-secondary text-end f-14">
+                                {" "}
+                                نام و نام‌خانوادگی: پارمیدا زارع
+                              </span>
                             </Col>
-                            <Col lg={6} className="pe-lg-2 ps-2 pe-2 mt-lg-0 mt-3">
-                              <span className="btn shadow-es col-12 rounded-4 py-2 text-secondary text-end f-14">شماره تماس: 09171102056</span>
+                            <Col
+                              lg={6}
+                              className="pe-lg-2 ps-2 pe-2 mt-lg-0 mt-3"
+                            >
+                              <span className="btn shadow-es col-12 rounded-4 py-2 text-secondary text-end f-14">
+                                شماره تماس: 09171102056
+                              </span>
                             </Col>
-                            <Col lg={6} className="ps-lg-2 pe-lg-0 ps-2 pe-2 mt-3">
-                              <span className="btn shadow-es col-12 rounded-4 py-2 text-secondary text-end f-14">کدملی: 2420187459</span>
+                            <Col
+                              lg={6}
+                              className="ps-lg-2 pe-lg-0 ps-2 pe-2 mt-3"
+                            >
+                              <span className="btn shadow-es col-12 rounded-4 py-2 text-secondary text-end f-14">
+                                کدملی: 2420187459
+                              </span>
                             </Col>
                             <Col lg={6} className="pe-lg-2 ps-2 pe-2 mt-3">
-                              <span className="btn shadow-es col-12 rounded-4 py-2 text-secondary text-end f-14">کدپستی: 731875648</span>
+                              <span className="btn shadow-es col-12 rounded-4 py-2 text-secondary text-end f-14">
+                                کدپستی: 731875648
+                              </span>
                             </Col>
                             <Col lg={12} className="pe-lg-0 ps-2 pe-2 mt-3">
-                              <span className="btn shadow-es col-12 rounded-4 py-2 text-secondary text-end f-14">آدرس محل سکونت: 
-                              شیراز خیابان قدوسی غربی نرسیده به شهید محلاتی طبقه فوقانی فروشگاه واحد سوم ۳۶۱
+                              <span className="btn shadow-es col-12 rounded-4 py-2 text-secondary text-end f-14">
+                                آدرس محل سکونت: شیراز خیابان قدوسی غربی نرسیده
+                                به شهید محلاتی طبقه فوقانی فروشگاه واحد سوم ۳۶۱
                               </span>
                             </Col>
                           </Row>
                         </Col>
                       </Row>
-
                     </Tab.Pane>
-                    <Tab.Pane eventKey="experts">experts</Tab.Pane>
-                    <Tab.Pane eventKey="reports">reports</Tab.Pane>
+                    <Tab.Pane eventKey="experts">
+                        <Row>
+                        {ExpertData.map((item, index) => (
+                        <ExpertCard
+                          key={index}
+                          img={item.img}
+                          title={item.title}
+                        >
+                          <button className="btn-danger rounded-3 mb-2 f-14">حذف کارشناس</button>
+                        </ExpertCard>
+                      ))}
+                        </Row>
+                    </Tab.Pane>
+                    <Tab.Pane eventKey="reports">
+                      <Col
+                        lg={12}
+                        className=" mt-2 shadow-es col-12 rounded-4 py-2 border text-secondary px-3 d-flex justify-content-between"
+                      >
+                        <span className="f-14">
+                          <FontAwesomeIcon
+                            icon={faPencil}
+                            className="text-gery ms-2"
+                          />
+                          این آگهی قیمت اشتباهی گزاشته داره بازار رو خراب میکنه
+                        </span>
+                        <Link href="#">
+                          <a className="text-decoration-none text-es f-14">
+                            مشاهده آگهی
+                          </a>
+                        </Link>
+                      </Col>
+                    </Tab.Pane>
                   </Tab.Content>
                 </Col>
               </Row>
