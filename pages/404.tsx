@@ -5,8 +5,8 @@ import styles from '../styles/NotFound.module.css';
 export default function NotFound(){
 
     return(
-        <div className={ styles.vh95 +' NotFound d-flex align-items-center'}>
-        <Container className='pt-5'>
+        <div className='vh-100 NotFound d-flex align-items-center'>
+        <Container>
             <Row>
                 <Col className=' d-flex justify-content-end col-lg-4 col-md-5 col-sm-7 col-11 mx-auto pt-4'>
                   <div className={styles.esElevator + " bg-light rounded-4"}>
