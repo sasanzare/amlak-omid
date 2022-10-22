@@ -10,6 +10,10 @@ const nextConfig = {
     // !! WARN !!
     ignoreBuildErrors: true,
   },
+  i18n: {
+    locales: ["fa"],
+    defaultLocale: "fa",
+  },
 
 }
 

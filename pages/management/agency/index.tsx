@@ -86,7 +86,7 @@ const [cityAreaSearchList, setcityAreaSearchList] = useState([]);
        
         return (
             <>
-            <div className="p-2 pt-5">
+            <div className="p-2 pt-5 mt-5">
                 <h2 >agency
                 <button className="ms-2 me-2" onClick={() => openDialoge()}>+</button>
                 </h2>

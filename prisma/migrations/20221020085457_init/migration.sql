@@ -202,10 +202,10 @@ ALTER TABLE "agency" ADD CONSTRAINT "agency_cityAreaId_fkey" FOREIGN KEY ("cityA
 ALTER TABLE "cityArea" ADD CONSTRAINT "cityArea_cityId_fkey" FOREIGN KEY ("cityId") REFERENCES "city"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "realEstate" ADD CONSTRAINT "realEstate_userId_fkey" FOREIGN KEY ("userId") REFERENCES "user"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "realEstate" ADD CONSTRAINT "realEstate_agencyId_fkey" FOREIGN KEY ("agencyId") REFERENCES "agency"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "realEstate" ADD CONSTRAINT "realEstate_agencyId_fkey" FOREIGN KEY ("agencyId") REFERENCES "agency"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE "realEstate" ADD CONSTRAINT "realEstate_userId_fkey" FOREIGN KEY ("userId") REFERENCES "user"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "realEstate" ADD CONSTRAINT "realEstate_cityAreaId_fkey" FOREIGN KEY ("cityAreaId") REFERENCES "cityArea"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
