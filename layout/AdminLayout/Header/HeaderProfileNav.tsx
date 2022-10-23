@@ -27,7 +27,7 @@ const ProfileDropdownItem = (props: NavItemProps) => {
 
   return (
     <>
-      <FontAwesomeIcon className="me-2" icon={icon} fixedWidth />
+      <FontAwesomeIcon className="ms-2" icon={icon} fixedWidth />
       {children}
     </>
   )
@@ -48,13 +48,13 @@ export default function HeaderProfileNav() {
             />
           </div>
         </Dropdown.Toggle>
-        <Dropdown.Menu className="pt-0">
-          <Dropdown.Header className="bg-light fw-bold rounded-top">Account</Dropdown.Header>
+        <Dropdown.Menu className="pt-0 text-end">
+          <Dropdown.Header className="bg-light fw-bold rounded-top">حساب</Dropdown.Header>
           <Link href="/" passHref>
             <Dropdown.Item>
               <ProfileDropdownItem icon={faBell}>
                 Updates
-                <Badge bg="info" className="ms-2">42</Badge>
+                <Badge bg="info" className="me-2">42</Badge>
               </ProfileDropdownItem>
             </Dropdown.Item>
           </Link>
@@ -62,7 +62,7 @@ export default function HeaderProfileNav() {
             <Dropdown.Item>
               <ProfileDropdownItem icon={faEnvelopeOpen}>
                 Updates
-                <Badge bg="success" className="ms-2">42</Badge>
+                <Badge bg="success" className="me-2">42</Badge>
               </ProfileDropdownItem>
             </Dropdown.Item>
           </Link>
@@ -70,7 +70,7 @@ export default function HeaderProfileNav() {
             <Dropdown.Item>
               <ProfileDropdownItem icon={faListCheck}>
                 Tasks
-                <Badge bg="danger" className="ms-2">42</Badge>
+                <Badge bg="danger" className="me-2">42</Badge>
               </ProfileDropdownItem>
             </Dropdown.Item>
           </Link>
@@ -78,15 +78,15 @@ export default function HeaderProfileNav() {
             <Dropdown.Item>
               <ProfileDropdownItem icon={faMessage}>
                 Messages
-                <Badge bg="warning" className="ms-2">42</Badge>
+                <Badge bg="warning" className="me-2">42</Badge>
               </ProfileDropdownItem>
             </Dropdown.Item>
           </Link>
 
-          <Dropdown.Header className="bg-light fw-bold">Settings</Dropdown.Header>
+          <Dropdown.Header className="bg-light fw-bold">تنظیمات</Dropdown.Header>
           <Link href="/" passHref>
             <Dropdown.Item>
-              <ProfileDropdownItem icon={faUser}>Profile</ProfileDropdownItem>
+              <ProfileDropdownItem icon={faUser}>پروفایل</ProfileDropdownItem>
             </Dropdown.Item>
           </Link>
           <Link href="/" passHref>
@@ -114,7 +114,7 @@ export default function HeaderProfileNav() {
           </Link>
           <Link href="/login" passHref>
             <Dropdown.Item>
-              <ProfileDropdownItem icon={faPowerOff}>Logout</ProfileDropdownItem>
+              <ProfileDropdownItem icon={faPowerOff}>خروج</ProfileDropdownItem>
             </Dropdown.Item>
           </Link>
         </Dropdown.Menu>

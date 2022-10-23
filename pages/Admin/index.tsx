@@ -47,8 +47,7 @@ const random = (min: number, max: number) => Math.floor(Math.random() * (max - m
 const Home: NextPage = () => (
   <AdminLayout>
     <Head>
-      <title>پنبل ادمین</title>
-      <link rel="stylesheet" href="/admin/css/style.css"/>
+      <title>پنل ادمین</title>
     </Head>
     <div className="row">
       <div className="col-sm-6 col-lg-3">

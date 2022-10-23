@@ -34,12 +34,12 @@ export default function Header(props: HeaderProps) {
         >
           <FontAwesomeIcon icon={faBars} />
         </Button>
-        <Link href="/src/pages">
-          <a className="header-brand d-md-none">
-            <svg width="118" height="46">
-              <title>CoreUI Logo</title>
-              <use xlinkHref="/assets/brand/coreui.svg#full" />
-            </svg>
+        <Link href="/">
+          <a className=" d-md-none text-decoration-none text-es">
+       
+              Amlak Omid
+             
+          
           </a>
         </Link>
         <div className="header-nav d-none d-md-flex">

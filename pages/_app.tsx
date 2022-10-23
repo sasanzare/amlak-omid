@@ -22,11 +22,10 @@ import { useRouter } from "next/router";
 function MyApp({ Component, pageProps }: AppProps) {
   const router = useRouter();
   const hide =
-    router.pathname === "/404" || router.pathname === "/admin" ? false : true;
-
+    router.pathname === "/404" || router.pathname.includes("/Admin") ? false : true;
   return (
     <ContextProvider>
-      <div className="App overflow-hidden" dir="">
+      <div className="App overflow-hidden" dir="rtl">
         {false ? (
           <AdminBlock>
             <Component {...pageProps} />

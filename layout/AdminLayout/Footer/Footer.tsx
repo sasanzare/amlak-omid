@@ -1,28 +1,25 @@
-import React from 'react'
-
-export default function Footer() {
+import Link from "next/link";
+export default () => {
   return (
-    <footer className="footer flex-column flex-md-row border-top d-flex align-items-center justify-content-between px-4 py-2">
+    <footer className="footer flex-column flex-md-row border-top d-flex align-items-center justify-content-between px-4 py-2 dir-l">
       <div>
-        <a className="text-decoration-none" href="https://coreui.io">CoreUI </a>
-        <a className="text-decoration-none" href="https://coreui.io">
-          Bootstrap Admin
-          Template
-        </a>
-        {' '}
-        © 2021
-        creativeLabs.
+        <span>Copyright</span> ©
+        <Link href="/">
+          <a className="text-decoration-none text-warning">
+            <span>{new Date().getFullYear()}</span>
+          </a>
+        </Link>
       </div>
       <div className="ms-md-auto">
         Powered by&nbsp;
         <a
-          className="text-decoration-none"
-          href="@layout/AdminLayout/AdminLayout"
+          className="text-decoration-none text-warning"
+          href="https://sasanzare.ir"
+          target="_blank"
         >
-          CoreUI UI
-          Components
+          Sasan Zare
         </a>
       </div>
     </footer>
-  )
-}
+  );
+};

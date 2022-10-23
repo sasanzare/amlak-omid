@@ -23,8 +23,8 @@ export default function FormModal(props) {
                 </p> */}
             </Modal.Body>
             <Modal.Footer>
-                <Button onClick={() => { props.onSave() }}>save</Button>
-                <Button variant="secondary" onClick={props.onCancel}>cancel</Button>
+                <Button onClick={() => { props.onSave() }}>دخیره</Button>
+                <Button variant="secondary" onClick={props.onCancel}>لفو</Button>
             </Modal.Footer>
         </Modal>
     );
