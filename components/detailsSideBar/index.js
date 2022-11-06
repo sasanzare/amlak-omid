@@ -1,10 +1,10 @@
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {faClock,faPhone} from '@fortawesome/free-solid-svg-icons'
 
-import './detailsSideBar.css'
-import { svg } from './../../assets/svg';
+// import './detailsSideBar.css'
+// import { svg } from './../../assets/svg';
 import { Form } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import  Link  from 'next/link';
 
 
 const DetailsSidBar = ({profile,time,user,mainTitle,kind,Residential,address,addressText,bed,bedNumber,meters,metersNumber,price,priceNumber}) => {
@@ -31,7 +31,7 @@ const DetailsSidBar = ({profile,time,user,mainTitle,kind,Residential,address,add
 
                      <li className='d-flex justify-content-between px-2 py-2 mb-4'>
                            <div>
-                              {svg.home}
+                              {/* {svg.home} */}
                               <span className='f-16 title-text'>{kind}</span>
                            </div>
                            <span className='f-16 title-text'>{Residential}</span>
@@ -40,7 +40,7 @@ const DetailsSidBar = ({profile,time,user,mainTitle,kind,Residential,address,add
 
                      <li className='d-flex justify-content-between px-2 py-2 mb-4'>
                            <div>
-                              {svg.location}
+                              {/* {svg.location} */}
                               <span className='f-16 title-text'>{address}</span>
                            </div>
                            <span className='f-16 title-text'>{addressText}</span>
@@ -48,7 +48,7 @@ const DetailsSidBar = ({profile,time,user,mainTitle,kind,Residential,address,add
 
                      <li className='d-flex justify-content-between px-2 py-2 mb-4'>
                            <div>
-                              {svg.bed}
+                              {/* {svg.bed} */}
                               <span className='f-16 title-text'>{bed}</span>
                            </div>
                            <span className='f-16 title-text'>{bedNumber}</span>
@@ -57,7 +57,7 @@ const DetailsSidBar = ({profile,time,user,mainTitle,kind,Residential,address,add
 
                      <li className='d-flex justify-content-between px-2 py-2 mb-4'>
                            <div>
-                              {svg.meters}
+                              {/* {svg.meters} */}
                               <span className='f-16 title-text'>{meters}</span>
                            </div>
                            <span className='f-16 title-text'>{metersNumber}</span>
@@ -66,7 +66,7 @@ const DetailsSidBar = ({profile,time,user,mainTitle,kind,Residential,address,add
 
                      <li className='d-flex justify-content-between px-2 py-2 mb-4'>
                            <div>
-                              {svg.price}
+                              {/* {svg.price} */}
                               <span className='f-16 title-text'>{price}</span>
                            </div>
                            <span className='f-16 title-text'>{priceNumber}</span>
@@ -74,7 +74,7 @@ const DetailsSidBar = ({profile,time,user,mainTitle,kind,Residential,address,add
 
                      <li className='d-flex justify-content-center  px-2 py-2 mb-4'>
                            <a className="btn btn-es show-btn fw-bold" href="#">
-                        {svg.video}
+                        {/* {svg.video} */}
                            <span className='flex-2'>
                               بازدیدمجازی
                               </span> 
@@ -84,13 +84,18 @@ const DetailsSidBar = ({profile,time,user,mainTitle,kind,Residential,address,add
          
                   </ul> 
 
-                           <Link className="btn btn-es fw-bold call-user-btn mb-4" to={localStorage.getItem('token') ? '/news':"/signin"}>
-                           <FontAwesomeIcon
+                           {/* <Link href={ (localStorage.getItem('token')) ? '/news':"/signin" } > */}
+                           <Link href={ "/signin" } >
+                       
+                        <a className="btn btn-es fw-bold call-user-btn mb-4" >
+                        <FontAwesomeIcon
                         icon={faPhone}
                         />
-                           <span className='flex-2'>
+                        <span className='flex-2'>
                               ثبت آگهی
                               </span> 
+                        </a>
+                          
                               
                               </Link>
             </div>
@@ -98,8 +103,17 @@ const DetailsSidBar = ({profile,time,user,mainTitle,kind,Residential,address,add
 
 
                <div className='d-flex flex-wrap justify-content-between mb-4'>
-                     <Link className="btn fw-bold  flex-1 sideBar-btn" to="/">املاک</Link>
-                     <Link className="btn fw-bold  flex-1 sideBar-btn" to="/buy">خریدوفروش خانه</Link>
+                     <Link  href="/">
+                     <a className="btn fw-bold  flex-1 sideBar-btn">  
+                        املاک
+                    </a>
+                     
+                     </Link>
+                     <Link  href="/buy">
+                        <a className="btn fw-bold  flex-1 sideBar-btn"> خریدوفروش خانه</a>
+                       
+                        
+                        </Link>
                </div>
           </>
      );

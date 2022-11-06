@@ -168,12 +168,14 @@ export default function SidebarNav() {
       <SidebarNavTitle>Components</SidebarNavTitle>
 
       <SidebarNavGroup toggleIcon={faNewspaper} toggleText="مقاله ها">
-        <SidebarNavItem href="">
-          {" "}
+        <SidebarNavItem href="/Admin/Articles/New">
           اضافه کردن مقاله
           <small className="me-auto">
             <Badge bg="danger">+</Badge>
           </small>
+        </SidebarNavItem>
+        <SidebarNavItem href="/Admin/Articles">
+          مقاله‌ها
         </SidebarNavItem>
       </SidebarNavGroup>
       <SidebarNavGroup toggleIcon={faPuzzlePiece} toggleText="Base">

@@ -1,9 +1,9 @@
 import React ,{useRef ,useEffect} from 'react';
-import { Splide, SplideSlide } from '@splidejs/react-splide';
-import '@splidejs/splide/dist/css/splide.min.css';
-import '@splidejs/splide/dist/css/themes/splide-skyblue.min.css';
+// import { Splide, SplideSlide } from '@splidejs/react-splide';
+// import '@splidejs/splide/dist/css/splide.min.css';
+// import '@splidejs/splide/dist/css/themes/splide-skyblue.min.css';
 
-import './detailsStyle.css'
+// import './detailsStyle.css'
 
 
 
@@ -13,13 +13,13 @@ const CarouselHomeDetails = () => {
   const mainSlider =useRef(null)
   const secondSlider =useRef(null)
 
-  useEffect(() => {
-    mainSlider.current.sync(secondSlider.current.splide)
-  }, []);
+  // useEffect(() => {
+  //   mainSlider.current.sync(secondSlider.current.splide)
+  // }, []);
 
     return ( 
 <>
-        <Splide  ref={mainSlider}
+        {/* <Splide  ref={mainSlider}
         options={ {
             type       : 'fade',
             heightRatio: 0.5,
@@ -30,22 +30,22 @@ const CarouselHomeDetails = () => {
         
         >
         <SplideSlide>
-          <img src='./img/carousel/mainPic.png' alt="Image 1"/>
+          <img src='/img/carousel/mainPic.png' alt="Image 1"/>
         </SplideSlide>
         <SplideSlide>
-          <img src="./img/carousel/pic1.png" alt="Image 2"/>
-        </SplideSlide>
-
-        <SplideSlide>
-          <img src="./img/carousel/pic2.png" alt="Image 2"/>
+          <img src="/img/carousel/pic1.png" alt="Image 2"/>
         </SplideSlide>
 
         <SplideSlide>
-          <img src="./img/carousel/pic3.png" alt="Image 2"/>
+          <img src="/img/carousel/pic2.png" alt="Image 2"/>
         </SplideSlide>
 
         <SplideSlide>
-          <img src="./img/carousel/pic4.png" alt="Image 2"/>
+          <img src="/img/carousel/pic3.png" alt="Image 2"/>
+        </SplideSlide>
+
+        <SplideSlide>
+          <img src="/img/carousel/pic4.png" alt="Image 2"/>
         </SplideSlide>
       </Splide>
 
@@ -105,7 +105,7 @@ const CarouselHomeDetails = () => {
         <SplideSlide>
           <img src="./img/carousel/pic4.png" alt="Image 2"/>
         </SplideSlide>
-        </Splide>
+        </Splide> */}
 
         </>
      );

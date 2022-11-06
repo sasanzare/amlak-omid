@@ -11,19 +11,16 @@ import {
   import Image from 'next/image';
 
 
-  import { useEditor, EditorContent } from '@tiptap/react'
-  import StarterKit from '@tiptap/starter-kit'
-
+  
+// import RichTextEditor from "../../../../components/admin/RichTextEditor";
 
 export default () => {
 
  
-    const editor = useEditor({
-        extensions: [
-          StarterKit,
-        ],
-        content: '<p>Hello World! 🌎️</p>',
-      })
+  // const [value, setValue] = useState("");
+  // const getValue = (value) => {
+  //   setValue(value);
+  // };
 
 
 
@@ -229,7 +226,9 @@ export default () => {
 
     
 
-            <EditorContent editor={editor} />
+            {/* <RichTextEditor initialValue="" getValue={getValue} />
+        <br />
+        <div>{value}</div> */}
 
 
             

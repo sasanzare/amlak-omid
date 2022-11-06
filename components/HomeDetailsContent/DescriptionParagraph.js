@@ -1,4 +1,4 @@
-import './detailsStyle.css'
+// import './detailsStyle.css'
 
 const DescriptionParagraph = ({discriptionParagraph}) => {
     return ( 

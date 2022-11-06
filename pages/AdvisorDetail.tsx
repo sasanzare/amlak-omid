@@ -1,7 +1,8 @@
 import DetailsSidBar from '../components/detailsSideBar';
 import HomeDetailsContent from '../components/HomeDetailsContent';
 import SugessBox from '../blocks/sugess/SugessBox';
-import { useLocation } from 'react-router-dom';
+
+import {useRouter} from 'next/router';
 import { Container, Row, Col } from 'react-bootstrap';
 import { useEffect, useState, useContext } from 'react';
 import axios from 'axios';
@@ -14,7 +15,7 @@ import { SinglePropertyApi } from '../api/index';
 
 function AdvisorDetail() {
 
-  const location = useLocation();
+  const location = useRouter();
   const { setShowLoading } = useContext(context);
   const [singleBlog, setSingleBlog] = useState({})
 

@@ -2,7 +2,46 @@ import { Container, Row, Col } from "react-bootstrap";
 import Pagination from "react-bootstrap/Pagination";
 import Title from "../../microComponents/Title";
 import ArticleCards from "../../blocks/articleCards";
+import { useState, useEffect, useContext } from "react";
+import { context } from "../../context";
+import axios from "axios";
+
 export default function Articles() {
+  const { setShowLoading } = useContext(context);
+  const [articleList, setarticleList] = useState([]);
+
+
+ 
+
+  useEffect(() => {
+    get();
+  }, []);
+
+ 
+
+  function get() {
+    setShowLoading(true);
+    axios
+      .get("/api/article")
+      .then((res) => {
+        setarticleList(res.data);
+        if (res.status === 200) {
+          setShowLoading(false);
+          // setPageCount(res.data.count / itemsPerPage)
+        }
+      })
+      .catch((err) => {
+        if (err.response?.data) {
+          err?.response?.data?.errors?.map((issue) => toast.error(issue));
+        } else {
+          toast.error("مشکلی پیش آمده است !");
+        }
+        setShowLoading(false);
+      });
+  }
+
+
+
   const data = [
     {
       img: "./img/article1.png",
@@ -101,6 +140,19 @@ export default function Articles() {
             myClass="pt-4 px-3 mt-2"
           />
         ))}
+       {/* {articleList?.map((data, i) => (
+          <ArticleCards
+            key={i}
+            data={data}
+            img={data.articleImage}
+            title={data.title}
+            content={data.text}
+            myClass="pt-4 px-3 mt-2"
+          />
+        ))} */}
+
+
+
         <Col lg={5} md={6} className="mx-auto">
           {/* <Pagination {...paginationConfig} /> */}
         </Col>

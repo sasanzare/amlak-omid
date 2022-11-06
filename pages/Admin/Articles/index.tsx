@@ -154,7 +154,7 @@ export default () => {
       >
         <Form dir="rtl" name="submitForm" id="submitForm">
           <Form.Group className="mb-3" controlId="title">
-            <Form.Label>title</Form.Label>
+            <Form.Label>عنوان</Form.Label>
             <Form.Control
               value={modalObj?.title}
               name="title"
