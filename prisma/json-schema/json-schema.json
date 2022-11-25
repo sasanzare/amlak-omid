@@ -428,6 +428,31 @@
           "format": "date-time"
         }
       }
+    },
+    "faq": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "question": {
+          "type": "string"
+        },
+        "answer": {
+          "type": "string"
+        },
+        "position": {
+          "type": "integer"
+        },
+        "status": {
+          "type": "boolean",
+          "default": false
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
     }
   },
   "type": "object",
@@ -461,6 +486,9 @@
     },
     "contactFrom": {
       "$ref": "#/definitions/contactFrom"
+    },
+    "faq": {
+      "$ref": "#/definitions/faq"
     }
   }
 }

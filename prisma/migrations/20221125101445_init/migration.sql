@@ -144,6 +144,18 @@ CREATE TABLE "contactFrom" (
     CONSTRAINT "contactFrom_pkey" PRIMARY KEY ("id")
 );
 
+-- CreateTable
+CREATE TABLE "faq" (
+    "id" TEXT NOT NULL,
+    "question" TEXT NOT NULL,
+    "answer" TEXT NOT NULL,
+    "position" INTEGER NOT NULL,
+    "status" BOOLEAN NOT NULL DEFAULT false,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "faq_pkey" PRIMARY KEY ("id")
+);
+
 -- CreateIndex
 CREATE UNIQUE INDEX "tempUser_id_key" ON "tempUser"("id");
 
@@ -179,6 +191,12 @@ CREATE UNIQUE INDEX "article_id_key" ON "article"("id");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "contactFrom_id_key" ON "contactFrom"("id");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "faq_id_key" ON "faq"("id");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "faq_position_key" ON "faq"("position");
 
 -- AddForeignKey
 ALTER TABLE "agencyRatingInterface" ADD CONSTRAINT "agencyRatingInterface_userId_fkey" FOREIGN KEY ("userId") REFERENCES "user"("id") ON DELETE SET NULL ON UPDATE CASCADE;

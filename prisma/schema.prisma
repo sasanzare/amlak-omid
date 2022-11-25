@@ -168,3 +168,12 @@ model contactFrom {
   description String
   createdAt   DateTime @default(now())
 }
+
+model faq {
+  id          String   @id @unique @default(cuid())
+  question    String
+  answer      String
+  position    Int      @unique
+  status      Boolean  @default(false)
+  createdAt   DateTime @default(now())
+}
