@@ -170,10 +170,9 @@ model contactFrom {
 }
 
 model faq {
-  id          String   @id @unique @default(cuid())
+  id          Int      @id @default(autoincrement())
   question    String
   answer      String
-  position    Int      @unique
   status      Boolean  @default(false)
   createdAt   DateTime @default(now())
 }

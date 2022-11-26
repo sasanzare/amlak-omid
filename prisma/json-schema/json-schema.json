@@ -433,16 +433,13 @@
       "type": "object",
       "properties": {
         "id": {
-          "type": "string"
+          "type": "integer"
         },
         "question": {
           "type": "string"
         },
         "answer": {
           "type": "string"
-        },
-        "position": {
-          "type": "integer"
         },
         "status": {
           "type": "boolean",
