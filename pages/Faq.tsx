@@ -12,7 +12,7 @@ export default ()=> {
   const [faqList, setFaqList] = useState([]);
 
   useEffect(() => {
-    get({});
+    get();
   }, []);
 
   function get() {

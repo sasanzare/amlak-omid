@@ -37,7 +37,7 @@ async function get(req, res) {
 async function upsert(req, res) {
   let id = parseInt(req.body.id) || 0;
   delete req.body.id;
-  req.body.status = (parseInt(req.body.status) == 1)? true :false ;
+  // req.body.status = (parseInt(req.body.status) == 1)? true :false ;
   let obj = await prisma.faq.upsert({
     where: {
       id,
