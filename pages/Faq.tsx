@@ -59,9 +59,9 @@ export default ()=> {
             <Col sm={12} className="text-center mt-3 shadow-sm rounded-4 py-4">
               <h1 className="h5 pt-2 pb-4 ">سوالات متداول سامانه املاک امید</h1>
               <Accordion defaultActiveKey="0">
-                {faqList?.map((data) => {
+                {faqList?.map((data,i) => {
                   return (
-                    <Accordion.Item key={data.id} eventKey={data.id} className="mb-3">
+                    <Accordion.Item key={i} eventKey={i} className="mb-3">
                       <Accordion.Header className="head-faq">
                         {data.question}
                       </Accordion.Header>
