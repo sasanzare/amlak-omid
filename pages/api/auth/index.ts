@@ -3,20 +3,38 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 import { stdout } from 'process';
 import prisma from '../../../lib/prisma';
 var jwt = require('jsonwebtoken');
+import initMiddleware from '../../../lib/init-middleware'
+import validateMiddleware from '../../../lib/validate-middleware'
+import { check, validationResult } from 'express-validator'
+import { sign } from '../../../lib/jwt-provider';
 
-// type Data = {
-//   name: any,
+const validateBody = initMiddleware(
+  validateMiddleware([
+    check('phoneNumber').isMobilePhone("fa-IR"),
+    check('verificationCode').isString(),
+  ], validationResult)
+)
 
-// }
-// type ResponseData = {
-//   errors: any
-// }
 
+/**
+ * @swagger
+ * /api/auth:
+ *   post:
+ *     description: Returns the hello world
+ *     responses:
+ *       200:
+ *         description: hello world
+ */
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse,
 
 ) {
+  await validateBody(req, res)
+  const errors = validationResult(req)
+  if (!errors.isEmpty()) {
+    return res.status(422).json({ errors: errors.array() })
+  }
   var { phoneNumber, verificationCode } = req.body
   var tempUser = await prisma.tempUser.findFirst({
     where: {
@@ -31,7 +49,7 @@ export default async function handler(
   } else {
     console.log(phoneNumber)
     prisma.tempUser.delete({ where: { id: tempUser.id } });
-    
+
     var user = await prisma.user.upsert({
       where: {
         phoneNumber,
@@ -45,19 +63,12 @@ export default async function handler(
       },
     })
 
-    let token = jwt.sign(
+    let token = await sign(
       {
         phoneNumber,
         _id: user.id,
         role: user.role
-      },
-      process.env.JWT_SECRET,
-      {
-        expiresIn: "24h",
-      }
-    );
-
-    console.log(jwt.verify(token, process.env.JWT_SECRET))
+      }, String(process.env.JWT_SECRET));
     res.status(200).json({ token });
   }
 }

@@ -67,11 +67,12 @@ model user {
   isActive     Boolean                 @default(true)
   realEstate   realEstate[]
   // AgencyRequest agencyRequest[]
+  article      article[]
 }
 
 model agencyRatingInterface {
   id        String   @id @unique @default(cuid())
-  User      user?    @relation(fields: [userId], references: [id])
+  user      user?    @relation(fields: [userId], references: [id])
   userId    String?
   agency    agency?  @relation(fields: [agencyId], references: [id])
   agencyId  String?
@@ -152,6 +153,8 @@ model realEstate {
 
 model article {
   id           String   @id @unique @default(cuid())
+  user         user     @relation(fields: [userId], references: [id])
+  userId       String
   title        String
   summary      String?
   text         String
@@ -170,9 +173,9 @@ model contactFrom {
 }
 
 model faq {
-  id          Int      @id @default(autoincrement())
-  question    String
-  answer      String
-  status      Boolean  @default(false)
-  createdAt   DateTime @default(now())
+  id        Int      @id @default(autoincrement())
+  question  String
+  answer    String
+  status    Boolean  @default(false)
+  createdAt DateTime @default(now())
 }

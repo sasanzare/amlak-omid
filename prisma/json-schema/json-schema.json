@@ -108,6 +108,12 @@
           "items": {
             "$ref": "#/definitions/realEstate"
           }
+        },
+        "article": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/article"
+          }
         }
       }
     },
@@ -117,7 +123,7 @@
         "id": {
           "type": "string"
         },
-        "User": {
+        "user": {
           "anyOf": [
             {
               "$ref": "#/definitions/user"
@@ -374,6 +380,9 @@
       "properties": {
         "id": {
           "type": "string"
+        },
+        "user": {
+          "$ref": "#/definitions/user"
         },
         "title": {
           "type": "string"
