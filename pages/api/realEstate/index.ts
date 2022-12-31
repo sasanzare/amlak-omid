@@ -1,79 +1,73 @@
+import type { NextApiRequest, NextApiResponse } from 'next'
+import prisma from '../../../lib/prisma';
 
-   
-    import type { NextApiRequest, NextApiResponse } from 'next'
+export default async function handler(
+    req: NextApiRequest,
+    res: NextApiResponse,
 
-    import prisma from '../../../lib/prisma';
-    const jwt = require('jsonwebtoken');
-    
- 
-    export default async function handler(
-      req: NextApiRequest,
-      res: NextApiResponse,
-    
-    ) {
-        if(req.method === "GET"){
-            get(req,res)
-        }
-        else if (req.method === "POST"){
-             upsert(req,res)
-        }   
-        else if (req.method === "DELETE"){
-              remove(req,res)
-        }else{
-            throw new Error(
-                `The HTTP ${req.method} method is not supported at this route.`
-              )
-        }
+) {
+    if (req.method === "GET") {
+        get(req, res)
     }
-    //schema.definitions[table].properties[current]
-    async  function get(req,res) {
-            let obj = await prisma.realEstate.findMany({
-                where: {
-                    name : { contains : req.query.name },
-phoneNumber : { contains : req.query.phoneNumber },
-description : { contains : req.query.description },
-roomCount : { equals : req.query.roomCount },
-assignmentType : { equals : req.query.assignmentType },
-type : { equals : req.query.type },
-price : { equals : req.query.price },
-areaName : { contains : req.query.areaName },
-cityName : { contains : req.query.cityName },
-longitude : { contains : req.query.longitude },
-latitude : { contains : req.query.latitude },
-isActive : { equals : req.query.isActive },
-
-                },
-                // orderBy: [
-                //     {
-                //         createdAt: req.query.dateSort , //'desc',
-                //     },
-                    
-                //   ],
-                skip: 0,
-                take: 20,
-              });
-            res.status(200).json(obj);
+    else if (req.method === "POST") {
+        upsert(req, res)
     }
-
-    async function upsert(req,res) {
-        let id = req.body.id || '';
-        delete req.body.id;
-        let obj = await prisma.realEstate.upsert({
-            where: {
-              id,
-            },
-            update: {
-                ...req.body
-            },
-            create: {
-                ...req.body
-            },
-        });
-          res.status(200).json(obj);
+    else if (req.method === "DELETE") {
+        remove(req, res)
+    } else {
+        throw new Error(
+            `The HTTP ${req.method} method is not supported at this route.`
+        )
     }
+}
+//schema.definitions[table].properties[current]
+async function get(req, res) {
+    let obj = await prisma.realEstate.findMany({
+        where: {
+            name: { contains: req.query.name },
+            phoneNumber: { contains: req.query.phoneNumber },
+            description: { contains: req.query.description },
+            roomCount: { equals: req.query.roomCount },
+            assignmentType: { equals: req.query.assignmentType },
+            type: { equals: req.query.type },
+            price: { equals: req.query.price },
+            areaName: { contains: req.query.areaName },
+            cityName: { contains: req.query.cityName },
+            longitude: { contains: req.query.longitude },
+            latitude: { contains: req.query.latitude },
+            isActive: { equals: req.query.isActive },
 
-    async function remove(req,res) {
-        let obj = await prisma.realEstate.delete({ where: { id:req.query.id } });
-        res.status(200).json(obj);
-    }
-    
+        },
+        // orderBy: [
+        //     {
+        //         createdAt: req.query.dateSort , //'desc',
+        //     },
+
+        //   ],
+        skip: 0,
+        take: 20,
+    });
+    res.status(200).json(obj);
+}
+
+async function upsert(req, res) {
+    let id = req.body.id || '';
+    delete req.body.id;
+    let obj = await prisma.realEstate.upsert({
+        where: {
+            id,
+        },
+        update: {
+            ...req.body
+        },
+        create: {
+            ...req.body
+        },
+    });
+    res.status(200).json(obj);
+}
+
+async function remove(req, res) {
+    let obj = await prisma.realEstate.delete({ where: { id: req.query.id } });
+    res.status(200).json(obj);
+}

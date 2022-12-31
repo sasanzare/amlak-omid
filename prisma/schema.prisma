@@ -97,6 +97,7 @@ model agency {
   owner      user                    @relation(fields: [ownerId], references: [id])
   ownerId    String
   cityArea   cityArea                @relation(fields: [cityAreaId], references: [id])
+  cityAreaId String
   agents     agentInterface[]
   rate       agencyRatingInterface[]
   createdAt  DateTime                @default(now())
@@ -104,7 +105,6 @@ model agency {
   isActive   Boolean                 @default(false)
   RealEstate realEstate[]
   status     requestStatus           @default(pending)
-  cityAreaId String
 }
 
 model city {
