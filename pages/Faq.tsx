@@ -65,7 +65,7 @@ export default ()=> {
                       <Accordion.Header className="head-faq">
                         {data.question}
                       </Accordion.Header>
-                      <Accordion.Body>{data.answer}</Accordion.Body>
+                      <Accordion.Body  dangerouslySetInnerHTML={{ __html: data.answer }} />
                     </Accordion.Item>
                   );
                 })}
