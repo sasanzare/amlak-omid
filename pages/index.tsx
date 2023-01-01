@@ -115,7 +115,7 @@ function Home() {
         <Col sm={12} className="pt-5">
           <Row>
             <div className="col-sm-12 col-11 mx-auto" dir="ltr">
-              <Link href={"/"}>
+              <Link href={"/Agencies"}>
                 <a className="text-decoration-none text-secondary float-start">
                   مشاهده همه
                 </a>

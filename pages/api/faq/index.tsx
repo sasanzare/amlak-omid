@@ -29,7 +29,13 @@ async function get(req, res) {
       },
     });
   } else {
-    result = await prisma.faq.findMany({});
+    result = await prisma.faq.findMany({
+      orderBy: [
+        {
+          id: 'desc',
+        },
+      ],
+    });
   }
   res.status(200).json(result);
 }

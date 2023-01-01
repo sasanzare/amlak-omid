@@ -178,6 +178,13 @@ export default function SidebarNav() {
           مقاله‌ها
         </SidebarNavItem>
       </SidebarNavGroup>
+      <SidebarNavGroup toggleIcon={faNewspaper} toggleText="سوالات متداول">
+        <SidebarNavItem href="/Admin/Faq">
+          سوالات
+        </SidebarNavItem>
+      </SidebarNavGroup>
+
+
       <SidebarNavGroup toggleIcon={faPuzzlePiece} toggleText="Base">
         <SidebarNavItem href="base/accordion.html">Accordion</SidebarNavItem>
         <SidebarNavItem href="base/breadcrumb.html">Breadcrumb</SidebarNavItem>

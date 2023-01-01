@@ -19,7 +19,7 @@ function News() {
     <Container className="pt-5 mt-5 pb-4">
       <Row>
         <Title title="ثبت آگهی املاک" />
-        {/* <NewsForm /> */}
+        <NewsForm />
       </Row>
 
     </Container>

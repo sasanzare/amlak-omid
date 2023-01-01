@@ -85,7 +85,7 @@ function Header() {
                     // </Dropdown>
                     <Link href="/signin?goTo=/">
                       <a className="btn btn-border fw-bold col-xxl-7 col-xl-9 col-lg-12 ">
-                        ثبت نام کاربر
+                        ثبت نام 
                       </a>
                     </Link>
                   )}

@@ -2,7 +2,7 @@ import { Modal, Button } from "react-bootstrap";
 export default function FormModal(props) {
   return (
     <Modal
-      {...props}
+      show={props.show}
       size="lg"
       aria-labelledby="contained-modal-title-vcenter"
       centered
@@ -24,7 +24,7 @@ export default function FormModal(props) {
         <Button
           variant="success"
           type="submit"
-          onClick={props.onSave}
+          onClick={props.func}
         >
           دخیره
         </Button>
