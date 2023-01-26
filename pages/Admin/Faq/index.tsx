@@ -16,11 +16,6 @@ import {
 import { EditorState } from "draft-js";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import { convertToHTML, convertFromHTML } from "draft-convert";
-
-
-
-
-
 import dynamic from "next/dynamic";
 
 
@@ -65,10 +60,10 @@ export default () => {
   };
 
   useEffect(() => {
-    get();
+    getFaq();
   }, []);
 
-  function get() {
+  function getFaq() {
     setShowLoading(true);
     axios
       .get("/api/faq")
@@ -91,7 +86,7 @@ export default () => {
 
   function remove(data) {
     axios.delete("/api/faq?id=" + data.id).then((res) => {
-      get();
+      getFaq();
     });
   }
 
@@ -107,7 +102,7 @@ export default () => {
       }
       axios.post("/api/faq", object).then((res) => {
         setModalShow(false);
-        get();
+        getFaq();
         reset();
       });
     }
@@ -120,38 +115,6 @@ export default () => {
     setIsSwitchOn(false);
     setIdQ(0);
   }
-
-
-  const importerConfig = {
-    htmlToEntity: (nodeName, node, createEntity) => {
-      // a tags will become LINK entities, marked as mutable, with only the URL as data.
-      if (nodeName === "a") {
-        return createEntity(ENTITY_TYPE.LINK, "MUTABLE", { url: node.href })
-      }
-  
-      if (nodeName === "img") {
-        return createEntity(ENTITY_TYPE.IMAGE, "IMMUTABLE", {
-          src: node.src,
-        })
-      }
-  
-      if (nodeName === "hr") {
-        return createEntity(ENTITY_TYPE.HORIZONTAL_RULE, "IMMUTABLE", {})
-      }
-  
-      return null
-    },
-    htmlToBlock: (nodeName) => {
-      if (nodeName === "hr" || nodeName === "img") {
-        // "atomic" blocks is how Draft.js structures block-level entities.
-        return "atomic"
-      }
-  
-      return null
-    },
-  }
-  
-
 
 
   function openDialoge(obj) {
@@ -200,14 +163,6 @@ export default () => {
 
         <Form.Group className="mb-3">
           <Form.Label>پاسخ</Form.Label>
-          {/* <Form.Control
-              value={ans}
-              onChange={(e) => setAns(e.target.value)}
-              as="textarea"
-              rows={4}
-              placeholder="پاسخ را وارد کنید..."
-              
-            /> */}
 
           <Editor
             editorState={editorState}

@@ -3,13 +3,14 @@ import { env } from 'process';
 import prisma from '../../../lib/prisma';
 import { parseForm } from "../../../lib/parse-form";
 import { verify } from '../../../lib/jwt-provider';
+import console from 'console';
 
 export const config = {
     api: {
         bodyParser: false,
     },
 };
-
+ 
 export default async function handler(
     req: NextApiRequest,
     res: NextApiResponse,
@@ -54,8 +55,8 @@ async function get(req, res) {
 async function upsert(req: NextApiRequest, res: NextApiResponse) {
     const uploadDirCategory = 'articles'
     const { fields, files } = await parseForm(req, uploadDirCategory);
-    const media = files.media
-    const user = await verify(req, String(env.JWT_SECRET))
+    const media = JSON.stringify(files.media.filepath).split("articles/")[1].replace('"','');
+    const user = await verify(req, String(env.JWT_SECRET));
     const articleId: string = String(fields.id) || '';
     delete fields.id;
     const obj = await prisma.article.upsert({
@@ -64,11 +65,11 @@ async function upsert(req: NextApiRequest, res: NextApiResponse) {
         },
         update: {
             ...fields,
-            articleImage: media.newFilename
+            articleImage: media
         },
         create: {
             ...fields,
-            articleImage: media.newFilename,
+            articleImage: media,
             userId: user._id
         },
     });

@@ -45,7 +45,7 @@ function Header() {
                 >
                   {userData ? (
                     <Dropdown>
-                      <Dropdown.Toggle variant="primary" id="dropdown-basic">
+                      <Dropdown.Toggle className="btn-es" id="dropdown-basic">
                         پروفایل من
                       </Dropdown.Toggle>
                       <Dropdown.Menu className="text-end">

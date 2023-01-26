@@ -14,7 +14,7 @@ export async function getServerSideProps(context: any) {
   return {
     props: {}, // will be passed to the page component as props
   }
-}
+} 
 const Buy = (props: any) => {
   const router = useRouter()
   // var { pageNumber, location, price } = router.query

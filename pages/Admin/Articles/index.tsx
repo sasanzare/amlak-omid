@@ -1,29 +1,66 @@
 import { useState, useEffect, useContext } from "react";
-import { AdminLayout } from '../../../layout';
+import { AdminLayout } from "../../../layout";
 import axios from "axios";
-import { toast } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { context } from "../../../context";
-import Table from "react-bootstrap/Table";
 import FormModal from "../../../components/modal";
-import Form from "react-bootstrap/Form";
+import { Form, Card, Dropdown } from "react-bootstrap";
+import dynamic from "next/dynamic";
+import { EditorState } from "draft-js";
+import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
+import { convertToHTML, convertFromHTML } from "draft-convert";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faEllipsisVertical,
+  faUsers,
+  faCheckCircle,
+  faXmarkCircle,
+} from "@fortawesome/free-solid-svg-icons";
 
 export default () => {
+  const [editorState, setEditorState] = useState(() =>
+    EditorState.createEmpty()
+  );
+  const [convertedContent, setConvertedContent] = useState(null);
+  const handleEditorChange = (state) => {
+    setEditorState(state);
+    convertContentToHTML();
+  };
+  const convertContentToHTML = () => {
+    let currentContentAsHTML = convertToHTML(editorState.getCurrentContent());
+    setConvertedContent(currentContentAsHTML);
+  };
+
+  const Editor = dynamic(
+    () => import("react-draft-wysiwyg").then((mod) => mod.Editor),
+    { ssr: false }
+  );
+
   const { setShowLoading } = useContext(context);
   const [articleList, setarticleList] = useState([]);
   const [modalShow, setModalShow] = useState(false);
   const [modalObj, setModalObj] = useState(null);
 
+  const [title, setTitle] = useState("");
+  const [summary, setSummary] = useState("");
+  const [normalName, setNormalName] = useState("");
+  const [articleImage, setArticleImage] = useState<File>();
+  const [selectedImage, setSelectedImage] = useState("");
+  const [isSwitchOn, setIsSwitchOn] = useState(false);
+  const [idA, setIdA] = useState(0);
+
   let searchTimeOut = null;
 
   useEffect(() => {
-    get({});
+    getArticle({});
   }, []);
 
   function getFilters() {
     return "";
   }
 
-  function get(filters) {
+  function getArticle(filters) {
     setShowLoading(true);
     axios
       .get("/api/article" + getFilters())
@@ -46,41 +83,84 @@ export default () => {
 
   function remove(data) {
     axios.delete("/api/article?id=" + data.id).then((res) => {
-      get({});
+      getArticle({});
     });
   }
 
   function upsert() {
-    let submitForm = document.getElementById("submitForm");
-    let formData = new FormData(submitForm);
-    modalObj?.id && formData.append("id", modalObj.id);
-    console.log("ok");
-    let object = {};
-    formData.forEach((value, key) => (object[key] = value));
-    axios.post("/api/article", object).then((res) => {
-      setModalShow(false);
-      get({});
-    });
+    if (title == "") {
+      return toast.error("لطفا عنوان را وارد کنید!");
+    }
+    if (!editorState.getCurrentContent().hasText()) {
+      return toast.error("لطفا محتوا را وارد کنید!");
+    }
+    if (selectedImage == "") {
+      return toast.error(" تصویر مقاله را انتخاب کنید!");
+    }
+    let object = {
+      title,
+      summary,
+      text: convertedContent,
+      normalName,
+      media: articleImage,
+    };
+    if (idA != 0) {
+      object = { ...object, id: idA };
+    }
+    axios
+      .post("/api/article", object, {
+        headers: {
+          Authorization: `${
+            JSON.parse(localStorage.getItem("userData")).token
+          }`,
+          "Content-Type": "multipart/form-data",
+        },
+      })
+      .then((res) => {
+        setModalShow(false);
+        getArticle({});
+        reset();
+      })
+      .catch((err) => {
+        if (err.response) {
+          // err?.response?.data?.errors?.map((issue) => toast.error(issue));
+          toast.error("مشکلی پیش آمده است !");
+          console.log(err.response);
+        } else {
+          toast.error("مشکلی پیش آمده است !");
+        }
+      });
+  }
+
+  function reset() {
+    setTitle("");
+    setSummary("");
+    setEditorState(EditorState.createEmpty());
+    setNormalName("");
+    setArticleImage(null);
+    setSelectedImage("");
+    setIdA(0);
   }
 
   function search(value, field, searchTableName) {
     clearTimeout(searchTimeOut);
     searchTimeOut = setTimeout(() => {
-      axios.get(`/api/${searchTableName}/search?text=` + value).then((res) => {
-        console.log(res.data);
-        eval(`
+      axios
+        .getArticle(`/api/${searchTableName}/search?text=` + value)
+        .then((res) => {
+          console.log(res.data);
+          eval(`
                     set${field}SearchList(res.data)
                 `);
-      });
+        });
     }, 1000);
   }
-  
+
   function openDialoge(obj) {
     if (obj) setModalObj(obj);
     setModalShow(true);
   }
   function closeDialoge() {
-    setModalObj({});
     setModalShow(false);
   }
 
@@ -88,122 +168,197 @@ export default () => {
     <AdminLayout>
       <div className="p-2 pt-5">
         <h2>
-          article
-          <button className="ms-2 me-2" onClick={() => openDialoge()}>
+          مقاله ها
+          <button
+            className="btn btn-success me-3 f-20 fw-bold"
+            onClick={() => openDialoge()}
+          >
             +
           </button>
         </h2>
       </div>
-      <Table striped bordered hover responsive>
-        <thead>
-          <tr>
-            <th scope="col">#</th>
-            <th scope="col">title</th>
-            <th scope="col">summary</th>
-            <th scope="col">text</th>
-            <th scope="col">normalName</th>
-            <th scope="col">articleImage</th>
-            <th scope="col">createdAt</th>
-
-            <th scope="col">Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {articleList?.map((data, i) => {
-            return (
-              <tr>
-                <td scope="row">{i}</td>
-                <td>{data.title}</td>
-                <td>{data.summary}</td>
-                <td>{data.text}</td>
-                <td>{data.normalName}</td>
-                <td>{data.articleImage}</td>
-                <td>{data.createdAt}</td>
-
-                <td scope="row">
-                  <button
-                    className="btn btn-success"
-                    onClick={() => {
-                      remove(data);
-                    }}
-                  >
-                    {" "}
-                    delete{" "}
-                  </button>
-                  <button
-                    className="btn btn-danger"
-                    onClick={() => {
-                      openDialoge(data);
-                    }}
-                  >
-                    {" "}
-                    edit{" "}
-                  </button>
-                </td>
-              </tr>
-            );
-          })}
-        </tbody>
-      </Table>
-
       <FormModal
         show={modalShow}
         onCancel={() => closeDialoge()}
-        onSave={upsert}
-        title="add/edit article"
+        func={upsert}
+        title="مقاله"
       >
         <Form dir="rtl" name="submitForm" id="submitForm">
           <Form.Group className="mb-3" controlId="title">
             <Form.Label>عنوان</Form.Label>
             <Form.Control
-              value={modalObj?.title}
-              name="title"
-              type="string"
-              placeholder="Enter title"
+              onChange={(e) => setTitle(e.target.value)}
+              value={title}
+              placeholder="عنوان را وارد کنید..."
             />
           </Form.Group>
 
           <Form.Group className="mb-3" controlId="summary">
-            <Form.Label>summary</Form.Label>
+            <Form.Label>خلاصه (توضیحات)</Form.Label>
             <Form.Control
-              value={modalObj?.summary}
-              name="summary"
-              type="string,null"
-              placeholder="Enter summary"
+              onChange={(e) => setSummary(e.target.value)}
+              value={summary}
+              as="textarea"
+              rows={2}
+              placeholder="خلاصه را وارد کنید..."
             />
           </Form.Group>
 
           <Form.Group className="mb-3" controlId="text">
-            <Form.Label>text</Form.Label>
-            <Form.Control
-              value={modalObj?.text}
-              name="text"
-              type="string"
-              placeholder="Enter text"
+            <Form.Label>محتوا</Form.Label>
+            <Editor
+              editorState={editorState}
+              onEditorStateChange={handleEditorChange}
             />
           </Form.Group>
 
           <Form.Group className="mb-3" controlId="normalName">
-            <Form.Label>normalName</Form.Label>
+            <Form.Label>نرمال نیم</Form.Label>
             <Form.Control
-              value={modalObj?.normalName}
-              name="normalName"
-              type="string,null"
-              placeholder="Enter normalName"
+              onChange={(e) => setNormalName(e.target.value)}
+              value={normalName}
+              placeholder="نام را وارد کنید..."
             />
           </Form.Group>
 
-          <Form.Group className="mb-3" controlId="articleImage">
-            <Form.Label>articleImage</Form.Label>
-            <Form.Control
-              value={modalObj?.articleImage}
-              name="articleImage"
-              type="string,null"
-              placeholder="Enter articleImage"
-            />
+          <Form.Group className="mb-3 text-center">
+            <p className="f-14 text-right">تصویر مقاله</p>
+            <Form.Label className="w-50">
+              <Form.Control
+                onChange={({ target }) => {
+                  if (target.files) {
+                    const file = target.files[0];
+                    setSelectedImage(URL.createObjectURL(file));
+                    setArticleImage(file);
+                  }
+                }}
+                multiple
+                accept="image/*"
+                type="file"
+                hidden={true}
+              />
+
+              <div className="d-flex justify-content-center">
+                {selectedImage ? (
+                  <img src={selectedImage} width={200} />
+                ) : (
+                  <div className="border border-rounded p-5 text-center">
+                    <span>آپلود عکس</span>
+                  </div>
+                )}
+              </div>
+            </Form.Label>
           </Form.Group>
         </Form>
       </FormModal>
+
+      <div className="row">
+        <div className="col-md-12">
+          <Card className="mb-4">
+            <Card.Header>مقالات</Card.Header>
+            <Card.Body>
+              <div className="table-responsive">
+                <table className="table border mb-0">
+                  <thead className="table-light fw-semibold">
+                    <tr className="align-middle">
+                      <th className="text-center"></th>
+                      <th>عنوان</th>
+                      <th>خلاصه</th>
+                      <th>محتوا</th>
+                      <th>تصویر مقاله</th>
+                      <th>زمان ایجاد</th>
+                      <th className="text-start ps-3">اقدامات</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {articleList?.map((data, i) => {
+                      // let active = (
+                      //   <FontAwesomeIcon
+                      //     icon={faXmarkCircle}
+                      //     className="text-danger"
+                      //     fixedWidth
+                      //   />
+                      // );
+
+                      // if (data.status == true)
+                      //   active = (
+                      //     <FontAwesomeIcon
+                      //       icon={faCheckCircle}
+                      //       className="text-success"
+                      //       fixedWidth
+                      //     />
+                      //   );
+
+                      return (
+                        <tr key={data.id} className="align-middle">
+                          <td className="d-none">{data.userId}</td>
+
+                          <td className="text-center">{++i}</td>
+                          <td>
+                            <p>{data.title}</p>
+                          </td>
+                          <td>
+                            <p>{data.summary}</p>
+                          </td>
+
+                          <td dangerouslySetInnerHTML={{ __html: data.text }} />
+
+                          <td>
+                            <img
+                              src={"/uploads/articles/" + data.articleImage}
+                              width={120}
+                            />
+                          </td>
+                          <td>
+                            <span>{data.createdAt}</span>
+                          </td>
+                          <td className="text-start">
+                            <Dropdown align="end">
+                              <Dropdown.Toggle
+                                as="button"
+                                bsPrefix="btn"
+                                className="btn-link rounded-0 text-black-50 shadow-none p-0"
+                                id="action-user1"
+                              >
+                                <FontAwesomeIcon
+                                  fixedWidth
+                                  icon={faEllipsisVertical}
+                                />
+                              </Dropdown.Toggle>
+
+                              <Dropdown.Menu>
+                                <Dropdown.Item
+                                  className="text-success text-end"
+                                  onClick={() => {
+                                    openDialoge(data);
+                                  }}
+                                >
+                                  ویرایش
+                                </Dropdown.Item>
+                                <Dropdown.Item
+                                  className="text-danger text-end"
+                                  href="#/action-3"
+                                  onClick={() => {
+                                    remove(data);
+                                  }}
+                                >
+                                  حذف
+                                </Dropdown.Item>
+                              </Dropdown.Menu>
+                            </Dropdown>
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              </div>
+            </Card.Body>
+          </Card>
+        </div>
+      </div>
+
+      <ToastContainer position="top-left" rtl={true} theme="colored" />
     </AdminLayout>
   );
 };

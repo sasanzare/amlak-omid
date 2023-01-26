@@ -10,9 +10,11 @@ export async function sign(payload: object, secret: string): Promise<string> {
             expiresIn: exp,
         }
     );
+    
 }
 
 export async function verify(req: NextApiRequest, secret: string): Promise<string | JwtPayload> {
-    const token = String(req.headers.authorization).replace(/^Bearer\s+/, "")
+    // const token = String(req.headers.authorization).replace(/^Bearer\s+/, "")
+    const token = req.headers.authorization
     return jwt.verify(token, secret);
 }
