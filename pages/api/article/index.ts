@@ -3,7 +3,7 @@ import { env } from 'process';
 import prisma from '../../../lib/prisma';
 import { parseForm } from "../../../lib/parse-form";
 import { verify } from '../../../lib/jwt-provider';
-import console from 'console';
+
 
 export const config = {
     api: {
@@ -31,24 +31,36 @@ export default async function handler(
 }
 //schema.definitions[table].properties[current]
 async function get(req, res) {
-    let obj = await prisma.article.findMany({
-        where: {
-            title: { contains: req.query.title },
-            summary: { contains: req.query.summary },
-            text: { contains: req.query.text },
-            normalName: { contains: req.query.normalName },
-            articleImage: { contains: req.query.articleImage },
+    const { id }  = req.query;
+    let {number} =req.query;
+    let obj = null;
+    if(id){
+         obj = await prisma.article.findUnique({
+            where: {
+              id: id,
+            },
+          })
+    }else{
+        obj = await prisma.article.findMany({
+            where: {
+                title: { contains: req.query.title },
+                summary: { contains: req.query.summary },
+                text: { contains: req.query.text },
+                normalName: { contains: req.query.normalName },
+                articleImage: { contains: req.query.articleImage },
+    
+            },
+            // orderBy: [
+            //     {
+            //         createdAt: req.query.dateSort , //'desc',
+            //     },
+    
+            //   ],
+            skip: 0,
+            take: (parseInt(number))? parseInt(number) : 20,
+        });
+    }
 
-        },
-        // orderBy: [
-        //     {
-        //         createdAt: req.query.dateSort , //'desc',
-        //     },
-
-        //   ],
-        skip: 0,
-        take: 20,
-    });
     res.status(200).json(obj);
 }
 

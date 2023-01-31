@@ -8,7 +8,42 @@ import ArticleCards from "../blocks/articleCards/";
 import Card from "../components/CardEstae";
 import Estate from "../components/Estate";
 import Link from "next/link";
+import { context } from "../context";
+import { useState, useEffect, useContext } from "react";
+import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
+import { useRouter,Router } from 'next/router'
+
 function Home() {
+  const router = useRouter()
+
+  const { setShowLoading } = useContext(context);
+  const [articleList, setArticleList] = useState([]);
+
+  useEffect(() => {
+    get();
+  }, []);
+
+  function get() {
+    setShowLoading(true);
+    axios
+      .get("/api/article?number=3")
+      .then((res) => {
+        setArticleList(res.data);
+        if (res.status === 200) {
+          setShowLoading(false);
+        }
+      })
+      .catch((err) => {
+        if (err.response?.data) {
+          err?.response?.data?.errors?.map((issue) => toast.error(issue));
+        } else {
+          toast.error("مشکلی پیش آمده است !");
+        }
+        setShowLoading(false);
+      });
+  }
+
   const offices = [
     {
       title: "آژانس املاک سینا",
@@ -79,26 +114,10 @@ function Home() {
     },
   ];
 
-  const data = [
-    {
-      img: "./img/article1.png",
-      title: "خرید خانه در شیراز",
-      content:
-        "لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک است، چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است، و برای شرایط فعلی تکنولوژی مورد نیاز، و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد، کتابهای زیادی در شصت و سه درصد گذشته حال و آینده، شناخت فراوان جامعه و متخصصان را می طلبد،",
-    },
-    {
-      img: "./img/article2.png",
-      title: "خرید خانه در تهران",
-      content:
-        "لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک است، چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است، و برای شرایط فعلی تکنولوژی مورد نیاز، و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد، کتابهای زیادی در شصت و سه درصد گذشته حال و آینده، شناخت فراوان جامعه و متخصصان را می طلبد،",
-    },
-    {
-      img: "./img/article3.png",
-      title: "نکات قبل از خرید ملک",
-      content:
-        "لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک است، چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است، و برای شرایط فعلی تکنولوژی مورد نیاز، و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد، کتابهای زیادی در شصت و سه درصد گذشته حال و آینده، شناخت فراوان جامعه و متخصصان را می طلبد،",
-    },
-  ];
+  const getId = (e) => {
+      router.push(`/Articles/${e.target.getAttribute("data-reactid")}`)
+    
+  };
   return (
     <Container className="Home pt-5 mt-5 pb-4">
       <Row>
@@ -180,15 +199,18 @@ function Home() {
         </Col>
         <Title title="مجله املاک ساسان" />
 
-        {data.map((card, index) => (
+        {articleList?.map((card) => (
           <ArticleCards
-            key={index}
-            img={card.img}
+            key={card.id}
+            img={card.articleImage}
             title={card.title}
-            content={card.content}
+            content={card.summary}
+            id={card.id}
+            getId={getId}
           />
         ))}
       </Row>
+      <ToastContainer />
     </Container>
   );
 }

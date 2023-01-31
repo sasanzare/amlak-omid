@@ -156,13 +156,26 @@ export default () => {
     }, 1000);
   }
 
+
   function openDialoge(obj) {
-    if (obj) setModalObj(obj);
+    if (obj) {
+      // console.log(obj)
+      console.log(selectedImage)
+      setTitle(obj.title);
+      setSummary(obj.summary);
+      setNormalName(obj.normalName);
+      setArticleImage(obj.articleImage);
+      setSelectedImage(obj.selectedImage);
+       setEditorState(EditorState.createWithContent(convertFromHTML(obj.text)));
+      setIdA(obj.id);
+    }
     setModalShow(true);
   }
   function closeDialoge() {
+    reset();
     setModalShow(false);
   }
+  
 
   return (
     <AdminLayout>
@@ -232,6 +245,7 @@ export default () => {
                     setArticleImage(file);
                   }
                 }}
+                // value={articleImage}
                 multiple
                 accept="image/*"
                 type="file"
@@ -239,15 +253,34 @@ export default () => {
               />
 
               <div className="d-flex justify-content-center">
-                {selectedImage ? (
-                  <img src={selectedImage} width={200} />
-                ) : (
-                  <div className="border border-rounded p-5 text-center">
-                    <span>آپلود عکس</span>
-                  </div>
-                )}
+                {!articleImage?(
+                       selectedImage ? (
+                        <img src={selectedImage} value={selectedImage} width={200} />
+                      ) : (
+                        <div className="border border-rounded p-5 text-center">
+                          <span>آپلود عکس</span>
+                        </div>
+                      )
+                ):(
+                  selectedImage ? (
+                    <img src={selectedImage} value={selectedImage} width={200} />
+                    
+                  ) : (
+                    <img src={"/uploads/articles/" + articleImage} value={selectedImage} width={200} />
+                  )
+               
+                   
+                    
+                
+                )
+                
+           
+              
+              }
+         
               </div>
             </Form.Label>
+          
           </Form.Group>
         </Form>
       </FormModal>
@@ -264,8 +297,9 @@ export default () => {
                       <th className="text-center"></th>
                       <th>عنوان</th>
                       <th>خلاصه</th>
-                      <th>محتوا</th>
                       <th>تصویر مقاله</th>
+                      <th>محتوا</th>
+                      
                       <th>زمان ایجاد</th>
                       <th className="text-start ps-3">اقدامات</th>
                     </tr>
@@ -298,10 +332,10 @@ export default () => {
                             <p>{data.title}</p>
                           </td>
                           <td>
-                            <p>{data.summary}</p>
+                            <p>{data.summary.split(' ').slice(0, 10).join(' ')}</p>
                           </td>
 
-                          <td dangerouslySetInnerHTML={{ __html: data.text }} />
+                         
 
                           <td>
                             <img
@@ -309,6 +343,7 @@ export default () => {
                               width={120}
                             />
                           </td>
+                          <td dangerouslySetInnerHTML={{ __html: data.text.split(' ').slice(0, 20).join(' ') }} />
                           <td>
                             <span>{data.createdAt}</span>
                           </td>

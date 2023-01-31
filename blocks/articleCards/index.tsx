@@ -6,6 +6,8 @@ export default function ArticleCards(props) {
         img={props.img}
         title={props.title}
         content={props.content}
+        id={props.id}
+        getId={props.getId}
       />
     </div>
   );

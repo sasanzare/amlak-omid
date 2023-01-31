@@ -127,6 +127,7 @@ export default () => {
     setModalShow(true);
   }
   function closeDialoge() {
+    reset()
     setModalShow(false);
   }
 
