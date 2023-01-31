@@ -50,12 +50,9 @@ async function get(req, res) {
                 articleImage: { contains: req.query.articleImage },
     
             },
-            // orderBy: [
-            //     {
-            //         createdAt: req.query.dateSort , //'desc',
-            //     },
-    
-            //   ],
+            orderBy: {
+                createdAt: "desc",
+              },
             skip: 0,
             take: (parseInt(number))? parseInt(number) : 20,
         });

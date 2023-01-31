@@ -6,32 +6,58 @@ import { faMobileAlt, faMapMarkerAlt } from '@fortawesome/free-solid-svg-icons'
 import { faInstagram } from '@fortawesome/free-brands-svg-icons'
 import Btn from '../microComponents/Btn';
 import MyMap from '../components/map/Map';
-import { toast } from 'react-toastify';
 import axios from 'axios';
 import { ContactApi } from '../api';
 import { context } from '../context/index';
+import { ToastContainer, toast } from "react-toastify";
 
 function Contact() {
 
-  const [fullName, setFullName] = useState();
-  const [email, setEmail] = useState();
-  const [title, setTitle] = useState();
-  const [discription, setdiscription] = useState();
+  const [fullName, setFullName] = useState("");
+  const [email, setEmail] = useState("");
+  const [title, setTitle] = useState("");
+  const [discription, setDescription] = useState("");
 
 
   const { setShowLoading } = useContext(context);
+  function reset() {
+    setTitle("");
+    setFullName("");
+    setDescription("");
+    setEmail("");
+  }
+
 
   //////Code Btn
   const contactFormHandeller = async (e) => {
     e.preventDefault();
+    if (fullName == "") {
+      return toast.error("لطفا نام و نام‌خانوادگی خود را  وارد کنید!");
+    }
+    if (email == "") {
+      return toast.error("لطفا ایمیل خود را وارد کنید!")
+    }
+    if (!(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email))){
+      return toast.error("لطفا ایمیل صحیح را وارد کنید!")
+    }
+
+    if (title == "") {
+      return toast.error("لطفا عنوان را وارد کنید!");
+    }
+    if (discription == "") {
+      return toast.error("لطفا پیام خود را وارد کنید!")
+    }
+   
+    
+
     setShowLoading(true);
 
     try {
       const res = await axios.post(ContactApi, { fullName: fullName, email: email, title: title, description: discription })
       if (res.status === 200) {
-        toast.success(res.data.message)
-
+        reset();
         setShowLoading(false);
+        toast.success("از پیغام شما سپاس گزاریم")
       }
 
     } catch (err) {
@@ -75,16 +101,16 @@ function Contact() {
           <Col lg={10} sm={12} className='mx-auto'>
             <Form className='row'>
               <Form.Group className="mb-4 col-md-6 col-12">
-                <input onChange={(e) => setFullName(e.target.value)} className='form-control lh-xl border-3 rounded-4' placeholder="نام و نام‌خانوادگی" />
+                <input onChange={(e) => setFullName(e.target.value)} value={fullName} className='form-control lh-xl border-3 rounded-4' placeholder="نام و نام‌خانوادگی" />
               </Form.Group>
               <Form.Group className="mb-4 col-md-6 col-12">
-                <input onChange={(e) => setEmail(e.target.value)} type="email" className='email form-control lh-xl border-3 rounded-4' placeholder="آدرس ایمیل" required />
+                <input onChange={(e) => setEmail(e.target.value)} value={email} type="email" className='email form-control lh-xl border-3 rounded-4' placeholder="آدرس ایمیل" required />
               </Form.Group>
               <Form.Group className="mb-4 col-12">
-                <input onChange={(e) => setTitle(e.target.value)} className='form-control lh-xl border-3 rounded-4' placeholder="عنوان پیام" />
+                <input onChange={(e) => setTitle(e.target.value)} value={title} className='form-control lh-xl border-3 rounded-4' placeholder="عنوان پیام" />
               </Form.Group>
               <Form.Group className="mb-4 col-12">
-                <textarea onChange={(e) => setdiscription(e.target.value)} className='form-control border-3 rounded-4' placeholder='متن پیام...' rows="6" required></textarea>
+                <textarea onChange={(e) => setDescription(e.target.value)} value={discription} className='form-control border-3 rounded-4' placeholder='متن پیام...' rows="6" required></textarea>
               </Form.Group>
               <Btn onClick={(e) => contactFormHandeller(e)} title="ارسال پیام" type="submit" myClass="btn-es lh-lg col-lg-3 col-md-4 col-sm-5 col-6 f-22 mx-auto rounded-5" />
             </Form>
@@ -98,6 +124,7 @@ function Contact() {
           </Col>
         </Row>
       </Container>
+      <ToastContainer position="top-left" rtl={true} theme="colored" />
     </div>
   );
 }

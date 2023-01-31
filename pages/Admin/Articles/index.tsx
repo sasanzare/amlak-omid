@@ -13,9 +13,6 @@ import { convertToHTML, convertFromHTML } from "draft-convert";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faEllipsisVertical,
-  faUsers,
-  faCheckCircle,
-  faXmarkCircle,
 } from "@fortawesome/free-solid-svg-icons";
 
 export default () => {

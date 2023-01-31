@@ -36,7 +36,7 @@ export default async function handler(
 }
 
 async function get(req, res) {
-  let obj = await prisma.faq.findMany({});
+  let obj = await prisma.faq.findMany();
   res.status(200).json(obj);
 }
 
