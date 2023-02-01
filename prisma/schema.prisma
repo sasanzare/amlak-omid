@@ -92,19 +92,23 @@ model agentInterface {
 }
 
 model agency {
-  id         String                  @id @unique @default(cuid())
-  name       String?
-  owner      user                    @relation(fields: [ownerId], references: [id])
-  ownerId    String
-  cityArea   cityArea                @relation(fields: [cityAreaId], references: [id])
-  cityAreaId String
-  agents     agentInterface[]
-  rate       agencyRatingInterface[]
-  createdAt  DateTime                @default(now())
-  updatedAt  DateTime                @updatedAt
-  isActive   Boolean                 @default(false)
-  RealEstate realEstate[]
-  status     requestStatus           @default(pending)
+  id          String                  @id @unique @default(cuid())
+  name        String?
+  agencyImage String?
+  owner       user                    @relation(fields: [ownerId], references: [id])
+  ownerId     String
+  cityArea    cityArea                @relation(fields: [cityAreaId], references: [id])
+  cityAreaId  String
+  agents      agentInterface[]
+  rate        agencyRatingInterface[]
+  phoneNumber String                  @unique
+  latitude    Decimal                 @db.Decimal(8,6)
+  longitude   Decimal                 @db.Decimal(9,6)
+  createdAt   DateTime                @default(now())
+  updatedAt   DateTime                @updatedAt
+  isActive    Boolean                 @default(false)
+  RealEstate  realEstate[]
+  status      requestStatus           @default(pending)
 }
 
 model city {
@@ -142,8 +146,8 @@ model realEstate {
   cityName       String
   cityArea       cityArea       @relation(fields: [cityAreaId], references: [id])
   cityAreaId     String
-  longitude      String
-  latitude       String
+  latitude       Decimal        @db.Decimal(8,6)
+  longitude      Decimal        @db.Decimal(9,6)
   createdAt      DateTime       @default(now())
   updatedAt      DateTime       @updatedAt
   isActive       Boolean        @default(false)

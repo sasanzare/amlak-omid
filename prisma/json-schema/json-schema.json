@@ -190,6 +190,12 @@
             "null"
           ]
         },
+        "agencyImage": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
         "owner": {
           "$ref": "#/definitions/user"
         },
@@ -207,6 +213,15 @@
           "items": {
             "$ref": "#/definitions/agencyRatingInterface"
           }
+        },
+        "phoneNumber": {
+          "type": "string"
+        },
+        "latitude": {
+          "type": "number"
+        },
+        "longitude": {
+          "type": "number"
         },
         "createdAt": {
           "type": "string",
@@ -355,11 +370,11 @@
         "cityArea": {
           "$ref": "#/definitions/cityArea"
         },
-        "longitude": {
-          "type": "string"
-        },
         "latitude": {
-          "type": "string"
+          "type": "number"
+        },
+        "longitude": {
+          "type": "number"
         },
         "createdAt": {
           "type": "string",
