@@ -6,7 +6,8 @@ import {
   faStar,
   IconDefinition,
   faMessage,
-  faQuestionCircle
+  faQuestionCircle,
+  faUser
 } from "@fortawesome/free-regular-svg-icons";
 import {
   faBug,
@@ -168,7 +169,12 @@ export default function SidebarNav() {
       <SidebarNavItem icon={faPencil} href="typography.html">
         Typography
       </SidebarNavItem>
-      <SidebarNavTitle>Components</SidebarNavTitle>
+      <SidebarNavTitle>دسترسی سریع</SidebarNavTitle>
+      <SidebarNavGroup toggleIcon={faUser} toggleText="کاربران">
+        <SidebarNavItem href="/Admin/Users">
+           کاربرها 
+        </SidebarNavItem>
+      </SidebarNavGroup>
 
       <SidebarNavGroup toggleIcon={faNewspaper} toggleText="مقاله ها">
         <SidebarNavItem href="/Admin/Articles/New">

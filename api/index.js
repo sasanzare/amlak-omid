@@ -9,3 +9,7 @@ export const NewsApi = `api/property/add`
 export const PropertiesApi = `/api/properties`
 export const SinglePropertyApi = (id) => `api/properties/single?id=${id}`
 export const SingleBlogApi = (normalName) => `api/articles/single?normalName=${normalName}`
+export const getAgencyInfoApi = `/api/agency`
+export const getUsersApi = `/api/user`
+export const upsertUser = `/api/user/post`
+export const removeUser = `/api/user/remove`

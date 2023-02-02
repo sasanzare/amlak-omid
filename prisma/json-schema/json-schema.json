@@ -66,6 +66,7 @@
         },
         "role": {
           "type": "string",
+          "default": "normal",
           "enum": [
             "admin",
             "agencyOwner",
