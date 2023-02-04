@@ -3,7 +3,7 @@ export default function PromptModal(props) {
   return (
     <Modal
       show={props.show}
-      size="lg"
+      size="md"
       aria-labelledby="contained-modal-title-vcenter"
       centered
       className="dir-r"

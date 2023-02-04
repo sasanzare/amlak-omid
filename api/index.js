@@ -13,3 +13,4 @@ export const getAgencyInfoApi = `/api/agency`
 export const getUsersApi = `/api/user`
 export const upsertUser = `/api/user/post`
 export const removeUser = `/api/user/remove`
+export const getRealEstateApi = `/api/realEstate`

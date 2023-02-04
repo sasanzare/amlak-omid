@@ -333,7 +333,25 @@
           "type": "string"
         },
         "roomCount": {
-          "type": "integer"
+          "type": "string",
+          "default": "one",
+          "enum": [
+            "one",
+            "two",
+            "three",
+            "four",
+            "five"
+          ]
+        },
+        "meter": {
+          "type": "string",
+          "default": "m10",
+          "enum": [
+            "m10",
+            "m90",
+            "m150",
+            "m220"
+          ]
         },
         "Photos": {
           "type": "array",
@@ -360,7 +378,7 @@
           ]
         },
         "price": {
-          "type": "integer"
+          "type": "string"
         },
         "areaName": {
           "type": "string"
@@ -388,6 +406,17 @@
         "isActive": {
           "type": "boolean",
           "default": false
+        },
+        "AdStatus": {
+          "type": "string",
+          "default": "awaitingPayment",
+          "enum": [
+            "awaitingPayment",
+            "awaitingConfirmation",
+            "active",
+            "expired",
+            "Deleted"
+          ]
         }
       }
     },

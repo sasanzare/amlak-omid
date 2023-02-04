@@ -7,7 +7,7 @@ import {
   IconDefinition,
   faMessage,
   faQuestionCircle,
-  faUser
+  faUser,
 } from "@fortawesome/free-regular-svg-icons";
 import {
   faBug,
@@ -23,7 +23,6 @@ import {
   faPuzzlePiece,
   faRightToBracket,
   faNewspaper,
-  faArrowAltCircleLeft
 } from "@fortawesome/free-solid-svg-icons";
 import React, {
   PropsWithChildren,
@@ -197,9 +196,14 @@ export default function SidebarNav() {
           فرم ارتباط‌‌باما
         </SidebarNavItem>
       </SidebarNavGroup>
-      <SidebarNavGroup toggleIcon={faMessage} toggleText="املاک‌ها">
+      <SidebarNavGroup toggleIcon={faMessage} toggleText="املاک‌">
         <SidebarNavItem href="/Admin/Agency">
           آژانس‌های املاک 
+        </SidebarNavItem>
+      </SidebarNavGroup>
+      <SidebarNavGroup toggleIcon={faMessage} toggleText="آگهی ها">
+        <SidebarNavItem href="/Admin/RealEstate">
+          آگهی ها
         </SidebarNavItem>
       </SidebarNavGroup>
 

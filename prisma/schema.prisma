@@ -35,11 +35,32 @@ enum assignmentType {
 }
 
 enum propertyType {
-  commercial
-  apartment
-  villaGarden
-  land
-  independents
+  c //commercial
+  a //apartment
+  v //villaGarden
+  l //land
+  i //independents
+}
+enum roomCount {
+ one
+ two
+ three
+ four
+ five
+}
+enum meter {
+  m10
+  m90
+  m150
+  m220
+}
+
+enum AdStatus {
+ awaitingPayment     
+  awaitingConfirmation
+  active
+  expired
+  Deleted
 }
 
 model tempUser {
@@ -87,7 +108,7 @@ model agentInterface {
   agency    agency   @relation(fields: [agencyId], references: [id])
   agencyId  String
   createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  updatedAt DateTime @default(now()) @updatedAt
   isActive  Boolean  @default(false)
 }
 
@@ -105,7 +126,7 @@ model agency {
   latitude    Decimal                 @db.Decimal(8,6)
   longitude   Decimal                 @db.Decimal(9,6)
   createdAt   DateTime                @default(now())
-  updatedAt   DateTime                @updatedAt
+  updatedAt   DateTime                @default(now()) @updatedAt
   isActive    Boolean                 @default(false)
   RealEstate  realEstate[]
   status      requestStatus           @default(pending)
@@ -137,11 +158,12 @@ model realEstate {
   name           String
   phoneNumber    String
   description    String
-  roomCount      Int
+  roomCount      roomCount      @default(one)
+  meter          meter          @default(m10)
   Photos         String[]
   assignmentType assignmentType
   type           propertyType
-  price          BigInt
+  price          String
   areaName       String
   cityName       String
   cityArea       cityArea       @relation(fields: [cityAreaId], references: [id])
@@ -149,9 +171,9 @@ model realEstate {
   latitude       Decimal        @db.Decimal(8,6)
   longitude      Decimal        @db.Decimal(9,6)
   createdAt      DateTime       @default(now())
-  updatedAt      DateTime       @updatedAt
+  updatedAt      DateTime       @default(now()) @updatedAt
   isActive       Boolean        @default(false)
-
+  AdStatus       AdStatus       @default(awaitingPayment)
   // @@index([cityName, areaName, roomCount, price(sort: Asc), type, createdAt(sort: Asc)])
 }
 
