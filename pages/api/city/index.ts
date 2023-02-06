@@ -48,6 +48,18 @@ async function get(req, res) {
         //     },
 
         //   ],
+
+
+        // select: {
+        //     id: true,
+        //     name: true,
+        //     createdAt: true,
+        //     cityArea:{
+        //         select:{
+        //             name: true
+        //         }
+        //     }
+        //   },
         skip: 0,
         take: 20,
     });

@@ -17,8 +17,14 @@ import {
   faCheckCircle,
   faXmarkCircle,
 } from "@fortawesome/free-solid-svg-icons";
-import { getRealEstateApi } from "../../../api";
-import { property, room,meterage,assignment,advertisingStatus } from "../../../lib/enum-converter"
+import { getRealEstateApi, getCityApi, getCityAreaApi, getCityAreaByIdApi } from "../../../api";
+import {
+  property,
+  room,
+  meterage,
+  assignment,
+  advertisingStatus,
+} from "../../../lib/enum-converter";
 export default () => {
   const [editorState, setEditorState] = useState(() =>
     EditorState.createEmpty()
@@ -61,22 +67,71 @@ export default () => {
   const [articleImage, setArticleImage] = useState<File>();
   const [selectedImage, setSelectedImage] = useState("");
   const [isSwitchOn, setIsSwitchOn] = useState(false);
-  const [idA, setIdA] = useState(0);
+  const [idEs, setIdEs] = useState(0);
+  const [cityList, setCityList] = useState([]);
+  const [cityAreaList, setCityAreaList] = useState([]);
 
+  const onSwitchAction = () => {
+    setIsSwitchOn(!isSwitchOn);
+  };
   let searchTimeOut = null;
 
   useEffect(() => {
     getRealEstate();
   }, []);
 
+  useEffect(() => {
+    getCityArea();
+  }, [city]);
+
   function getRealEstate() {
     setShowLoading(true);
-    axios.get(getRealEstateApi).then((res) => {
+    axios
+      .get(getRealEstateApi)
+      .then((res) => {
         setRealEstateList(res.data);
         if (res.status === 200) {
           setShowLoading(false);
-          console.log(realEstateList);
-          // setPageCount(res.data.count / itemsPerPage)
+        }
+      })
+      .catch((err) => {
+        if (err.response?.data) {
+          err?.response?.data?.errors?.map((issue) => toast.error(issue));
+        } else {
+          toast.error("مشکلی پیش آمده است !");
+        }
+        setShowLoading(false);
+      });
+  }
+
+  function getCity() {
+    setShowLoading(true);
+    axios
+      .get(getCityApi)
+      .then((res) => {
+        setCityList(res.data);
+        if (res.status === 200) {
+          setShowLoading(false);
+        }
+      })
+      .catch((err) => {
+        if (err.response?.data) {
+          err?.response?.data?.errors?.map((issue) => toast.error(issue));
+        } else {
+          toast.error("مشکلی پیش آمده است !");
+        }
+        setShowLoading(false);
+      });
+  }
+
+  function getCityArea() {
+    setShowLoading(true);
+    axios
+      .get( `${getCityAreaByIdApi}?cityId=${city}`)
+      .then((res) => {
+        setCityAreaList(res.data);
+        if (res.status === 200) {
+          setShowLoading(false);
         }
       })
       .catch((err) => {
@@ -96,27 +151,34 @@ export default () => {
   }
 
   function upsert() {
-    if (title == "") {
-      return toast.error("لطفا عنوان را وارد کنید!");
-    }
-    if (!editorState.getCurrentContent().hasText()) {
-      return toast.error("لطفا محتوا را وارد کنید!");
-    }
-    if (selectedImage == "") {
-      return toast.error(" تصویر مقاله را انتخاب کنید!");
-    }
+    // if (title == "") {
+    //   return toast.error("لطفا عنوان را وارد کنید!");
+    // }
+    // if (!editorState.getCurrentContent().hasText()) {
+    //   return toast.error("لطفا محتوا را وارد کنید!");
+    // }
+    // if (selectedImage == "") {
+    //   return toast.error(" تصویر مقاله را انتخاب کنید!");
+    // }
     let object = {
-      title,
-      summary,
-      text: convertedContent,
-      city,
-      media: articleImage,
+      name,
+      phoneNumber,
+      description: convertedContent,
+      roomCount,
+      meter,
+      assignmentType,
+      type: propertyType,
+      price,
+      cityAreaId: area,
+      AdStatus,
+      cityName:city,
+      // media: articleImage,
     };
-    if (idA != 0) {
-      object = { ...object, id: idA };
+    if (idEs != 0) {
+      object = { ...object, id: idEs };
     }
     axios
-      .post("/api/article", object, {
+      .post(getRealEstateApi, object, {
         headers: {
           Authorization: `${
             JSON.parse(localStorage.getItem("userData")).token
@@ -147,22 +209,10 @@ export default () => {
     setCity("");
     setArticleImage(null);
     setSelectedImage("");
-    setIdA(0);
+    setIdEs(0);
+    setCityList([])
   }
 
-  function search(value, field, searchTableName) {
-    clearTimeout(searchTimeOut);
-    searchTimeOut = setTimeout(() => {
-      axios
-        .getRealEstate(`/api/${searchTableName}/search?text=` + value)
-        .then((res) => {
-          console.log(res.data);
-          eval(`
-                    set${field}SearchList(res.data)
-                `);
-        });
-    }, 1000);
-  }
 
   function openDialoge(obj) {
     if (obj) {
@@ -174,8 +224,12 @@ export default () => {
       setArticleImage(obj.articleImage);
       setSelectedImage(obj.selectedImage);
       setEditorState(EditorState.createWithContent(convertFromHTML(obj.text)));
-      setIdA(obj.id);
+      setIdEs(obj.id);
     }
+    setModalShow(true);
+  }
+  function createNewAd(){
+    getCity();
     setModalShow(true);
   }
   function closeDialoge() {
@@ -189,7 +243,7 @@ export default () => {
           آگهی‌ها
           <button
             className="btn btn-success me-3 f-20 fw-bold"
-            onClick={() => openDialoge()}
+            onClick={() => createNewAd()}
           >
             +
           </button>
@@ -209,53 +263,132 @@ export default () => {
               value={name}
             />
           </Form.Group>
-
-          <Form.Group className="mb-3" controlId="summary">
+          <Form.Group className="mb-3">
             <Form.Label>شهر</Form.Label>
-            <Form.Control
+
+            <Form.Select
               onChange={(e) => setCity(e.target.value)}
               value={city}
-            />
-          </Form.Group>
-          <Form.Group className="mb-3" controlId="summary">
-            <Form.Label>محدوده</Form.Label>
-            <Form.Control
-              onChange={(e) => setArea(e.target.value)}
-              value={area}
-            />
-          </Form.Group>
-          <Form.Group className="mb-3" controlId="summary">
-            <Form.Label>تعداد اتاق</Form.Label>
-            <Form.Control
-              onChange={(e) => setRoomCount(e.target.value)}
-              value={roomCount}
-            />
-          </Form.Group>
-          <Form.Group className="mb-3" controlId="summary">
-            <Form.Label>تعداد اتاق</Form.Label>
-            <Form.Control
-              onChange={(e) => setRoomCount(e.target.value)}
-              value={roomCount}
-            />
+            >
+             
+              {cityList?.map((data, i) => {
+                return(
+                  <option key={data.id} value={data.id}>{data.name}</option>
+                );
+              })}
+
+            </Form.Select>
           </Form.Group>
 
-          <Form.Group className="mb-3" controlId="text">
+          <Form.Group className="mb-3">
+            <Form.Label>محدوده</Form.Label>
+
+            <Form.Select
+              onChange={(e) => setArea(e.target.value)}
+              value={area}
+            >
+               <option >---</option>
+              {cityAreaList?.map((data, i) => {
+                return(
+                  <option key={data.id} value={data.id}>{data.name}</option>
+                );
+              })}
+
+            </Form.Select>
+          </Form.Group>
+          
+          <Form.Group className="mb-3">
+            <Form.Label>نوع ملک</Form.Label>
+
+            <Form.Select
+              onChange={(e) => setPropertyType(e.target.value)}
+              value={propertyType}
+            >
+               <option value="c" >اداری / تجاری</option>
+               <option value="a" >آپارتمان</option>
+               <option value="v" >ویلایی / باغ و باغچه</option>
+               <option value="l" >زمین / کلنگی</option>
+               <option value="i" >مستقلات / پنت هاوس</option>
+            </Form.Select>
+          </Form.Group>
+          <Form.Group className="mb-3">
+            <Form.Label>تعداد اتاف</Form.Label>
+
+            <Form.Select
+              onChange={(e) => setRoomCount(e.target.value)}
+              value={roomCount}
+            >
+               <option value="one" >۱</option>
+               <option value="two" >۲</option>
+               <option value="three" >۳</option>
+               <option value="four" >۴</option>
+               <option value="five" >۵</option>
+            </Form.Select>
+          </Form.Group>
+          <Form.Group className="mb-3">
+            <Form.Label>متراژ</Form.Label>
+
+            <Form.Select
+              onChange={(e) => setMeter(e.target.value)}
+              value={meter}
+            >
+               <option value="m10" >۱۰ تا ۹۰ متر</option>
+               <option value="m90" >۹۰ تا ۱۵۰ متر</option>
+               <option value="m150" >۱۵۰ تا ۲۲۰ متر</option>
+               <option value="m220" >۲۲۰ متر به بالا</option>
+            </Form.Select>
+          </Form.Group>
+
+          <Form.Group className="mb-3">
+            <Form.Label>نوع واگذاری</Form.Label>
+
+            <Form.Select
+              onChange={(e) => setAssignmentType(e.target.value)}
+              value={assignmentType}
+            >
+              <option value="rental">رهن و اجاره</option>
+              <option value="forSale">خرید</option>
+              <option value="fastSale">فروش فوری</option>
+            </Form.Select>
+          </Form.Group>
+          <Form.Group className="mb-3">
+            <Form.Label>قیمت</Form.Label>
+            <Form.Control
+              onChange={(e) => setPrice(e.target.value)}
+              value={price}
+            />
+          </Form.Group>
+          <Form.Group className="mb-3">
             <Form.Label>شماره تماس</Form.Label>
+            <Form.Control
+              onChange={(e) => setPhoneNumber(e.target.value)}
+              value={phoneNumber}
+            />
+          </Form.Group>
+        
+
+          <Form.Group className="mb-3" controlId="text">
+            <Form.Label>توضیحات</Form.Label>
             <Editor
               editorState={editorState}
               onEditorStateChange={handleEditorChange}
             />
           </Form.Group>
 
-          <Form.Group className="mb-3" controlId="city">
-            <Form.Label>تعداد اتاق</Form.Label>
-            <Form.Control
-              onChange={(e) => setCity(e.target.value)}
-              value={city}
-              placeholder="نام را وارد کنید..."
-            />
-          </Form.Group>
+          <Form.Group className="mb-3">
+            <Form.Label>وضعیت آگهی</Form.Label>
 
+            <Form.Select
+              onChange={(e) => setAdStatus(e.target.value)}
+              value={AdStatus}
+            >
+              <option value="awaitingPayment">در انتظار پرداخت</option>
+              <option value="awaitingConfirmation">در انتظار تایید</option>
+              <option value="active">منتشر شده</option>
+              <option value="expired">منقضی شده</option>
+              <option value="Deleted">حذف شده</option>
+            </Form.Select>
+          </Form.Group>
           <Form.Group className="mb-3 text-center">
             <p className="f-14 text-right">تصویر اصلی</p>
             <Form.Label className="w-50">
@@ -298,6 +431,15 @@ export default () => {
                 )}
               </div>
             </Form.Label>
+          </Form.Group>
+          <Form.Group className="mb-3" controlId="status">
+            <Form.Check
+              className="d-flex flex-column-reverse"
+              type="switch"
+              onChange={onSwitchAction}
+              checked={isSwitchOn}
+              label="وضعیت"
+            />
           </Form.Group>
         </Form>
       </FormModal>
@@ -353,52 +495,28 @@ export default () => {
                           <td className="d-none">{data.id}</td>
 
                           <td className="text-center">{++i}</td>
-                         
-                          <td>
-                          {data.name}
-                          </td>
-                          <td>
-                          {data.cityArea.name}
-                          </td>
-                          <td>
-                          {data.areaName}
-                          </td>
-                          <td>
-                          { property(data.type)}
-                          </td>
-                          <td>
-                          {room(data.roomCount)}
-                          </td>
-                          <td>
-                          {meterage(data.meter)}
-                          </td>
-                          <td>
-                          {assignment(data.assignmentType)}
-                          </td>
-                          <td>
-                          {data.price}
-                          </td>
-                          <td>
-                          {data.phoneNumber}
-                          </td>
-                          <td>
-                          {data.description}
-                          </td>
-                          <td>
-                          {active}
-                          </td>
-                          <td>
-                          {advertisingStatus(data.AdStatus)}
-                          </td>
+
+                          <td>{data.name}</td>
+                          <td>{data.cityArea.name}</td>
+                          <td>{data.areaName}</td>
+                          <td>{property(data.type)}</td>
+                          <td>{room(data.roomCount)}</td>
+                          <td>{meterage(data.meter)}</td>
+                          <td>{assignment(data.assignmentType)}</td>
+                          <td>{data.price}</td>
+                          <td>{data.phoneNumber}</td>
+                          <td>{data.description}</td>
+                          <td>{active}</td>
+                          <td>{advertisingStatus(data.AdStatus)}</td>
 
                           <td>
                             <img
                               src={"/uploads/articles/" + data}
                               width={120}
                             />
-                 
+
                             <span>{data.createdAt}</span>
-                          </td> 
+                          </td>
                           <td className="text-start">
                             <Dropdown align="end">
                               <Dropdown.Toggle

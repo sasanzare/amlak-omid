@@ -79,6 +79,7 @@ async function get(req, res) {
 }
 
 async function upsert(req, res) {
+    console.log("kir")
     const uploadDirCategory = 'advertising'
     const { fields, files } = await parseForm(req, uploadDirCategory);
     const media = JSON.stringify(files.media.filepath).split("advertising/")[1].replace('"','');

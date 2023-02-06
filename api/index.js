@@ -14,3 +14,6 @@ export const getUsersApi = `/api/user`
 export const upsertUser = `/api/user/post`
 export const removeUser = `/api/user/remove`
 export const getRealEstateApi = `/api/realEstate`
+export const getCityApi = "/api/city"
+export const getCityAreaApi = "/api/cityArea"
+export const getCityAreaByIdApi = "/api/cityArea/getById"
