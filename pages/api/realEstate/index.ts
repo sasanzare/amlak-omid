@@ -86,6 +86,7 @@ async function upsert(req, res) {
     const user = await verify(req, String(env.JWT_SECRET));
     const estateId : string = String(fields.id) || '';
     delete fields.id;
+    console.log("khar")
     let obj = await prisma.realEstate.upsert({
         where: {
             id: estateId,
@@ -102,6 +103,25 @@ async function upsert(req, res) {
     });
     res.status(200).json(obj);
 }
+
+
+// async function upsert(req, res) {
+//     const { id }  = req.query;
+//     delete req.body.id;
+//     // req.body.status = (parseInt(req.body.status) == 1)? true :false ;
+//     let obj = await prisma.realEstate.upsert({
+//       where: {
+//         id,
+//       },
+//       update: {
+//         ...req.body,
+//       },
+//       create: {
+//         ...req.body,
+//       },
+//     });
+//     res.status(200).json(obj);
+//   }
 
 async function remove(req, res) {
     let obj = await prisma.realEstate.delete({ where: { id: req.query.id } });

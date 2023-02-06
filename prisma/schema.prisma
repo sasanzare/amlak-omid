@@ -160,7 +160,8 @@ model realEstate {
   description    String
   roomCount      roomCount      @default(one)
   meter          meter          @default(m10)
-  Photos         String[]
+  estateImage    String?
+  Photos         String?
   assignmentType assignmentType
   type           propertyType
   price          String
@@ -168,8 +169,8 @@ model realEstate {
   cityName       String
   cityArea       cityArea       @relation(fields: [cityAreaId], references: [id])
   cityAreaId     String
-  latitude       Decimal        @db.Decimal(8,6)
-  longitude      Decimal        @db.Decimal(9,6)
+  latitude       Decimal?        @db.Decimal(8,6)
+  longitude      Decimal?        @db.Decimal(9,6)
   createdAt      DateTime       @default(now())
   updatedAt      DateTime       @default(now()) @updatedAt
   isActive       Boolean        @default(false)

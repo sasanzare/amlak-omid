@@ -14,6 +14,11 @@ const nextConfig = {
     locales: ["fa"],
     defaultLocale: "fa",
   },
+  api: {
+    bodyParser: {
+        sizeLimit: '15mb' // Set desired value here
+    }
+}
 
 }
 

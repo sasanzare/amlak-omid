@@ -353,11 +353,17 @@
             "m220"
           ]
         },
+        "estateImage": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
         "Photos": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
+          "type": [
+            "string",
+            "null"
+          ]
         },
         "assignmentType": {
           "type": "string",
@@ -390,10 +396,16 @@
           "$ref": "#/definitions/cityArea"
         },
         "latitude": {
-          "type": "number"
+          "type": [
+            "number",
+            "null"
+          ]
         },
         "longitude": {
-          "type": "number"
+          "type": [
+            "number",
+            "null"
+          ]
         },
         "createdAt": {
           "type": "string",
