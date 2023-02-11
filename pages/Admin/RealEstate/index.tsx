@@ -49,15 +49,14 @@ export default () => {
   const [modalShow, setModalShow] = useState(false);
   const [modalObj, setModalObj] = useState(null);
 
-  const [title, setTitle] = useState("");
+
   const [name, setName] = useState("");
-  const [summary, setSummary] = useState("");
   const [city, setCity] = useState("");
   const [area, setArea] = useState("");
-  const [propertyType, setPropertyType] = useState("");
-  const [roomCount, setRoomCount] = useState("");
-  const [meter, setMeter] = useState("");
-  const [assignmentType, setAssignmentType] = useState("");
+  const [propertyType, setPropertyType] = useState("c");
+  const [roomCount, setRoomCount] = useState("one");
+  const [meter, setMeter] = useState("m10");
+  const [assignmentType, setAssignmentType] = useState("rental");
   const [price, setPrice] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [description, setDescription] = useState("");
@@ -170,8 +169,8 @@ export default () => {
       assignmentType,
       type: propertyType,
       price,
-      areaName,
       cityAreaId: area,
+      cityId: city,
       latitude,
       longitude,
       // isActive: false,
@@ -210,8 +209,10 @@ export default () => {
   }
 
   function reset() {
-    setTitle("");
-    setSummary("");
+setPropertyType("c");
+ setRoomCount("one");
+ setMeter("m10");
+setAssignmentType("rental");
     setEditorState(EditorState.createEmpty());
     setCity("");
     setEstateImage(null);
@@ -223,10 +224,6 @@ export default () => {
 
   function openDialoge(obj) {
     if (obj) {
-      // console.log(obj)
-      console.log(selectedImage);
-      setTitle(obj.title);
-      setSummary(obj.summary);
       setCity(obj.city);
       setEstateImage(obj.estateImage);
       setSelectedImage(obj.selectedImage);
@@ -363,13 +360,6 @@ export default () => {
             <Form.Control
               onChange={(e) => setPrice(e.target.value)}
               value={price}
-            />
-          </Form.Group>
-          <Form.Group className="mb-3">
-            <Form.Label>آٔدرس</Form.Label>
-            <Form.Control
-              onChange={(e) => setAreaName(e.target.value)}
-              value={areaName}
             />
           </Form.Group>
           <Form.Group className="mb-3">
@@ -511,15 +501,15 @@ export default () => {
                           <td className="text-center">{++i}</td>
 
                           <td>{data.name}</td>
+                          <td>{data.city.name}</td>
                           <td>{data.cityArea.name}</td>
-                          <td>{data.areaName}</td>
                           <td>{property(data.type)}</td>
                           <td>{room(data.roomCount)}</td>
                           <td>{meterage(data.meter)}</td>
                           <td>{assignment(data.assignmentType)}</td>
                           <td>{data.price}</td>
                           <td>{data.phoneNumber}</td>
-                          <td>{data.description}</td>
+                          <td dangerouslySetInnerHTML={{ __html: data.description }} />
                           <td>{active}</td>
                           <td>{advertisingStatus(data.AdStatus)}</td>
 

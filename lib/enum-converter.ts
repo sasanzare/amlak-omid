@@ -1,16 +1,16 @@
 export function property(data){
     let outPut;
     switch(data) {
-      case "commercial":
+      case "c":
         outPut = "اداری / تجاری"
         break;
-      case "apartment":
+      case "a":
         outPut = "آپارتمان"
         break;
-      case "villaGarden":
+      case "v":
         outPut = "ویلایی / باغ و باغچه"
         break;
-      case "land":
+      case "l":
         outPut = "زمین / کلنگی"
         break;
       default:
