@@ -17,7 +17,7 @@ import {
   faCheckCircle,
   faXmarkCircle,
 } from "@fortawesome/free-solid-svg-icons";
-import { getRealEstateApi, getCityApi, getCityAreaApi, getCityAreaByIdApi } from "../../../api";
+import { getRealEstateApi, getCityApi, getCityAreaApi, getCityAreaByIdApi,createRealEstateApi } from "../../../api";
 import {
   property,
   room,
@@ -62,9 +62,10 @@ export default () => {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [description, setDescription] = useState("");
   const [AdStatus, setAdStatus] = useState("");
+  const [areaName, setAreaName] = useState("");
   const [latitude, setLatitude] = useState(0);
   const [longitude, setLongitude] = useState(0);
-  const [articleImage, setArticleImage] = useState<File>();
+  const [estateImage, setEstateImage] = useState<File>();
   const [selectedImage, setSelectedImage] = useState("");
   const [isSwitchOn, setIsSwitchOn] = useState(false);
   const [idEs, setIdEs] = useState(0);
@@ -169,16 +170,22 @@ export default () => {
       assignmentType,
       type: propertyType,
       price,
+      areaName,
       cityAreaId: area,
+      latitude,
+      longitude,
+      // isActive: false,
       AdStatus,
-      cityName:city,
-      // media: articleImage,
+      // cityName:city,
+      media: estateImage,
     };
+
+    console.log(object)
     if (idEs != 0) {
       object = { ...object, id: idEs };
     }
     axios
-      .post(getRealEstateApi, object, {
+      .post(createRealEstateApi, object, {
         headers: {
           Authorization: `${
             JSON.parse(localStorage.getItem("userData")).token
@@ -207,7 +214,7 @@ export default () => {
     setSummary("");
     setEditorState(EditorState.createEmpty());
     setCity("");
-    setArticleImage(null);
+    setEstateImage(null);
     setSelectedImage("");
     setIdEs(0);
     setCityList([])
@@ -221,7 +228,7 @@ export default () => {
       setTitle(obj.title);
       setSummary(obj.summary);
       setCity(obj.city);
-      setArticleImage(obj.articleImage);
+      setEstateImage(obj.estateImage);
       setSelectedImage(obj.selectedImage);
       setEditorState(EditorState.createWithContent(convertFromHTML(obj.text)));
       setIdEs(obj.id);
@@ -359,6 +366,13 @@ export default () => {
             />
           </Form.Group>
           <Form.Group className="mb-3">
+            <Form.Label>آٔدرس</Form.Label>
+            <Form.Control
+              onChange={(e) => setAreaName(e.target.value)}
+              value={areaName}
+            />
+          </Form.Group>
+          <Form.Group className="mb-3">
             <Form.Label>شماره تماس</Form.Label>
             <Form.Control
               onChange={(e) => setPhoneNumber(e.target.value)}
@@ -397,10 +411,10 @@ export default () => {
                   if (target.files) {
                     const file = target.files[0];
                     setSelectedImage(URL.createObjectURL(file));
-                    setArticleImage(file);
+                    setEstateImage(file);
                   }
                 }}
-                // value={articleImage}
+                // value={estateImage}
                 multiple
                 accept="image/*"
                 type="file"
@@ -408,7 +422,7 @@ export default () => {
               />
 
               <div className="d-flex justify-content-center">
-                {!articleImage ? (
+                {!estateImage ? (
                   selectedImage ? (
                     <img
                       src={selectedImage}
@@ -424,7 +438,7 @@ export default () => {
                   <img src={selectedImage} value={selectedImage} width={200} />
                 ) : (
                   <img
-                    src={"/uploads/articles/" + articleImage}
+                    src={"/uploads/articles/" + estateImage}
                     value={selectedImage}
                     width={200}
                   />

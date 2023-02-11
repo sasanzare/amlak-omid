@@ -23,6 +23,9 @@ import {
   faPuzzlePiece,
   faRightToBracket,
   faNewspaper,
+  faEarth,
+  faPlaneDeparture,
+  faWarning
 } from "@fortawesome/free-solid-svg-icons";
 import React, {
   PropsWithChildren,
@@ -196,14 +199,32 @@ export default function SidebarNav() {
           فرم ارتباط‌‌باما
         </SidebarNavItem>
       </SidebarNavGroup>
-      <SidebarNavGroup toggleIcon={faMessage} toggleText="املاک‌">
+      <SidebarNavGroup toggleIcon={faPlaneDeparture} toggleText="املاک‌">
         <SidebarNavItem href="/Admin/Agency">
           آژانس‌های املاک 
         </SidebarNavItem>
       </SidebarNavGroup>
-      <SidebarNavGroup toggleIcon={faMessage} toggleText="آگهی ها">
+      <SidebarNavGroup toggleIcon={faPuzzlePiece} toggleText="آگهی ها">
         <SidebarNavItem href="/Admin/RealEstate">
           آگهی ها
+        </SidebarNavItem>
+      </SidebarNavGroup>
+      <SidebarNavGroup toggleIcon={faEarth} toggleText="شهر ها">
+        <SidebarNavItem href="/Admin/City">
+           شهر
+        </SidebarNavItem>
+        <SidebarNavItem href="/Admin/City/area">
+           محله
+        </SidebarNavItem>
+      </SidebarNavGroup>
+      <SidebarNavGroup toggleIcon={faFileLines} toggleText="یادداشت ها">
+        <SidebarNavItem href="/Admin/Note">
+           یادداشت
+        </SidebarNavItem>
+      </SidebarNavGroup>
+      <SidebarNavGroup toggleIcon={faWarning} toggleText="گزارش‌ها">
+        <SidebarNavItem href="/Admin/Report">
+           گزارش
         </SidebarNavItem>
       </SidebarNavGroup>
 

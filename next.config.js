@@ -1,6 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  reactStrictMode: false,
+  reactStrictMode: true,
   swcMinify: true,
 
   typescript: {
@@ -13,13 +13,10 @@ const nextConfig = {
   i18n: {
     locales: ["fa"],
     defaultLocale: "fa",
-  },
-  api: {
-    bodyParser: {
-        sizeLimit: '15mb' // Set desired value here
-    }
-}
-
+  }
 }
 
 module.exports = nextConfig
+
+
+

@@ -60,6 +60,12 @@
             "null"
           ]
         },
+        "userImage": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
         "lastLogin": {
           "type": "string",
           "format": "date-time"
@@ -114,6 +120,24 @@
           "type": "array",
           "items": {
             "$ref": "#/definitions/article"
+          }
+        },
+        "note": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/note"
+          }
+        },
+        "save": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/save"
+          }
+        },
+        "report": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/report"
           }
         }
       }
@@ -268,6 +292,12 @@
             "$ref": "#/definitions/cityArea"
           }
         },
+        "realEstate": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/realEstate"
+          }
+        },
         "createdAt": {
           "type": "string",
           "format": "date-time"
@@ -286,16 +316,16 @@
         "city": {
           "$ref": "#/definitions/city"
         },
-        "realEstate": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/realEstate"
-          }
-        },
         "agency": {
           "type": "array",
           "items": {
             "$ref": "#/definitions/agency"
+          }
+        },
+        "realEstate": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/realEstate"
           }
         },
         "createdAt": {
@@ -359,14 +389,9 @@
             "null"
           ]
         },
-        "Photos": {
-          "type": [
-            "string",
-            "null"
-          ]
-        },
         "assignmentType": {
           "type": "string",
+          "default": "rental",
           "enum": [
             "rental",
             "forSale",
@@ -375,6 +400,7 @@
         },
         "type": {
           "type": "string",
+          "default": "c",
           "enum": [
             "c",
             "a",
@@ -386,24 +412,21 @@
         "price": {
           "type": "string"
         },
-        "areaName": {
-          "type": "string"
-        },
-        "cityName": {
-          "type": "string"
+        "city": {
+          "$ref": "#/definitions/city"
         },
         "cityArea": {
           "$ref": "#/definitions/cityArea"
         },
         "latitude": {
           "type": [
-            "number",
+            "string",
             "null"
           ]
         },
         "longitude": {
           "type": [
-            "number",
+            "string",
             "null"
           ]
         },
@@ -429,6 +452,30 @@
             "expired",
             "Deleted"
           ]
+        },
+        "note": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/note"
+          }
+        },
+        "save": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/save"
+          }
+        },
+        "report": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/report"
+          }
+        },
+        "gallery": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/gallery"
+          }
         }
       }
     },
@@ -516,6 +563,112 @@
           "format": "date-time"
         }
       }
+    },
+    "note": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "user": {
+          "$ref": "#/definitions/user"
+        },
+        "note": {
+          "type": "string"
+        },
+        "realEstate": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/realEstate"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "save": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "user": {
+          "$ref": "#/definitions/user"
+        },
+        "realEstate": {
+          "$ref": "#/definitions/realEstate"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "report": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "user": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/user"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "report": {
+          "type": "string"
+        },
+        "realEstate": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/realEstate"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "gallery": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "Photos": {
+          "type": "string"
+        },
+        "realEstate": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/realEstate"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
     }
   },
   "type": "object",
@@ -552,6 +705,18 @@
     },
     "faq": {
       "$ref": "#/definitions/faq"
+    },
+    "note": {
+      "$ref": "#/definitions/note"
+    },
+    "save": {
+      "$ref": "#/definitions/save"
+    },
+    "report": {
+      "$ref": "#/definitions/report"
+    },
+    "gallery": {
+      "$ref": "#/definitions/gallery"
     }
   }
 }

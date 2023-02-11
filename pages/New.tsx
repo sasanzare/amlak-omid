@@ -18,8 +18,8 @@ function News() {
   return (
     <Container className="pt-5 mt-5 pb-4">
       <Row>
-        <Title title="ثبت آگهی املاک" />
-        {/* <NewsForm /> */}
+        <Title classes="col-12" title="ثبت آگهی املاک" />
+        <NewsForm />
       </Row>
 
     </Container>

@@ -16,8 +16,12 @@ const NewsForm = () => {
     const { setShowLoading } = useContext(context);
 
 
+    const [name, setName] = useState();
     const [city, setCity] = useState();
+    const [roomCount, setRoomCount] = useState();
     const [area, setArea] = useState();
+    const [meter, setMeter] = useState();
+    const [estateImage, setEstateImage] = useState();
     const [type, setType] = useState();
     const [price, setPrice] = useState();
     const [metrage, setMetrage] = useState();
@@ -100,7 +104,7 @@ const NewsForm = () => {
         reader.readAsDataURL(img);
     }
     return (
-        <Form className="Search row newsForm mx-auto flex-column flex-lg-row py-3 mt-5" >
+        <Form className="col-lg-6 col-md-8  newsForm mx-auto flex-column flex-lg-row py-3 mt-5" >
             <SingleSelect val={[
                 "مرودشت",
                 "شیراز",

@@ -45,7 +45,7 @@ export default () => {
   const [articleImage, setArticleImage] = useState<File>();
   const [selectedImage, setSelectedImage] = useState("");
   const [isSwitchOn, setIsSwitchOn] = useState(false);
-  const [idA, setIdA] = useState(0);
+  const [idA, setIdA] = useState("");
 
   let searchTimeOut = null;
 
@@ -136,7 +136,7 @@ export default () => {
     setNormalName("");
     setArticleImage(null);
     setSelectedImage("");
-    setIdA(0);
+    setIdA("");
   }
 
   function search(value, field, searchTableName) {

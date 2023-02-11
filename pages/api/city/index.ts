@@ -50,16 +50,19 @@ async function get(req, res) {
         //   ],
 
 
-        // select: {
-        //     id: true,
-        //     name: true,
-        //     createdAt: true,
-        //     cityArea:{
-        //         select:{
-        //             name: true
-        //         }
-        //     }
-        //   },
+        select: {
+            id: true,
+            name: true,
+            createdAt: true,
+            cityArea:{
+                select:{
+                    name: true
+                }
+            }
+          },
+        orderBy: {
+            createdAt: "desc",
+          },
         skip: 0,
         take: 20,
     });

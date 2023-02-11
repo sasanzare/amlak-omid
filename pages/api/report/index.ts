@@ -1,32 +1,18 @@
+
 import type { NextApiRequest, NextApiResponse } from 'next'
 import prisma from '../../../lib/prisma';
-import initMiddleware from '../../../lib/init-middleware';
-import validateMiddleware from '../../../lib/validate-middleware';
-import { check, validationResult } from 'express-validator';
-import { env } from 'process';
 
-const validateBody = initMiddleware(
-    validateMiddleware([
-        check('name').isString().notEmpty(),
-        check('cityId').isString().notEmpty()
-    ], validationResult)
-)
 
 export default async function handler(
     req: NextApiRequest,
     res: NextApiResponse,
 
 ) {
-    console.log(env.DATABASE_URL)
     if (req.method === "GET") {
         get(req, res)
     }
     else if (req.method === "POST") {
-        await validateBody(req, res)
-        const errors = validationResult(req)
-        if (!errors.isEmpty()) {
-            return res.status(422).json({ errors: errors.array() })
-        }
+ 
         upsert(req, res)
     }
     else if (req.method === "DELETE") {
@@ -37,18 +23,29 @@ export default async function handler(
         )
     }
 }
-//schema.definitions[table].properties[current]
 async function get(req, res) {
-    let obj = await prisma.cityArea.findMany({
-        // where: {
-        //     name: { contains: req.query.name },
-
-        // },
+    let obj = await prisma.report.findMany({
+        select: {
+            id: true,
+            report: true,
+            createdAt: true,
+            user:{
+                select:{
+                    firstName: true,
+                    lastName: true,
+                }
+            },
+            realEstate:{
+                select:{
+                    name: true,
+                }
+            }
+          },
         orderBy: {
             createdAt: "desc",
           },
-        skip: 0,
-        take: 20,
+        // skip: 0,
+        // take: 20,
     });
     res.status(200).json(obj);
 }
@@ -56,7 +53,7 @@ async function get(req, res) {
 async function upsert(req, res) {
     let id = req.body.id || '';
     delete req.body.id;
-    let obj = await prisma.cityArea.upsert({
+    let obj = await prisma.report.upsert({
         where: {
             id,
         },
@@ -71,6 +68,6 @@ async function upsert(req, res) {
 }
 
 async function remove(req, res) {
-    let obj = await prisma.cityArea.delete({ where: { id: req.query.id } });
+    let obj = await prisma.report.delete({ where: { id: req.query.id } });
     res.status(200).json(obj);
 }
