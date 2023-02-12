@@ -5,10 +5,6 @@ import { parseForm } from "../../../lib/parse-form";
 import { verify } from '../../../lib/jwt-provider';
 
 
-
-
-
-
 export const config = {
     api: {
         bodyParser: false,
@@ -20,16 +16,17 @@ export default async function upsert(
 
 ) {
  if (req.method === "POST") {
-    console.log(11)
+    // console.log(typeof req.body.isActive)
     const uploadDirCategory = 'advertising';
-    console.log(12)
+
     const { fields, files } = await parseForm(req, uploadDirCategory);
     const media = JSON.stringify(files.media.filepath).split("advertising/")[1].replace('"','');
     // const photo = JSON.stringify(files.photo.filepath).split("advertising/")[1].replace('"','');
     const user = await verify(req, String(env.JWT_SECRET));
     const estateId : string = String(fields.id) || '';
     delete fields.id;
-    console.log("..+++..")
+    console.log(typeof fields.isActive)
+    const isActive = (fields.isActive === "true")? true : false;
     let obj = await prisma.realEstate.upsert({
         where: {
             id: estateId,
@@ -37,13 +34,15 @@ export default async function upsert(
         update: {
             ...fields,
             estateImage: media,
+            isActive
             // gallery: photo
         },
         create: {
             ...fields,
             estateImage: media,
             // gallery: photo,
-            userId: user._id
+            userId: user._id,
+            isActive
         },
     });
     res.status(200).json(obj);

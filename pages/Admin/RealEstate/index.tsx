@@ -17,7 +17,13 @@ import {
   faCheckCircle,
   faXmarkCircle,
 } from "@fortawesome/free-solid-svg-icons";
-import { getRealEstateApi, getCityApi, getCityAreaApi, getCityAreaByIdApi,createRealEstateApi } from "../../../api";
+import {
+  getRealEstateApi,
+  getCityApi,
+  getCityAreaApi,
+  getCityAreaByIdApi,
+  createRealEstateApi,
+} from "../../../api";
 import {
   property,
   room,
@@ -48,7 +54,6 @@ export default () => {
   const [realEstateList, setRealEstateList] = useState([]);
   const [modalShow, setModalShow] = useState(false);
   const [modalObj, setModalObj] = useState(null);
-
 
   const [name, setName] = useState("");
   const [city, setCity] = useState("");
@@ -127,7 +132,7 @@ export default () => {
   function getCityArea() {
     setShowLoading(true);
     axios
-      .get( `${getCityAreaByIdApi}?cityId=${city}`)
+      .get(`${getCityAreaByIdApi}?cityId=${city}`)
       .then((res) => {
         setCityAreaList(res.data);
         if (res.status === 200) {
@@ -145,21 +150,36 @@ export default () => {
   }
 
   function remove(data) {
-    axios.delete("/api/article?id=" + data.id).then((res) => {
+    axios.delete(`${getRealEstateApi}?id=` + data.id).then((res) => {
       getRealEstate();
     });
   }
 
   function upsert() {
-    // if (title == "") {
-    //   return toast.error("لطفا عنوان را وارد کنید!");
-    // }
-    // if (!editorState.getCurrentContent().hasText()) {
-    //   return toast.error("لطفا محتوا را وارد کنید!");
-    // }
-    // if (selectedImage == "") {
-    //   return toast.error(" تصویر مقاله را انتخاب کنید!");
-    // }
+    if (name == "") {
+      return toast.error("لطفا عنوان را وارد کنید!");
+    }
+    if (city == "") {
+      return toast.error("لطفا شهر را انتخاب کنید!");
+    }
+    if (area == "") {
+      return toast.error("لطفا محله را انتخاب کنید!");
+    }
+    if (price == "") {
+      return toast.error("لطفا قیمت را وارد کنید!");
+    }
+    if (phoneNumber == "") {
+      return toast.error("شماره تماس را وارد کنید!");
+    }
+    if (phoneNumber.length != 11) {
+      return toast.error("لطفا شماره صحیح را وارد کنید!");
+    }
+    if (!editorState.getCurrentContent().hasText()) {
+      return toast.error("لطفا توضیحات را وارد کنید!");
+    }
+    if (selectedImage == "") {
+      return toast.error(" تصویر مقاله را انتخاب کنید!");
+    }
     let object = {
       name,
       phoneNumber,
@@ -173,13 +193,13 @@ export default () => {
       cityId: city,
       latitude,
       longitude,
-      // isActive: false,
+      isActive: isSwitchOn,
       AdStatus,
       // cityName:city,
       media: estateImage,
     };
 
-    console.log(object)
+    console.log(typeof object.isActive);
     if (idEs != 0) {
       object = { ...object, id: idEs };
     }
@@ -201,7 +221,6 @@ export default () => {
         if (err.response) {
           // err?.response?.data?.errors?.map((issue) => toast.error(issue));
           toast.error("مشکلی پیش آمده است !");
-          console.log(err.response);
         } else {
           toast.error("مشکلی پیش آمده است !");
         }
@@ -209,30 +228,54 @@ export default () => {
   }
 
   function reset() {
-setPropertyType("c");
- setRoomCount("one");
- setMeter("m10");
-setAssignmentType("rental");
+    setPropertyType("c");
+    setRoomCount("one");
+    setMeter("m10");
+    setAssignmentType("rental");
     setEditorState(EditorState.createEmpty());
     setCity("");
-    setEstateImage(null);
     setSelectedImage("");
     setIdEs(0);
-    setCityList([])
+    // setCityList([]);
+    setName("");
+    setArea("");
+    setPrice("");
+    setPhoneNumber("");
+    setAdStatus("");
+    setAreaName("");
+    setLatitude(0);
+    setLongitude(0);
+    setEstateImage<File>();
+    setIsSwitchOn(false);
+    setIdEs(0);
+    // setCityAreaList([]);
   }
 
-
   function openDialoge(obj) {
+    getCity()
     if (obj) {
-      setCity(obj.city);
+      setPropertyType(obj.propertyType);
+      setRoomCount(obj.roomCount);
+      setMeter(obj.meter);
+      setAssignmentType(obj.assignmentType);
+      setName(obj.name);
+      // setArea(obj.cityArea.area);
+      setPrice(obj.price);
+      setPhoneNumber(obj.phoneNumber);
+      setAdStatus(obj.AdStatus);
+      setAreaName(obj.areaName);
+      setLatitude(obj.latitude);
+      setLongitude(obj.longitude);
+      setIsSwitchOn(obj.isSwitchOn);
+      // setCity(obj.city.name);
       setEstateImage(obj.estateImage);
       setSelectedImage(obj.selectedImage);
-      setEditorState(EditorState.createWithContent(convertFromHTML(obj.text)));
+      setEditorState(EditorState.createWithContent(convertFromHTML(obj.description)));
       setIdEs(obj.id);
     }
     setModalShow(true);
   }
-  function createNewAd(){
+  function createNewAd() {
     getCity();
     setModalShow(true);
   }
@@ -270,37 +313,34 @@ setAssignmentType("rental");
           <Form.Group className="mb-3">
             <Form.Label>شهر</Form.Label>
 
-            <Form.Select
-              onChange={(e) => setCity(e.target.value)}
-              value={city}
-            >
-             
+            <Form.Select onChange={(e) => setCity(e.target.value)} value={city}>
+            <option>---
+                  </option>
               {cityList?.map((data, i) => {
-                return(
-                  <option key={data.id} value={data.id}>{data.name}</option>
+                return (
+                  <option key={data.id} value={data.id}>
+                    {data.name}
+                  </option>
                 );
               })}
-
             </Form.Select>
           </Form.Group>
 
           <Form.Group className="mb-3">
             <Form.Label>محدوده</Form.Label>
 
-            <Form.Select
-              onChange={(e) => setArea(e.target.value)}
-              value={area}
-            >
-               <option >---</option>
+            <Form.Select onChange={(e) => setArea(e.target.value)} value={area}>
+              <option>---</option>
               {cityAreaList?.map((data, i) => {
-                return(
-                  <option key={data.id} value={data.id}>{data.name}</option>
+                return (
+                  <option key={data.id} value={data.id}>
+                    {data.name}
+                  </option>
                 );
               })}
-
             </Form.Select>
           </Form.Group>
-          
+
           <Form.Group className="mb-3">
             <Form.Label>نوع ملک</Form.Label>
 
@@ -308,11 +348,11 @@ setAssignmentType("rental");
               onChange={(e) => setPropertyType(e.target.value)}
               value={propertyType}
             >
-               <option value="c" >اداری / تجاری</option>
-               <option value="a" >آپارتمان</option>
-               <option value="v" >ویلایی / باغ و باغچه</option>
-               <option value="l" >زمین / کلنگی</option>
-               <option value="i" >مستقلات / پنت هاوس</option>
+              <option value="c">اداری / تجاری</option>
+              <option value="a">آپارتمان</option>
+              <option value="v">ویلایی / باغ و باغچه</option>
+              <option value="l">زمین / کلنگی</option>
+              <option value="i">مستقلات / پنت هاوس</option>
             </Form.Select>
           </Form.Group>
           <Form.Group className="mb-3">
@@ -322,11 +362,11 @@ setAssignmentType("rental");
               onChange={(e) => setRoomCount(e.target.value)}
               value={roomCount}
             >
-               <option value="one" >۱</option>
-               <option value="two" >۲</option>
-               <option value="three" >۳</option>
-               <option value="four" >۴</option>
-               <option value="five" >۵</option>
+              <option value="one">۱</option>
+              <option value="two">۲</option>
+              <option value="three">۳</option>
+              <option value="four">۴</option>
+              <option value="five">۵</option>
             </Form.Select>
           </Form.Group>
           <Form.Group className="mb-3">
@@ -336,10 +376,10 @@ setAssignmentType("rental");
               onChange={(e) => setMeter(e.target.value)}
               value={meter}
             >
-               <option value="m10" >۱۰ تا ۹۰ متر</option>
-               <option value="m90" >۹۰ تا ۱۵۰ متر</option>
-               <option value="m150" >۱۵۰ تا ۲۲۰ متر</option>
-               <option value="m220" >۲۲۰ متر به بالا</option>
+              <option value="m10">۱۰ تا ۹۰ متر</option>
+              <option value="m90">۹۰ تا ۱۵۰ متر</option>
+              <option value="m150">۱۵۰ تا ۲۲۰ متر</option>
+              <option value="m220">۲۲۰ متر به بالا</option>
             </Form.Select>
           </Form.Group>
 
@@ -367,9 +407,9 @@ setAssignmentType("rental");
             <Form.Control
               onChange={(e) => setPhoneNumber(e.target.value)}
               value={phoneNumber}
+              placeholder="Example: 09170000000"
             />
           </Form.Group>
-        
 
           <Form.Group className="mb-3" controlId="text">
             <Form.Label>توضیحات</Form.Label>
@@ -509,16 +549,21 @@ setAssignmentType("rental");
                           <td>{assignment(data.assignmentType)}</td>
                           <td>{data.price}</td>
                           <td>{data.phoneNumber}</td>
-                          <td dangerouslySetInnerHTML={{ __html: data.description }} />
+                          <td
+                            dangerouslySetInnerHTML={{
+                              __html: data.description,
+                            }}
+                          />
                           <td>{active}</td>
                           <td>{advertisingStatus(data.AdStatus)}</td>
 
                           <td>
                             <img
-                              src={"/uploads/articles/" + data}
+                              src={"/uploads/advertising/" + data.estateImage}
                               width={120}
                             />
-
+                          </td>
+                          <td>
                             <span>{data.createdAt}</span>
                           </td>
                           <td className="text-start">
