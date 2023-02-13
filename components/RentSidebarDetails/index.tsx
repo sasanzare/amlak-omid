@@ -62,7 +62,7 @@ export default function RentSidebarDetails(props) {
           <FontAwesomeIcon icon={faMoneyBill1Wave} className="ms-1" />
           <small>قیمت</small>
         </div>
-        <small>{props.price}</small>
+        <small className="f-auto">{props.price}</small>
       </div>
       <div className="border-bottom py-3 text-secondary opacity-75 ">
         <Link href={props.virtual}>

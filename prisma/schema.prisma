@@ -117,23 +117,25 @@ model agentInterface {
 }
 
 model agency {
-  id          String                  @id @unique @default(cuid())
-  name        String?
-  agencyImage String?
-  owner       user                    @relation(fields: [ownerId], references: [id],onDelete: NoAction, onUpdate: NoAction)
-  ownerId     String
-  cityArea    cityArea                @relation(fields: [cityAreaId], references: [id],onDelete: NoAction, onUpdate: NoAction)
-  cityAreaId  String
-  agents      agentInterface[]
-  rate        agencyRatingInterface[]
-  phoneNumber String                  @unique
-  latitude    Decimal                 @db.Decimal(8,6)
-  longitude   Decimal                 @db.Decimal(9,6)
-  createdAt   DateTime                @default(now())
-  updatedAt   DateTime                @default(now()) @updatedAt
-  isActive    Boolean                 @default(false)
-  RealEstate  realEstate[]
-  status      requestStatus           @default(pending)
+  id                String                  @id @unique @default(cuid())
+  name              String?
+  agencyImage       String?
+  owner             user                    @relation(fields: [ownerId], references: [id],onDelete: NoAction, onUpdate: NoAction)
+  ownerId           String
+  city              city           @relation(fields: [cityId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  cityId            String
+  cityArea          cityArea       @relation(fields: [cityAreaId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  cityAreaId        String
+  agents            agentInterface[]
+  rate              agencyRatingInterface[]
+  phoneNumber       String                  @unique
+  latitude          String?               
+  longitude         String?                 
+  createdAt         DateTime                @default(now())
+  updatedAt         DateTime                @default(now()) @updatedAt
+  isActive          Boolean                 @default(false)
+  RealEstate        realEstate[]
+  status            requestStatus           @default(pending)
 }
 
 model city {
@@ -141,6 +143,7 @@ model city {
   name          String
   cityArea      cityArea[]
   realEstate    realEstate[]
+  agency        agency[]
   createdAt     DateTime     @default(now())
 }
 
@@ -178,7 +181,7 @@ model realEstate {
   createdAt      DateTime       @default(now())
   updatedAt      DateTime       @default(now()) @updatedAt
   isActive       Boolean        @default(false)
-  AdStatus       AdStatus       @default(awaitingPayment)
+  AdStatus       AdStatus       @default(awaitingConfirmation)
   note           note[]
   save           save[]
   report         report[]

@@ -6,7 +6,7 @@ import SideBar from "../../blocks/sidebar";
 import ArticleCards from "../../blocks/articleCards";
 import SideBarLinks from "../../components/SideBarLinks";
 import { useState, useEffect, useContext } from "react";
-import { useRouter,Router } from 'next/router';
+import { useRouter } from 'next/router';
 import axios from "axios";
 import { context } from "../../context";
 import { ToastContainer, toast } from "react-toastify";
@@ -78,8 +78,9 @@ const getArticleById = async (postId) => {
         const resp = await axios.get("/api/article?id=" + postId );
         if (resp.status === 200) {
                 setShowLoading(false);
+                setArticle(resp.data);
               }
-              setArticle(resp.data);
+              
     } catch (err) {
         toast.error("مشکلی پیش آمده است !");
         setShowLoading(false);

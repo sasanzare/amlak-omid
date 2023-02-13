@@ -40,7 +40,9 @@
 .f-yekan{
   font-family: yekan;
 }
-
+.f-auto{
+  font-family: auto;
+}
 p {
   text-align: justify;
 }

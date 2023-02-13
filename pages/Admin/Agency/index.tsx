@@ -268,10 +268,10 @@ export default () => {
                               {data.owner.firstName} {data.owner.lastName}
                             </p>
                           </td>
-                          <td>{data.agents}</td>
+                          {/* <td>{data.agents}</td>
                           <td>{data.RealEstate}</td>
                           <td>{data.rate}</td>
-                          <td>{data.phoneNumber}</td>
+                          <td>{data.phoneNumber}</td> */}
                           <td className="text-center">{active}</td>
                           <td className="text-center">{status}</td>
                       

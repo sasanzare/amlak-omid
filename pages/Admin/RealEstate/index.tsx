@@ -547,7 +547,7 @@ export default () => {
                           <td>{room(data.roomCount)}</td>
                           <td>{meterage(data.meter)}</td>
                           <td>{assignment(data.assignmentType)}</td>
-                          <td>{data.price}</td>
+                          <td>{data.price.replace(/(\d)(?=(\d{3})+$)/g, '$1,')}</td>
                           <td>{data.phoneNumber}</td>
                           <td
                             dangerouslySetInnerHTML={{
