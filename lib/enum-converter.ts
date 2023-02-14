@@ -91,3 +91,22 @@ export function property(data){
       }
       return outPut;
   }
+
+
+  export function roleFun(data){
+    let outPut;
+    switch(data) {
+      case "admin":
+        outPut = "ادمین"
+        break;
+      case "agencyOwner":
+        outPut = "مدیر املاک"
+        break;
+      case "agencyAgent":
+        outPut = "کارشناس"
+        break;
+      default:
+        outPut = "کاربری عادی"
+    }
+    return outPut;
+  }

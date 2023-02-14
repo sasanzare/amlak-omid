@@ -224,6 +224,9 @@
         "owner": {
           "$ref": "#/definitions/user"
         },
+        "city": {
+          "$ref": "#/definitions/city"
+        },
         "cityArea": {
           "$ref": "#/definitions/cityArea"
         },
@@ -243,10 +246,16 @@
           "type": "string"
         },
         "latitude": {
-          "type": "number"
+          "type": [
+            "string",
+            "null"
+          ]
         },
         "longitude": {
-          "type": "number"
+          "type": [
+            "string",
+            "null"
+          ]
         },
         "createdAt": {
           "type": "string",
@@ -296,6 +305,12 @@
           "type": "array",
           "items": {
             "$ref": "#/definitions/realEstate"
+          }
+        },
+        "agency": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/agency"
           }
         },
         "createdAt": {
@@ -444,7 +459,7 @@
         },
         "AdStatus": {
           "type": "string",
-          "default": "awaitingPayment",
+          "default": "awaitingConfirmation",
           "enum": [
             "awaitingPayment",
             "awaitingConfirmation",

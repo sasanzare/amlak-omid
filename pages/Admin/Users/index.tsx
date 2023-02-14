@@ -15,7 +15,15 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { ToastContainer, toast } from "react-toastify";
 import { getUsersApi, upsertUser,removeUser } from "../../../api";
-
+import {
+  property,
+  room,
+  meterage,
+  assignment,
+  advertisingStatus,
+  roleFun
+} from "../../../lib/enum-converter";
+import moment from 'jalali-moment';
 export default () => {
   const { setShowLoading } = useContext(context);
   const [userList, setuserList] = useState([]);
@@ -28,6 +36,8 @@ export default () => {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [nationalCode, setNationalCode] = useState("");
   const [address, setAddress] = useState("");
+  const [userImage, setUserImage] = useState<File>();
+  const [selectedImage, setSelectedImage] = useState("");
   const [role, setRole] = useState("normal");
   const [isSwitchOn, setIsSwitchOn] = useState(false);
   const [userId, setUserId] = useState("");
@@ -72,9 +82,30 @@ export default () => {
   }
 
   function upsert() {
+    if (firstName == "") {
+      return toast.error("لطفا نام را وارد کنید!");
+    }
+    if (lastName == "") {
+      return toast.error("لطفا نام خانوادگی را وارد کنید!");
+    }
+    if (name == "") {
+      return toast.error("لطفا نام کاربری را وارد کنید!");
+    }
+    if (email == "") {
+      return toast.error("لطفا  ایمیل را وارد کنید!");
+    }
+    if (!(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email))){
+      return toast.error("لطفا ایمیل صحیح را وارد کنید!")
+    }
     if (phoneNumber == "") {
-        return toast.error("لطفا شماره را وارد کنید!");
-      }
+      return toast.error("لطفا شماره موبایل را وارد کنید!");
+    }
+    if (phoneNumber.length != 11) {
+      return toast.error("لطفا شماره صحیح  وارد کنید!");
+    }
+    if (selectedImage == "") {
+      return toast.error(" تصویر مقاله را انتخاب کنید!");
+    }
     
       let object = {
         firstName,
@@ -85,12 +116,20 @@ export default () => {
         nationalCode,
         address,
         role,
+        media: userImage,
         isActive: isSwitchOn,
       };
       if (userId != "") {
         object = { ...object, id: userId };
       }
-      axios.post(upsertUser, object).then((res) => {
+      axios.post(upsertUser, object, {
+        headers: {
+          Authorization: `${
+            JSON.parse(localStorage.getItem("userData")).token
+          }`,
+          "Content-Type": "multipart/form-data",
+        },
+      }).then((res) => {
         setModalShow(false);
         getUsers();
         reset();
@@ -108,6 +147,8 @@ export default () => {
     setAddress(""),
     setRole("normal"),
     setUserId("");
+     setUserImage<File>();
+    setSelectedImage("");
   }
 
   function openDialoge(obj) {
@@ -172,6 +213,14 @@ export default () => {
           />
         </Form.Group>
         <Form.Group className="mb-3">
+          <Form.Label>نام‌کاربری</Form.Label>
+          <Form.Control
+            onChange={(e) => setName(e.target.value)}
+            value={name}
+          />
+        </Form.Group>
+ 
+        <Form.Group className="mb-3">
           <Form.Label>نقش</Form.Label>
 
           <Form.Select
@@ -184,13 +233,7 @@ export default () => {
             <option value="admin">مدیر وب سابت</option>
           </Form.Select>
         </Form.Group>
-        <Form.Group className="mb-3">
-          <Form.Label>نام‌کاربری</Form.Label>
-          <Form.Control
-            onChange={(e) => setName(e.target.value)}
-            value={name}
-          />
-        </Form.Group>
+
         <Form.Group className="mb-3">
           <Form.Label>ایمیل</Form.Label>
           <Form.Control
@@ -219,6 +262,7 @@ export default () => {
           <Form.Control
             onChange={(e) => setAddress(e.target.value)}
             value={address}
+            as="textarea" rows={2}
           />
         </Form.Group>
         <Form.Group className="mb-3">
@@ -230,6 +274,48 @@ export default () => {
             label="وضعیت"
           />
         </Form.Group>
+        <Form.Group className="mb-3 text-center">
+            <p className="f-14 text-right">پروفایل</p>
+            <Form.Label className="w-50">
+              <Form.Control
+                onChange={({ target }) => {
+                  if (target.files) {
+                    const file = target.files[0];
+                    setSelectedImage(URL.createObjectURL(file));
+                    setUserImage(file);
+                  }
+                }}
+                // value={userImage}
+                multiple
+                accept="image/*"
+                type="file"
+                hidden={true}
+              />
+
+              <div className="d-flex justify-content-center">
+                {!userImage?(
+                       selectedImage ? (
+                        <img src={selectedImage} value={selectedImage} width={200} />
+                      ) : (
+                        <div className="border border-rounded p-5 text-center">
+                          <span>آپلود عکس</span>
+                        </div>
+                      )
+                ):(
+                  selectedImage ? (
+                    <img src={selectedImage} value={selectedImage} width={200} />
+                    
+                  ) : (
+                    <img src={"/uploads/articles/" + userImage} value={selectedImage} width={200} />
+                  )
+                )
+                
+              }
+         
+              </div>
+            </Form.Label>
+          
+          </Form.Group>
       </FormModal>
 
 
@@ -255,6 +341,7 @@ export default () => {
                       </th>
                       <th>نام</th>
                       <th>نام خانوادگی</th>
+                      <th>پروفایل</th>
                       <th>نام کاربری</th>
                       <th>ایمیل</th>
                       <th>شماره تماس</th>
@@ -294,6 +381,12 @@ export default () => {
                             <p>{data.lastName}</p>
                           </td>
                           <td>
+                            <img
+                              src={"/uploads/users/" + data.userImage}
+                              width={120}
+                            />
+                          </td>
+                          <td>
                             <p>{data.name}</p>
                           </td>
                           <td>
@@ -309,12 +402,12 @@ export default () => {
                             <p>{data.address}</p>
                           </td>
                           <td>
-                            <p>{data.role}</p>
+                            <p>{roleFun(data.role)}</p>
                           </td>
 
                           <td className="text-center">{active}</td>
                           <td>
-                            <span>{data.createdAt}</span>
+                            <span>{moment(data.createdAt, 'YYYY/MM/DD').locale('fa').format('YYYY/MM/DD')}</span>
                           </td>
                           <td className="text-start">
                             <Dropdown align="end">

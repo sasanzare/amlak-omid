@@ -41,21 +41,6 @@ export default async function handler(
 //schema.definitions[table].properties[current]
 async function get(req, res) {
     let obj = await prisma.agency.findMany({
-        // where: {
-        //     name: { contains: req.query.name },
-        //     // isActive: { equals: req.query.isActive },
-        //     // status: { equals: req.query.status },
-
-        // },
-        // orderBy: [
-        //     {
-        //         createdAt: req.query.dateSort , //'desc',
-        //     },
-
-        //   ],
-
-     
-
         select: {
             id: true,
             name: true,
@@ -66,7 +51,7 @@ async function get(req, res) {
             createdAt: true,
             isActive: true,
             status: true,
-            RealEstate: true,
+            // RealEstate: true,
             agents: true,
             rate: true,
             owner: {
@@ -77,10 +62,18 @@ async function get(req, res) {
             },
             cityArea:{
                 select:{
-                    name: true
+                    name: true,
+                    _count: true,
                 }
-            }
+            },
+            RealEstate:{
+                select:{
+                    _count:true
+                }
+            },
+            
           },
+          
 
         // skip: 0,
         // take: 20,

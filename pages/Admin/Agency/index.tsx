@@ -15,6 +15,7 @@ import {
   faXmarkCircle,
 } from "@fortawesome/free-solid-svg-icons";
 import { getAgencyInfoApi } from '../../../api';
+import moment from 'jalali-moment'
 
 export default () => {
 
@@ -57,10 +58,9 @@ export default () => {
       .get(getAgencyInfoApi)
       .then((res) => {
         setAgencyList(res.data);
-        console.log(res.data);
+        
         if (res.status === 200) {
           setShowLoading(false);
-        
         }
       })
       .catch((err) => {
@@ -228,6 +228,7 @@ export default () => {
                   </thead>
                   <tbody>
                     {agencyList?.map((data,i) => {
+                      console.log(agencyList)
                                 let active = (
                                   <FontAwesomeIcon
                                     icon={faXmarkCircle}
@@ -268,15 +269,17 @@ export default () => {
                               {data.owner.firstName} {data.owner.lastName}
                             </p>
                           </td>
-                          {/* <td>{data.agents}</td>
-                          <td>{data.RealEstate}</td>
-                          <td>{data.rate}</td>
-                          <td>{data.phoneNumber}</td> */}
+                          <td>{data.cityArea.name}</td>
+                          <td>{data.agents.length}</td>
+                          <td>{data.RealEstate.length}</td>
                           <td className="text-center">{active}</td>
+                          <td>{data?.phoneNumber}</td>
+           
+                          
                           <td className="text-center">{status}</td>
                       
                           <td>
-                            <span>{data.createdAt}</span>
+                            <span>{moment(data.createdAt, 'YYYY/MM/DD').locale('fa').format('YYYY/MM/DD')}</span>
                           </td>
                           <td className="text-start">
                             <Dropdown align="end">

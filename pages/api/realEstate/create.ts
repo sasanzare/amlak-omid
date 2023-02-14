@@ -25,7 +25,6 @@ export default async function upsert(
     const user = await verify(req, String(env.JWT_SECRET));
     const estateId : string = String(fields.id) || '';
     delete fields.id;
-    console.log(typeof fields.isActive)
     const isActive = (fields.isActive === "true")? true : false;
     let obj = await prisma.realEstate.upsert({
         where: {

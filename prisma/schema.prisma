@@ -122,9 +122,9 @@ model agency {
   agencyImage       String?
   owner             user                    @relation(fields: [ownerId], references: [id],onDelete: NoAction, onUpdate: NoAction)
   ownerId           String
-  city              city           @relation(fields: [cityId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  city              city                    @relation(fields: [cityId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   cityId            String
-  cityArea          cityArea       @relation(fields: [cityAreaId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  cityArea          cityArea                @relation(fields: [cityAreaId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   cityAreaId        String
   agents            agentInterface[]
   rate              agencyRatingInterface[]
