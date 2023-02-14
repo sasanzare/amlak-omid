@@ -285,7 +285,7 @@ export default () => {
                     setUserImage(file);
                   }
                 }}
-                // value={userImage}
+      
                 multiple
                 accept="image/*"
                 type="file"

@@ -31,6 +31,7 @@ import {
   assignment,
   advertisingStatus,
 } from "../../../lib/enum-converter";
+import moment from 'jalali-moment'
 export default () => {
   const [editorState, setEditorState] = useState(() =>
     EditorState.createEmpty()
@@ -300,7 +301,7 @@ export default () => {
         show={modalShow}
         onCancel={() => closeDialoge()}
         func={upsert}
-        title="مقاله"
+        title="آگهی"
       >
         <Form dir="rtl" name="submitForm" id="submitForm">
           <Form.Group className="mb-3">
@@ -564,7 +565,7 @@ export default () => {
                             />
                           </td>
                           <td>
-                            <span>{data.createdAt}</span>
+                            <span>{moment(data.createdAt, 'YYYY/MM/DD').locale('fa').format('YYYY/MM/DD')}</span>
                           </td>
                           <td className="text-start">
                             <Dropdown align="end">

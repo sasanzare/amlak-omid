@@ -14,13 +14,19 @@ import {
   faCheckCircle,
   faXmarkCircle,
 } from "@fortawesome/free-solid-svg-icons";
-import { getAgencyInfoApi } from '../../../api';
+import { getAgencyInfoApi,  getRealEstateApi,
+  getCityApi,
+  getCityAreaByIdApi,
+   } from '../../../api';
+
 import moment from 'jalali-moment'
 
 export default () => {
 
   const { setShowLoading } = useContext(context);
   const [agencyList, setAgencyList] = useState([]);
+  const [cityList,setCityList] = useState([]);
+  const [cityAreaList,setCityAreaList] = useState([]);
   const [modalShow, setModalShow] = useState(false);
   const [title, setTitle] = useState("");
   const [name, setName] = useState("");
@@ -29,6 +35,7 @@ export default () => {
   const [agencyImage, setAgencyImage] = useState<File>();
   const [selectedImage, setSelectedImage] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
+  const [city, setCity] = useState("");
   const [cityArea, setCityArea] = useState("");
   const [latitude, setLatitude] = useState(0);
   const [longitude, setLongitude] = useState(0);
@@ -43,6 +50,7 @@ export default () => {
   const [isActiveOn, setIsActiveOn] = useState(false);
   const [switchStatus, setSwitchStatus] = useState(false);
 
+
   const onSwitchAction = () => {
     setIsActiveOn(!isActiveOn);
   };
@@ -51,6 +59,9 @@ export default () => {
     getAgencyInfo();
   }, []);
 
+  useEffect(() => {
+    getCityArea();
+  }, [city]);
 
   function getAgencyInfo() {
     setShowLoading(true);
@@ -59,6 +70,46 @@ export default () => {
       .then((res) => {
         setAgencyList(res.data);
         
+        if (res.status === 200) {
+          setShowLoading(false);
+        }
+      })
+      .catch((err) => {
+        if (err.response?.data) {
+          err?.response?.data?.errors?.map((issue) => toast.error(issue));
+        } else {
+          toast.error("مشکلی پیش آمده است !");
+        }
+        setShowLoading(false);
+      });
+  }
+
+  function getCity() {
+    setShowLoading(true);
+    axios
+      .get(getCityApi)
+      .then((res) => {
+        setCityList(res.data);
+        if (res.status === 200) {
+          setShowLoading(false);
+        }
+      })
+      .catch((err) => {
+        if (err.response?.data) {
+          err?.response?.data?.errors?.map((issue) => toast.error(issue));
+        } else {
+          toast.error("مشکلی پیش آمده است !");
+        }
+        setShowLoading(false);
+      });
+  }
+
+  function getCityArea() {
+    setShowLoading(true);
+    axios
+      .get(`${getCityAreaByIdApi}?cityId=${city}`)
+      .then((res) => {
+        setCityAreaList(res.data);
         if (res.status === 200) {
           setShowLoading(false);
         }
@@ -124,6 +175,12 @@ export default () => {
     }
     setModalShow(true);
   }
+
+  function createNewAd() {
+    getCity();
+    setModalShow(true);
+  }
+
   function closeDialoge() {
     reset();
     setModalShow(false);
@@ -136,7 +193,7 @@ export default () => {
            آژانس ها
           <button
             className="btn btn-success me-3 f-20 fw-bold"
-            onClick={() => openDialoge()}
+            onClick={() => createNewAd()}
           >
             +
           </button>
@@ -146,7 +203,7 @@ export default () => {
         show={modalShow}
         onCancel={() => closeDialoge()}
         func={upsert}
-        title="پیام"
+        title="آژانس"
       >
         <Form dir="rtl" name="submitForm" id="submitForm">
           <Form.Group className="mb-3" controlId="title">
@@ -171,31 +228,80 @@ export default () => {
               value={name}
             />
           </Form.Group>
-          <Form.Group className="mb-3" controlId="name">
-            <Form.Label>نام محله</Form.Label>
-            <Form.Control
-              onChange={(e) => setCityArea(e.target.value)}
-              value={name}
-            />
-          </Form.Group>
+          <Form.Group className="mb-3">
+            <Form.Label>شهر</Form.Label>
 
-          <Form.Group className="mb-3" >
-            <Form.Label>توضیحات</Form.Label>
-            <Form.Control
-              onChange={(e) => setDescription(e.target.value)}
-              value={description}
-              as="textarea"
-              rows={5}
-            />
+            <Form.Select onChange={(e) => setCity(e.target.value)} value={city}>
+            <option>---
+                  </option>
+              {cityList?.map((data, i) => {
+                return (
+                  <option key={data.id} value={data.id}>
+                    {data.name}
+                  </option>
+                );
+              })}
+            </Form.Select>
           </Form.Group>
 
           <Form.Group className="mb-3">
-            <Form.Label> ایمیل</Form.Label>
-            <Form.Control
-              onChange={(e) => setEmail(e.target.value)}
-              value={email}
-              type="email"
-            />
+            <Form.Label>محدوده</Form.Label>
+
+            <Form.Select onChange={(e) => setCityArea(e.target.value)} value={cityArea}>
+              <option>---</option>
+              {cityAreaList?.map((data, i) => {
+                return (
+                  <option key={data.id} value={data.id}>
+                    {data.name}
+                  </option>
+                );
+              })}
+            </Form.Select>
+          </Form.Group>
+
+
+
+          <Form.Group className="mb-3 text-center">
+            <p className="f-14 text-right">پروفایل</p>
+            <Form.Label className="w-50">
+              <Form.Control
+                onChange={({ target }) => {
+                  if (target.files) {
+                    const file = target.files[0];
+                    setSelectedImage(URL.createObjectURL(file));
+                    setUserImage(file);
+                  }
+                }}
+      
+                multiple
+                accept="image/*"
+                type="file"
+                hidden={true}
+              />
+
+              <div className="d-flex justify-content-center">
+                {!agencyImage?(
+                       selectedImage ? (
+                        <img src={selectedImage} value={selectedImage} width={200} />
+                      ) : (
+                        <div className="border border-rounded p-5 text-center">
+                          <span>آپلود عکس</span>
+                        </div>
+                      )
+                ):(
+                  selectedImage ? (
+                    <img src={selectedImage} value={selectedImage} width={200} />
+                    
+                  ) : (
+                    <img src={"/uploads/articles/" + userImage} value={selectedImage} width={200} />
+                  )
+                )
+                
+              }
+         
+              </div>
+            </Form.Label>
+          
           </Form.Group>
 
         </Form>
