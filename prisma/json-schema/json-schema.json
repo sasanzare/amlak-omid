@@ -377,6 +377,12 @@
         "description": {
           "type": "string"
         },
+        "address": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
         "roomCount": {
           "type": "string",
           "default": "one",

@@ -174,6 +174,26 @@ export default () => {
   }
   
 
+  // const uploadCallback = (file, callback) => {
+  //   console.log(file);
+  //   return new Promise((resolve, reject) => {
+  //     const reader = new window.FileReader();
+  //     console.log(reader);
+  //     reader.onloadend = async () => {
+  //       const form_data = new FormData();
+  //       form_data.append("file", file);
+  //       const res = await uploadFile(form_data);
+  //       setValue("thumbnail", res.data);
+  //       resolve({ data: { link: process.env.REACT_APP_API + res.data } });
+  //     };
+  //     reader.readAsDataURL(file);
+  //   });
+  // };
+
+  // const config = {
+  //   image: { uploadCallback: uploadCallback },
+  // };
+
   return (
     <AdminLayout>
       <div className="p-2 pt-5">
@@ -219,6 +239,7 @@ export default () => {
             <Editor
               editorState={editorState}
               onEditorStateChange={handleEditorChange}
+              // toolbar={config}
             />
           </Form.Group>
 

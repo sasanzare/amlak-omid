@@ -166,6 +166,7 @@ model realEstate {
   name           String
   phoneNumber    String
   description    String
+  address        String?
   roomCount      roomCount      @default(one)
   meter          meter          @default(m10)
   estateImage    String?

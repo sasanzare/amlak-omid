@@ -5,7 +5,7 @@ import SugessBox from '../../blocks/sugess/SugessBox';
 import PaginationPage from '../../components/PaginationPage';
 import { toast } from 'react-toastify';
 // import axios from 'axios';
-import { PropertiesApi, STATICS } from "../../api";
+import { PropertiesApi, STATICS,searchRealEstateApi } from "../../api";
 import { context } from '../../context/index';
 // import ReactPaginate from 'react-paginate';
 import { useRouter } from 'next/router'
@@ -22,9 +22,36 @@ const Buy = (props: any) => {
   const [pageCount, setPageCount] = useState(10);
   const { setShowLoading } = useContext(context);
   const [properties, setProperties] = useState([]);
+
+
   useEffect(() => {
     fetchData({ selected: router.query.pageNumber })
   }, []);
+
+
+  function getRealEstate() {
+    setShowLoading(true);
+    axios
+      .get(getRealEstateApi)
+      .then((res) => {
+        setRealEstateList(res.data);
+        if (res.status === 200) {
+          setShowLoading(false);
+        }
+      })
+      .catch((err) => {
+        if (err.response?.data) {
+          err?.response?.data?.errors?.map((issue) => toast.error(issue));
+        } else {
+          toast.error("مشکلی پیش آمده است !");
+        }
+        setShowLoading(false);
+      });
+  }
+
+
+
+
 
   // Invoke when user click to request another page.
   const fetchData = (event: any) => {
@@ -32,9 +59,11 @@ const Buy = (props: any) => {
     router.query.pageNumber = event.selected || 1;
     Object.keys(router.query).forEach((e) => {
       searchQuery.push(`${e}=${router.query[e]}`);
+      // console.log(`${e}=${router.query[e]}`)
     })
+    console.log(searchQuery)
     setShowLoading(true);
-    console.log(PropertiesApi + `/search?${searchQuery.join('&')}`);
+    // console.log(PropertiesApi + `/search?${searchQuery.join('&')}`);
     fetch(PropertiesApi + `/search?${searchQuery.join('&')}`).then((res) => {
       // setProperties(res.data.properties)
       if (res.status === 200) {
