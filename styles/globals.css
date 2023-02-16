@@ -219,6 +219,9 @@ p {
 .w-100 {
   width: 100% !important;
 }
+.vh-80{
+  height: 80vh;
+}
 
 .lh-xl {
   line-height: 2.5 !important;
