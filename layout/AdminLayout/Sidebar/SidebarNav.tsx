@@ -168,28 +168,6 @@ export default function SidebarNav() {
            کاربرها 
         </SidebarNavItem>
       </SidebarNavGroup>
-
-      <SidebarNavGroup toggleIcon={faNewspaper} toggleText="مقاله ها">
-        <SidebarNavItem href="/Admin/Articles/New">
-          اضافه کردن مقاله
-          <small className="me-auto">
-            <Badge bg="danger">+</Badge>
-          </small>
-        </SidebarNavItem>
-        <SidebarNavItem href="/Admin/Articles">
-          مقاله‌ها
-        </SidebarNavItem>
-      </SidebarNavGroup>
-      <SidebarNavGroup toggleIcon={faQuestionCircle} toggleText="سوالات متداول">
-        <SidebarNavItem href="/Admin/Faq">
-          سوالات
-        </SidebarNavItem>
-      </SidebarNavGroup>
-      <SidebarNavGroup toggleIcon={faMessage} toggleText="ارتباط‌باما">
-        <SidebarNavItem href="/Admin/Contact">
-          فرم ارتباط‌‌باما
-        </SidebarNavItem>
-      </SidebarNavGroup>
       <SidebarNavGroup toggleIcon={faCalculator} toggleText="املاک‌">
         <SidebarNavItem href="/Admin/Agency">
           آژانس‌های املاک 
@@ -200,6 +178,30 @@ export default function SidebarNav() {
           آگهی ها
         </SidebarNavItem>
       </SidebarNavGroup>
+
+      <SidebarNavGroup toggleIcon={faNewspaper} toggleText="مقاله ها">
+        {/* <SidebarNavItem href="/Admin/Articles/New">
+          اضافه کردن مقاله
+          <small className="me-auto">
+            <Badge bg="danger">+</Badge>
+          </small>
+        </SidebarNavItem> */}
+        <SidebarNavItem href="/Admin/Articles">
+          مقاله‌ها
+        </SidebarNavItem>
+      </SidebarNavGroup>
+    
+      <SidebarNavGroup toggleIcon={faMessage} toggleText="ارتباط‌باما">
+        <SidebarNavItem href="/Admin/Contact">
+          فرم ارتباط‌‌باما
+        </SidebarNavItem>
+      </SidebarNavGroup>
+     <SidebarNavGroup toggleIcon={faQuestionCircle} toggleText="سوالات متداول">
+        <SidebarNavItem href="/Admin/Faq">
+          سوالات
+        </SidebarNavItem>
+      </SidebarNavGroup>
+    
       <SidebarNavGroup toggleIcon={faEarth} toggleText="شهر ها">
         <SidebarNavItem href="/Admin/City">
            شهر

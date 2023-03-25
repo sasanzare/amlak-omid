@@ -20,22 +20,23 @@ const SignIn = () => {
                         activeKey={key}
                         onSelect={(k) => setKey(k)}
                         className="mb-3"
-                    > */}
-                        {/* <Tab eventKey="home" title="ثبت نام کاربر"> */}
+                    >
+                        <Tab eventKey="home" title="ثبت نام کاربر"> */}
                             <Login />
-                        {/* </Tab> */}
+                        {/* </Tab>
 
-                        {/* <Tab eventKey="moshaverAmlak" title="ثبت نام مشاور املاک">
+                        <Tab eventKey="moshaverAmlak" title="ثبت نام مشاور املاک">
                             <AdvisorRegistration />
                         </Tab>
 
                         <Tab eventKey="amlak" title="ثبت نام املاکی">
                             <RealStateRegistration />
-                        </Tab> */}
+                        </Tab> 
 
-                    {/* </Tabs> */}
+                    </Tabs> */}
                 </Col>
             </Row>
+            
         </Container>
 
 

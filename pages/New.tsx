@@ -12,7 +12,7 @@ function News() {
     let userData = localStorage.getItem('userData');
 
     if (!userData) {
-      navigate.push('/signin?source=news')
+      navigate.push('/signin?goTo=/New')
     }
   }, [])
   return (

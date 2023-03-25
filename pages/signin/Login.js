@@ -4,11 +4,11 @@ import styles from "./SignIn.module.css";
 import React, { useState, useContext } from "react";
 import axios from "axios";
 import { PhoneNamberApi } from "../../api";
-import { toast } from "react-toastify";
+import { toast,ToastContainer } from "react-toastify";
 import { context } from "../../context";
 import { authenticationApi } from "../../api/index";
 import { useRouter } from "next/router";
-import Link from "next/link";
+import LoginTypes from "../../components/LoginTypes"
 
 const Login = () => {
   axios.delete;
@@ -50,6 +50,7 @@ const Login = () => {
       if (res.status === 200) {
         // localStorage.setItem('token',res.data.token);
         router.push(`/${source}`);
+   
         localStorage.setItem("userData", JSON.stringify(res.data));
         // toast.success(res.data.message);
         // console.log(res.data)
@@ -66,17 +67,7 @@ const Login = () => {
   };
   return (
     <>
-      <div className="d-flex justify-content-between align-items-center flex-md-row flex-column col-lg-9 col-12 mx-auto">
-        <Link href="/signin?goTo=/">
-          <a className="btn btn-es col-lg-3 col-md-3 col-sm-5 col-6 ms-2 mt-3">ثبت نام کاربر</a>
-        </Link>
-        <Link href="/signin?goTo=/profile/agency">
-          <a className="btn btn-es col-lg-3 col-md-3 col-sm-5 col-6  ms-2 mt-3">ثبت نام املاک</a>
-        </Link>
-        <Link href="/signin?goTo=/profile/agent">
-          <a className="btn btn-es col-lg-3 col-md-3 col-sm-5 col-6 mt-3"> دعوت به همکاری</a>
-        </Link>
-      </div>
+      <LoginTypes />
       <div className="shadow-sm rounded-3   px-3 mt-3  text-center title-text border">
         <Title title="ورود" classes="" />
         <Row className="flex-column">
@@ -109,6 +100,7 @@ const Login = () => {
             </button>
           </Form>
         </Row>
+        <ToastContainer position="top-left" rtl={true} theme="colored" />
       </div>
     </>
   );

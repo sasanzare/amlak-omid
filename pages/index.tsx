@@ -191,7 +191,7 @@ function Home() {
             btn="ثبت‌نام مشاور"
           />
         </Col>
-        <Title title="مجله املاک ساسان" />
+        <Title title="مجله املاک امیپ" />
 
         {articleList?.map((card) => (
           <ArticleCards
@@ -204,7 +204,7 @@ function Home() {
           />
         ))}
       </Row>
-      <ToastContainer />
+      <ToastContainer position="top-left" rtl={true} theme="colored" />
     </Container>
   );
 }

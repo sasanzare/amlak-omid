@@ -110,3 +110,17 @@ export function property(data){
     }
     return outPut;
   }
+  export function requestStatus(data){
+    let outPut;
+    switch(data) {
+      case "accepted":
+        outPut = "تاییده شده"
+        break;
+      case "denied":
+        outPut = "رد شده"
+        break;
+      default:
+        outPut = "در حال بررسی"
+    }
+    return outPut;
+  }

@@ -81,16 +81,16 @@ function Contact() {
             <ListGroup className='List border-0 mt-3'>
               <ListGroup.Item className='border-0 bg-transparent px-0 d-flex pb-3'>
                 <FontAwesomeIcon className='text-es h3' icon={faMobileAlt} />
-                <a href='tel:09059048626' className='me-3 mt-2 h5 text-decoration-none text-secondary ' >0905-904-8626</a>
-                <a href='#' className='me-3 mt-2 h5 text-decoration-none text-secondary ' >0905-000-1212</a>
+                <a href='tel:09059048626' className='me-3 mt-2 h5 text-decoration-none text-secondary ' >0000--</a>
+                <a href='#' className='me-3 mt-2 h5 text-decoration-none text-secondary ' >0905-000-000</a>
               </ListGroup.Item>
               <ListGroup.Item className='border-0 bg-transparent px-0 d-flex pb-3'>
                 <FontAwesomeIcon className='text-es h3' icon={faMapMarkerAlt} />
-                <span className='me-3 mt-2 h5 text-secondary '>شیراز میدان نمازی کتابخانه خوارزمی</span>
+                <span className='me-3 mt-2 h5 text-secondary '>شیه </span>
               </ListGroup.Item>
               <ListGroup.Item className='border-0 bg-transparent px-0 d-flex pb-3'>
                 <FontAwesomeIcon className='text-es h3' icon={faInstagram} />
-                <a href='https://www.instagram.com/_sasan_zare' className='me-3 mt-2 h5 text-decoration-none text-secondary ' target="_blank">sasan_zare_@</a>
+                <a href='' className='me-3 mt-2 h5 text-decoration-none text-secondary ' target="_blank">@</a>
               </ListGroup.Item>
             </ListGroup>
           </Col>

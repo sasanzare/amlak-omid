@@ -17,8 +17,14 @@ import {
 import { getAgencyInfoApi,  getRealEstateApi,
   getCityApi,
   getCityAreaByIdApi,
+  getAgencyOwnerApi,
+  creatAagencyApi,
+  removeAagencyApi
    } from '../../../api';
 
+   import {
+    requestStatus,
+  } from "../../../lib/enum-converter";
 import moment from 'jalali-moment'
 
 export default () => {
@@ -27,11 +33,10 @@ export default () => {
   const [agencyList, setAgencyList] = useState([]);
   const [cityList,setCityList] = useState([]);
   const [cityAreaList,setCityAreaList] = useState([]);
+  const [agencyOwnerList,setAgencyOwnerList] = useState([]);
   const [modalShow, setModalShow] = useState(false);
-  const [title, setTitle] = useState("");
   const [name, setName] = useState("");
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
+ 
   const [agencyImage, setAgencyImage] = useState<File>();
   const [selectedImage, setSelectedImage] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
@@ -39,16 +44,14 @@ export default () => {
   const [cityArea, setCityArea] = useState("");
   const [latitude, setLatitude] = useState(0);
   const [longitude, setLongitude] = useState(0);
-  const [realEstate, setRealEstate] = useState(0);
-  const [agents, setAgents] = useState(0);
   const [rate, setRate] = useState(0);
   const [description, setDescription] = useState("");
   const [email, setEmail] = useState("");
-  const [status, setStatus] = useState(0);
+  const [ownerId, setOwnerId] = useState("");
+  const [status, setStatus] = useState("pending");
   const [isActive, setIsActive] = useState(0);
-  const [idForm, setIdForm] = useState(0);
+  const [idAg, setIdAg] = useState("");
   const [isActiveOn, setIsActiveOn] = useState(false);
-  const [switchStatus, setSwitchStatus] = useState(false);
 
 
   const onSwitchAction = () => {
@@ -69,6 +72,26 @@ export default () => {
       .get(getAgencyInfoApi)
       .then((res) => {
         setAgencyList(res.data);
+        
+        if (res.status === 200) {
+          setShowLoading(false);
+        }
+      })
+      .catch((err) => {
+        if (err.response?.data) {
+          err?.response?.data?.errors?.map((issue) => toast.error(issue));
+        } else {
+          toast.error("مشکلی پیش آمده است !");
+        }
+        setShowLoading(false);
+      });
+  }
+  function getAgencyOwner() {
+    setShowLoading(true);
+    axios
+      .get(getAgencyOwnerApi)
+      .then((res) => {
+        setAgencyOwnerList(res.data);
         
         if (res.status === 200) {
           setShowLoading(false);
@@ -125,24 +148,57 @@ export default () => {
   }
 
   function remove(data) {
-    axios.delete("/api/contactForm/remove?id=" + data.id).then((res) => {
+    axios.delete(removeAagencyApi+"?id=" + data.id).then((res) => {
       getAgencyInfo();
     });
   }
 
   function upsert() {
+    if (name == "") {
+      return toast.error("لطفا نام آژانس را وارد کنید!");
+    }
+    if (ownerId == "") {
+      return toast.error("لطفا نام مدیر را انتخاب کنید!");
+    }
+    if (city == "") {
+      return toast.error("لطفا شهر را انتخاب کنید!");
+    }
+    if (cityArea == "") {
+      return toast.error("لطفا محله را انتخاب کنید!");
+    }
+    if (phoneNumber == "") {
+      return toast.error("شماره تماس را وارد کنید!");
+    }
+    if (phoneNumber.length != 11) {
+      return toast.error("لطفا شماره صحیح را وارد کنید!");
+    }
+    if (selectedImage == "") {
+      return toast.error(" تصویر مقاله را انتخاب کنید!");
+    }
     let object = {
-      title,
       name,
-      email,
+      ownerId: ownerId,
+      cityId:city,
+      cityAreaId:cityArea,
+      phoneNumber,
+      media: agencyImage,
+      status,
+      isActive : isActiveOn
   
 
     };
-    if (idForm != 0) {
-      object = { ...object, id: idForm };
+    if (idAg != 0) {
+      object = { ...object, id: idAg };
     }
     axios
-      .post("/api/contactForm/post", object)
+      .post(creatAagencyApi, object, {
+        headers: {
+          Authorization: `${
+            JSON.parse(localStorage.getItem("userData")).token
+          }`,
+          "Content-Type": "multipart/form-data",
+        },
+      })
       .then((res) => {
         setModalShow(false);
         getAgencyInfo();
@@ -158,25 +214,38 @@ export default () => {
   }
 
   function reset() {
-    setTitle("");
     setName("");
-    setEmail("");
-    setIdForm(0);
+    setOwnerId("");
+    // setAgencyImage<File>();
+    setCity("");
+    setCityArea("");
+    setIdAg("");
+    setPhoneNumber("");
+    setIsActiveOn(false);
+    setStatus("pending");
   }
 
 
 
   function openDialoge(obj) {
     if (obj) {
-      setTitle(obj.title);
+      getAgencyOwner() 
+      getCityArea()
+      getCity()
       setName(obj.name);
-      setEmail(obj.email);
-      setIdForm(obj.id);
+      setPhoneNumber(obj.phoneNumber);
+      // setOwnerId(obj.owner.firstName+""+obj.owner.lastName);
+      // setCityArea(obj.cityArea.name);
+      // setCity(obj.cityArea.name);
+      setIsActiveOn(obj.isActive);
+      setIdAg(obj.id);
+      setStatus(obj.status)
     }
     setModalShow(true);
   }
 
   function createNewAd() {
+    getAgencyOwner();
     getCity();
     setModalShow(true);
   }
@@ -205,29 +274,31 @@ export default () => {
         func={upsert}
         title="آژانس"
       >
-        <Form dir="rtl" name="submitForm" id="submitForm">
-          <Form.Group className="mb-3" controlId="title">
+        <Form dir="rtl" name="submitForm" >
+          <Form.Group className="mb-3">
             <Form.Label>نام آژانس</Form.Label>
             <Form.Control
-              onChange={(e) => setٔName(e.target.value)}
-              value={title}
+              onChange={(e) => setName(e.target.value)}
+              value={name}
             />
           </Form.Group>
+          <Form.Group className="mb-3">
+            <Form.Label>نام و نام خانوادگی مدیر آژانس</Form.Label>
 
-          <Form.Group className="mb-3" controlId="name">
-            <Form.Label>نام مدیر</Form.Label>
-            <Form.Control
-              onChange={(e) => setFirstName(e.target.value)}
-              value={name}
-            />
+            <Form.Select onChange={(e) => setOwnerId(e.target.value)} value={ownerId}>
+            <option>---
+                  </option>
+              {agencyOwnerList?.map((data, i) => {
+                return (
+                  <option key={data.id} value={data.id}>
+                    {data.firstName + " " + data.lastName}
+              
+                  </option>
+                );
+              })}
+            </Form.Select>
           </Form.Group>
-          <Form.Group className="mb-3" controlId="name">
-            <Form.Label>نام‌خانوادگی مدیر</Form.Label>
-            <Form.Control
-              onChange={(e) => setLastName(e.target.value)}
-              value={name}
-            />
-          </Form.Group>
+  
           <Form.Group className="mb-3">
             <Form.Label>شهر</Form.Label>
 
@@ -259,7 +330,37 @@ export default () => {
             </Form.Select>
           </Form.Group>
 
+          <Form.Group className="mb-3" controlId="title">
+            <Form.Label>شماره تماس</Form.Label>
+            <Form.Control
+              onChange={(e) => setPhoneNumber(e.target.value)}
+              value={phoneNumber}
+              type="number"
+            />
+          </Form.Group>
+          <Form.Group className="mb-3">
+            <Form.Label>وضعیت</Form.Label>
 
+            <Form.Select onChange={(e) => setStatus(e.target.value)} value={status}>
+                  <option  value="pending"> در حال بررسی</option>
+                  <option  value="denied">رد شده</option>
+                  <option  value="accepted">تایید شده</option>
+                    
+              
+             
+             
+            </Form.Select>
+          </Form.Group>
+
+          <Form.Group className="mb-3" controlId="status">
+          <Form.Check
+            className="d-flex flex-column-reverse"
+            type="switch"
+            onChange={onSwitchAction}
+            checked={isActiveOn}
+            label="وضعیت"
+          />
+        </Form.Group>
 
           <Form.Group className="mb-3 text-center">
             <p className="f-14 text-right">پروفایل</p>
@@ -269,7 +370,7 @@ export default () => {
                   if (target.files) {
                     const file = target.files[0];
                     setSelectedImage(URL.createObjectURL(file));
-                    setUserImage(file);
+                    setAgencyImage(file);
                   }
                 }}
       
@@ -323,18 +424,19 @@ export default () => {
                       <th>محله</th>
                       <th>تعداد کارشناس</th>
                       <th>تعداد املاک</th>
-                      <th>امیتاز</th>
+                      {/* <th>امیتاز</th> */}
                       <th>شماره تماس</th>
-                      <th>نقشه</th>
-                      <th>زمان ایجاد</th>
+                      {/* <th>نقشه</th> */}
+                     
                       <th className="text-center">وضعیت</th>
                       <th>احراز هویت</th>
+                      <th>زمان ایجاد</th>
                       <th className="text-start ps-3">اقدامات</th>
                     </tr>
                   </thead>
                   <tbody>
                     {agencyList?.map((data,i) => {
-                      console.log(agencyList)
+                 
                                 let active = (
                                   <FontAwesomeIcon
                                     icon={faXmarkCircle}
@@ -342,9 +444,9 @@ export default () => {
                                     fixedWidth
                                   />
                                 );
-                                let status = active;
+                          
           
-                                if (data.status == true)
+                                if (data.isActive == true)
                                   active = (
                                     <FontAwesomeIcon
                                       icon={faCheckCircle}
@@ -352,14 +454,7 @@ export default () => {
                                       fixedWidth
                                     />
                                   );
-                                if (data.isActive == true)
-                                status = (
-                                    <FontAwesomeIcon
-                                      icon={faCheckCircle}
-                                      className="text-success"
-                                      fixedWidth
-                                    />
-                                  );
+                        
                       return (
                         <tr key={data.id} className="align-middle">
                           <td className="d-none">{data.id}</td>
@@ -367,7 +462,7 @@ export default () => {
                           <td className="text-center">{++i}</td>
                           <td>{data.name}</td>
                           <td>
-                            <img src={"/uploads/articles/" +  data.agencyImage} />
+                            <img src={"/uploads/agency/" +  data.agencyImage}  width={120} />
                           </td>
                  
                           <td>
@@ -378,12 +473,12 @@ export default () => {
                           <td>{data.cityArea.name}</td>
                           <td>{data.agents.length}</td>
                           <td>{data.RealEstate.length}</td>
-                          <td className="text-center">{active}</td>
+                        
                           <td>{data?.phoneNumber}</td>
            
-                          
-                          <td className="text-center">{status}</td>
-                      
+                       
+                          <td className="text-center">{requestStatus(data.status)}</td>
+                          <td className="text-center">{active}</td>
                           <td>
                             <span>{moment(data.createdAt, 'YYYY/MM/DD').locale('fa').format('YYYY/MM/DD')}</span>
                           </td>

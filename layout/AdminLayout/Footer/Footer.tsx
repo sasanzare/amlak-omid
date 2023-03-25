@@ -10,16 +10,7 @@ export default () => {
           </a>
         </Link>
       </div>
-      <div className="ms-md-auto">
-        Powered by&nbsp;
-        <a
-          className="text-decoration-none text-warning"
-          href="https://sasanzare.ir"
-          target="_blank"
-        >
-          Sasan Zare
-        </a>
-      </div>
+    
     </footer>
   );
 };

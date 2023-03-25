@@ -8,6 +8,7 @@ import { ToastContainer, toast } from "react-toastify";
 import { context } from "../../context/index";
 import { useForm } from "react-hook-form";
 import { RealStateRegistrationApi } from "../../api/index";
+import LoginTypes from "../../components/LoginTypes";
 
 export default function RealStateRegistration() {
   ///context
@@ -65,15 +66,13 @@ export default function RealStateRegistration() {
   }
 
   return (
-    <Container className="pt-5 mt-4">
-      <Row>
-        <Col
-          xl={8}
-          lg={9}
-          xs={11}
-          className="shadow-sm mx-auto rounded-3 pb-3 px-3 mt-5  text-center"
-        >
-          <Title title="ثبت نام مشاور املاک" />
+    <Container className="pt-5 mt-5 pb-4">
+    <Row className="justify-content-center">
+        <Col sm={12} md={9}>
+         
+                    <LoginTypes />
+                    <div className="shadow-sm rounded-3   px-3 mt-3  text-center title-text border">
+                    <Title title="ثبت نام مشاور املاک" />
           <p className="text-secondary col-xl-8 col-md-9 col-sm-10 col-9 mx-auto py-4 f-14">
             این در حالت صاحب مشاور املاک می تواند بدون محدودیت آگهی عادی و فروش
             ویژه اضافه کند هزینه دریافت اکانت مشاور ماهیانه دویست و پنجاه هزار
@@ -81,7 +80,7 @@ export default function RealStateRegistration() {
           </p>
           <Col xl={8} md={9} xs={10} className="mx-auto">
             <Form onSubmit={handleSubmit(BtnHandeller)} className="row">
-              <Form.Group className="col-sm-6 col-11 mx-auto mb-3 ps-sm-2">
+              <Form.Group className="col-lg-6  col-11 mx-auto mb-4">
                 <Form.Control
                   className=" shadow-es py-2 border-0 rounded-3 "
                   type="text"
@@ -96,7 +95,7 @@ export default function RealStateRegistration() {
                 </Form.Text>
               </Form.Group>
 
-              <Form.Group className="col-sm-6 col-11 mx-auto mb-3 pe-sm-2">
+              <Form.Group className="col-lg-6  col-11 mx-auto mb-4">
                 <Form.Control
                   className=" shadow-es py-2 border-0 rounded-3"
                   type="text"
@@ -111,7 +110,7 @@ export default function RealStateRegistration() {
                 </Form.Text>
               </Form.Group>
 
-              <Form.Group className="col-sm-6 col-11 mx-auto mb-3 ps-sm-2">
+              <Form.Group className="col-lg-6  col-11 mx-auto mb-4">
                 <Form.Control
                   className=" shadow-es py-2 border-0 rounded-3"
                   type="tel"
@@ -126,7 +125,7 @@ export default function RealStateRegistration() {
                 </Form.Text>
               </Form.Group>
 
-              <Form.Group className="col-sm-6 col-11 mx-auto mb-3 pe-sm-2">
+              <Form.Group className="col-lg-6  col-11 mx-auto mb-4">
                 <Form.Control
                   className=" shadow-es py-2 border-0 rounded-3"
                   type="tel"
@@ -140,7 +139,7 @@ export default function RealStateRegistration() {
                   {errors?.id?.message}
                 </Form.Text>
               </Form.Group>
-              <Form.Group className="col-sm-6 col-11 mx-auto mb-3 ps-sm-2">
+              <Form.Group className="col-lg-6  col-11 mx-auto mb-4">
                 <Form.Control
                   className=" shadow-es py-2 border-0 rounded-3"
                   type="text"
@@ -154,7 +153,7 @@ export default function RealStateRegistration() {
                   {errors?.id?.message}
                 </Form.Text>
               </Form.Group>
-              <Form.Group className="col-sm-6 col-11 mx-auto mb-3 pe-sm-2">
+              <Form.Group className="col-lg-6  col-11 mx-auto mb-4">
                 <Form.Control
                   className=" shadow-es py-2 border-0 rounded-3"
                   type="text"
@@ -169,10 +168,10 @@ export default function RealStateRegistration() {
                 </Form.Text>
               </Form.Group>
 
-              <Form.Group className="col-sm-12 col-11 mx-auto mb-3 ">
+              <Form.Group className="col-lg-12  col-11 mx-auto mb-4">
                 <Form.Control
                   className=" shadow-es py-2 border-0 rounded-3"
-                  type="text"
+                  as="textarea" rows={3}
                   placeholder="آدرس"
                   {...register("address", {
                     required: "آدرس وارد نشده است",
@@ -221,8 +220,14 @@ export default function RealStateRegistration() {
               </button>
             </Form>
           </Col>
+         
+                    </div>
+                 
         </Col>
-      </Row>
-    </Container>
+    </Row>
+    
+</Container>
+
+  
   );
 }
