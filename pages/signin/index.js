@@ -12,9 +12,10 @@ const SignIn = () => {
     const [key, setKey] = useState('home');
 
     return (
-        <Container className="pt-5 mt-5 pb-4">
-            <Row className="justify-content-center">
-                <Col sm={12} md={9}>
+        <div className="vh-100 d-flex align-items-center justify-content-center">
+                 <Container >
+            <Row >
+                <Col sm={12} md={9} className="mx-auto">
                     {/* <Tabs
                         id="controlled-tab-example"
                         activeKey={key}
@@ -38,6 +39,8 @@ const SignIn = () => {
             </Row>
             
         </Container>
+        </div>
+       
 
 
 

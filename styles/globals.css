@@ -378,3 +378,14 @@ a:hover {
 }
 
 
+.dashmain {
+  margin-top: -155px;
+}
+
+.h-150{
+  height: 150px;
+}
+
+.border-upload{
+  border: dashed 2px #92929240;
+}

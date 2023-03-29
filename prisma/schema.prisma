@@ -71,29 +71,31 @@ model tempUser {
 }
 
 model user {
-  id           String                  @id @unique @default(cuid())
-  firstName    String?
-  lastName     String?
-  name         String?
-  email        String?
-  phoneNumber  String                  @unique
-  nationalCode Int?
-  address      String?
-  userImage    String?
-  lastLogin    DateTime                @default(now())
-  role         role                    @default(normal)
-  agency       agency[]
-  agentOf      agentInterface[]
-  agencyRate   agencyRatingInterface[]
-  createdAt    DateTime                @default(now())
-  updatedAt    DateTime                @default(now()) @updatedAt
-  isActive     Boolean                 @default(true)
-  realEstate   realEstate[]
+  id              String                  @id @unique @default(cuid())
+  firstName       String?
+  lastName        String?
+  name            String?
+  email           String?
+  phoneNumber     String                  @unique
+  nationalCode    String? 
+  postalCode      String?
+  address         String?
+  userImage       String?
+  nationalImage   String?
+  lastLogin       DateTime                @default(now())
+  role            role                    @default(normal)
+  agency          agency[]
+  agentOf         agentInterface[]
+  agencyRate      agencyRatingInterface[]
+  createdAt       DateTime                @default(now())
+  updatedAt       DateTime                @default(now()) @updatedAt
+  isActive        Boolean                 @default(true)
+  realEstate      realEstate[]
   // AgencyRequest agencyRequest[]
-  article      article[]
-  note         note[]
-  save         save[]
-  report       report[]
+  article         article[]
+  note            note[]
+  save            save[]
+  report          report[]
 }
 
 model agencyRatingInterface {

@@ -8,7 +8,6 @@ import { toast,ToastContainer } from "react-toastify";
 import { context } from "../../context";
 import { authenticationApi } from "../../api/index";
 import { useRouter } from "next/router";
-import LoginTypes from "../../components/LoginTypes"
 
 const Login = () => {
   axios.delete;
@@ -66,8 +65,7 @@ const Login = () => {
     }
   };
   return (
-    <>
-      <LoginTypes />
+ 
       <div className="shadow-sm rounded-3   px-3 mt-3  text-center title-text border">
         <Title title="ورود" classes="" />
         <Row className="flex-column">
@@ -102,7 +100,7 @@ const Login = () => {
         </Row>
         <ToastContainer position="top-left" rtl={true} theme="colored" />
       </div>
-    </>
+  
   );
 };
 
