@@ -1,4 +1,3 @@
-import styles from "./Dashboard.module.css";
 import { Container, Row, Col, Nav, Tab, Table } from "react-bootstrap";
 import Link from "next/link";
 import SideBar from "../../blocks/sidebar";
@@ -7,6 +6,7 @@ import Estate from "../../components/Estate";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPencil } from "@fortawesome/free-solid-svg-icons";
 import ExpertCard from "../../components/ExpertCard";
+import LoginTypes from "../../components/LoginTypes";
 
 export default function Dashboard() {
   const suggested = [
@@ -73,8 +73,8 @@ export default function Dashboard() {
     <div className="About mt-5">
       <BgTop img="/img/userpanel/Group-209.jpg" />
       <Container>
-        <Tab.Container id="left-tabs-example" defaultActiveKey="advertisements">
-          <Row className={styles.dashmain + " pb-4"}>
+        <Tab.Container id="left-tabs-example" defaultActiveKey="register">
+          <Row className="dashmain pb-4">
             <Col
               lg={3}
               md={4}
@@ -100,8 +100,22 @@ export default function Dashboard() {
                       className="px-1 pt-3 mx-auto"
                     >
                       <Nav.Link
+                        eventKey="register"
+                        className="btn btn-border w-100 f-14 "
+                      >
+                          ثبت نام
+                      </Nav.Link>
+                    </Col>
+                    <Col
+                      xl={10}
+                      md={12}
+                      sm={6}
+                      xs={9}
+                      className="px-1 pt-3 mx-auto"
+                    >
+                      <Nav.Link
                         eventKey="advertisements"
-                        className="btn btn-es w-100 f-14 "
+                        className="btn btn-border w-100 f-14 "
                       >
                         آگهی های من
                       </Nav.Link>
@@ -228,6 +242,9 @@ export default function Dashboard() {
                   className="text-center shadow-sm rounded-4 pb-4 pt-3  px-4 bg-white"
                 >
                   <Tab.Content>
+                  <Tab.Pane eventKey="register">
+                  <LoginTypes />
+                  </Tab.Pane>
                     <Tab.Pane eventKey="advertisements">
                       <Row>
                         {suggested.map((suggest, index) => (
@@ -248,6 +265,7 @@ export default function Dashboard() {
                       </Row>
                     </Tab.Pane>
                     <Tab.Pane eventKey="note">note</Tab.Pane>
+                    
 
                     <Tab.Pane eventKey="transactions">
                       <Table borderless hover className="text-end">

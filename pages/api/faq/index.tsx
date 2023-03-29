@@ -1,7 +1,17 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-
 import prisma from "../../../lib/prisma";
-const jwt = require("jsonwebtoken");
+import initMiddleware from '../../../lib/init-middleware';
+import validateMiddleware from '../../../lib/validate-middleware';
+import { check, validationResult } from 'express-validator';
+
+const validateBody = initMiddleware(
+  validateMiddleware([
+    check('question').isString().notEmpty(),
+    check('answer').isString().notEmpty(),
+    check('status').isBoolean().optional()
+  ], validationResult)
+)
+
 
 export default async function handler(
   req: NextApiRequest,
@@ -10,6 +20,11 @@ export default async function handler(
   if (req.method === "GET") {
     get(req, res);
   } else if (req.method === "POST") {
+    await validateBody(req, res)
+    const errors = validationResult(req)
+    if (!errors.isEmpty()) {
+      return res.status(422).json({ errors: errors.array() })
+    }
     upsert(req, res);
   } else if (req.method === "DELETE") {
     remove(req, res);
@@ -21,17 +36,8 @@ export default async function handler(
 }
 
 async function get(req, res) {
-  let result;
-  if (req.query.id) {
-    result = await prisma.faq.findUnique({
-      where: {
-        id: parseInt(req.query.id),
-      },
-    });
-  } else {
-    result = await prisma.faq.findMany({});
-  }
-  res.status(200).json(result);
+  let obj = await prisma.faq.findMany();
+  res.status(200).json(obj);
 }
 
 async function upsert(req, res) {

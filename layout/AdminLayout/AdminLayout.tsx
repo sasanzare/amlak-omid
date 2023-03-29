@@ -7,8 +7,20 @@ import Sidebar, { SidebarOverlay } from './Sidebar/Sidebar'
 import Header from './Header/Header'
 import Footer from './Footer/Footer'
 import { Container } from 'react-bootstrap'
+import { useRouter } from "next/router";
 
 export default function AdminLayout({ children }: PropsWithChildren) {
+
+
+  const navigate = useRouter();
+  useEffect(() => {
+    let userData = localStorage.getItem('userData');
+    if (!userData) {
+      navigate.push('/Admin/login?goTo=/Admin')
+    }
+  }, []);
+
+
   // Show status for xs screen
   const [isShowSidebar, setIsShowSidebar] = useState(false)
 
@@ -43,10 +55,11 @@ export default function AdminLayout({ children }: PropsWithChildren) {
     }
   }, [setIsShowSidebarMd])
 
+
   return (
     <>
       <Head>
-        <title>داشتبرد‌ | مقاله‌‌‌‌‌ها</title>
+        <title> املاک امید | داشتبرد‌</title>
         <meta name="description" content="داشتبرد املاک امید" />
         <link rel="icon" href="/favicon.ico" />
         <link rel="stylesheet" href="/admin/css/style.css"/>

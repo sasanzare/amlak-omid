@@ -24,6 +24,11 @@ async function get(req, res) {
       question: true,
       answer: true,
     },
+    orderBy: [
+      {
+        id: 'asc',
+      },
+    ],
   });
   res.status(200).json(obj);
 }

@@ -1,12 +1,29 @@
-export const BASE_URL = 'http://localhost:3000/api'
-export const STATICS = `${BASE_URL}/static/uploads/`
-export const AdvisorRegistreApi = `${BASE_URL}/auth/register/moshaver`
-export const RealStateRegistrationApi = `${BASE_URL}/auth/register/amlak`
-export const PhoneNamberApi = `${BASE_URL}/auth/sendVerificationCode`
-export const authenticationApi = `${BASE_URL}/auth`
-export const ArticlesApi = `${BASE_URL}/articles`
-export const ContactApi = `${BASE_URL}/contact`
-export const NewsApi = `${BASE_URL}/property/add`
+export const STATICS = `api/static/uploads/`
+export const AdvisorRegistreApi = `api/auth/register/moshaver`
+export const RealStateRegistrationApi = `api/auth/register/amlak`
+export const PhoneNamberApi = `api/auth/sendVerificationCode`
+export const authenticationApi = `api/auth`
+export const getAgencyOwnerApi = `/api/user/getAgencyOwner`
+export const ArticlesApi = `/api/article`
+export const ContactApi = `api/contactForm/post`
+export const NewsApi = `api/property/add`
 export const PropertiesApi = `/api/properties`
-export const SinglePropertyApi = (id) => `${BASE_URL}/properties/single?id=${id}`
-export const SingleBlogApi = (normalName) => `${BASE_URL}/articles/single?normalName=${normalName}`
+export const SinglePropertyApi = (id) => `api/properties/single?id=${id}`
+export const SingleBlogApi = (normalName) => `api/articles/single?normalName=${normalName}`
+export const getAgencyInfoApi = `/api/agency`
+export const getUsersApi = `/api/user`
+export const upsertUser = `/api/user/post`
+export const removeUser = `/api/user/remove`
+export const getRealEstateApi = `/api/realEstate`
+export const createRealEstateApi = `/api/realEstate/create`
+export const searchRealEstateApi = `/api/realEstate/search`
+export const creatAagencyApi = `/api/agency/create`
+export const removeAagencyApi = `/api/agency/remove`
+export const getCityApi = "/api/city"
+export const getCityAreaApi = "/api/cityArea"
+export const createCityAreaApi = "/api/cityArea/create"
+export const removeCityAreaApi = "/api/cityArea/remove"
+export const getnestedCityAreaApi = "/api/cityArea/nestedGet"
+export const getCityAreaByIdApi = "/api/cityArea/getById"
+export const getNoteApi = "/api/note"
+export const getReportApi = "/api/report"

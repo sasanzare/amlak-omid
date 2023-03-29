@@ -12,11 +12,37 @@ import RentSidebarDetails from "../../components/RentSidebarDetails";
 
 import ImageGallery from "react-image-gallery";
 import "react-image-gallery/styles/css/image-gallery.css";
-
-
+import { useState, useEffect, useContext } from "react";
+import { useRouter } from 'next/router';
 import Estate from "../../components/Estate";
-
+import axios from "axios";
+import { context } from "../../context";
+import { ToastContainer, toast } from "react-toastify";
+import {
+  getRealEstateApi,ArticlesApi
+} from "./../../api";
+import {
+  property,
+  room,
+  meterage,
+} from "./../../lib/enum-converter";
+import moment from 'jalali-moment';
 export default function RentId() {
+  const router = useRouter();
+  const { setShowLoading } = useContext(context);
+  const [realEstateList, setRealEstateList] = useState([]);
+  const [realEstate, setRealEstate] = useState([]);
+
+  useEffect(() => {
+    getRealEstate();
+  }, []);
+
+  useEffect(() => {
+    const { rentid } = router.query
+    getRealEstateId(rentid);
+
+  }, [router.query]);
+
   const images = [
     {
       original: "/img/carousel/mainPic.png",
@@ -93,6 +119,43 @@ export default function RentId() {
       meter: "200",
     },
   ];
+
+
+  const getRealEstate = async () => {
+    setShowLoading(true);
+      try {
+        const resp = await axios.get(getRealEstateApi+"?number=4");
+        if (resp.status === 200) {
+                setShowLoading(false);
+              }
+              setRealEstateList(resp.data);
+    } catch (err) {
+        toast.error("مشکلی پیش آمده است !");
+        setShowLoading(false);
+    }
+  }
+
+  const getRealEstateId = async (realEstateId) => {
+    setShowLoading(true);
+      try {
+        const resp = await axios.get(getRealEstateApi+"?id=" + realEstateId );
+       
+        if (resp.status === 200) {
+                setShowLoading(false);
+                setRealEstate(resp.data);
+              }
+              
+              
+    } catch (err) {
+        toast.error("مشکلی پیش آمده است !");
+        setShowLoading(false);
+    }
+  }
+
+  const getIdRealEstate = (e) => {
+    router.push(`/Rent/${e.target.getAttribute("data-reactid")}`)
+};
+
   return (
     <Container className="Home pt-5 mt-5 pb-4">
       <Row>
@@ -100,14 +163,14 @@ export default function RentId() {
           <SideBar>
             <RentSidebarDetails
               img={null}
-              time="سه روز پیش"
-              type="مسکونی"
-              location="محله معالی آباد"
-              bed="2"
-              meter="110"
-              price="2,700,000,000"
+              // time={moment(realEstate?.createdAt, 'YYYY/MM/DD')?.locale('fa')?.format('YYYY/MM/DD')}
+              type={property(realEstate?.type)}
+              location={realEstate?.cityArea?.name}
+              bed={room(realEstate?.roomCount)}
+              meter={meterage(realEstate?.meter)}
+              price={realEstate?.price?.replace(/(\d)(?=(\d{3})+$)/g, '$1,')}
               virtual="#"
-              phone="+989059048626"
+              phone={realEstate?.phoneNumber}
             />
           </SideBar>
           <textarea
@@ -134,7 +197,7 @@ export default function RentId() {
               </span>
               <Link href="/">
                 <a className="text-decoration-none text-dark me-2 f-14">
-                  محله معالی آباد
+                {realEstate?.cityArea?.name}
                 </a>
               </Link>
               <span className="me-2 ">
@@ -185,22 +248,26 @@ export default function RentId() {
           </Row>
         </Col>
         <h6 className="col-md-12 col-11 mx-auto pt-5 pb-4 fw-bold mt-4">آگهی های مشابه</h6>
-        {suggested.map((suggest, index) => (
-              <Estate
-                key={index}
+             {realEstateList.map((data) => {
+              return (<Estate
+                key={data.id}
                 myClass="p-sm-2 p-3 my-lg-0  my-2 col-lg-3 col-md-6 col-11 mx-auto"
-                img={suggest.img}
-                title={suggest.title}
-                profile={suggest.profile}
-                location={suggest.location}
-                price={suggest.price}
-                bed={suggest.bed}
-                type={suggest.type}
-                time={suggest.time}
-                meter={suggest.meter}
-              />
-            ))}
+                img={data.estateImage}
+                title={(data.agency)? data.agency.name : "کاربر عادی" }
+                profile={(data.agency)? "/uploads/advertising/"+data.agency.agencyImage : "/img/avatar.jpeg" }
+                location={data.cityArea.name}
+                price={data.price.replace(/(\d)(?=(\d{3})+$)/g, '$1,')}
+                bed={room(data.roomCount)}
+                type={property(data.type)}
+                time={moment(data.createdAt, 'YYYY/MM/DD').locale('fa').format('YYYY/MM/DD')}
+                meter={meterage(data.meter)}
+                phoneNumber={data.phoneNumber}
+                to={data.id}
+                getId={getIdRealEstate}
+              />);
+              })}
       </Row>
+      <ToastContainer position="top-left" rtl={true} theme="colored" />
     </Container>
   );
 }

@@ -1,6 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  reactStrictMode: false,
+  reactStrictMode: true,
   swcMinify: true,
 
   typescript: {
@@ -14,7 +14,22 @@ const nextConfig = {
     locales: ["fa"],
     defaultLocale: "fa",
   },
-
+  
+    "headers": [
+      {
+        "source": "/api/(.*)",
+        "headers": [
+          { "key": "Access-Control-Allow-Credentials", "value": "true" },
+          { "key": "Access-Control-Allow-Origin", "value": "*" },
+          { "key": "Access-Control-Allow-Methods", "value": "*" },
+          { "key": "Access-Control-Allow-Headers", "value": "*" }
+        ]
+      }
+    ]
+  
 }
 
 module.exports = nextConfig
+
+
+

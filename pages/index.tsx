@@ -8,7 +8,77 @@ import ArticleCards from "../blocks/articleCards/";
 import Card from "../components/CardEstae";
 import Estate from "../components/Estate";
 import Link from "next/link";
+import { context } from "../context";
+import { useState, useEffect, useContext } from "react";
+import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
+import { useRouter,Router } from 'next/router';
+import {
+  getRealEstateApi,ArticlesApi
+} from "./../api";
+import {
+  property,
+  room,
+  meterage,
+  assignment,
+  advertisingStatus,
+} from "./../lib/enum-converter";
+import moment from 'jalali-moment'
+
+
+
 function Home() {
+  const router = useRouter();
+  const { setShowLoading } = useContext(context);
+  const [realEstateList, setRealEstateList] = useState([]);
+  const [articleList, setArticleList] = useState([]);
+
+  useEffect(() => {
+    get();
+    getRealEstate();
+  }, []);
+
+
+  function getRealEstate() {
+    setShowLoading(true);
+    axios
+      .get(getRealEstateApi+"?number=4")
+      .then((res) => {
+        setRealEstateList(res.data);
+        if (res.status === 200) {
+          setShowLoading(false);
+       
+        }
+      })
+      .catch((err) => {
+        if (err.response?.data) {
+          err?.response?.data?.errors?.map((issue) => toast.error(issue));
+        } else {
+          toast.error("مشکلی پیش آمده است !");
+        }
+        setShowLoading(false);
+      });
+  }
+  function get() {
+    setShowLoading(true);
+    axios
+      .get(ArticlesApi+"?number=3")
+      .then((res) => {
+        setArticleList(res.data);
+        if (res.status === 200) {
+          setShowLoading(false);
+        }
+      })
+      .catch((err) => {
+        if (err.response?.data) {
+          err?.response?.data?.errors?.map((issue) => toast.error(issue));
+        } else {
+          toast.error("مشکلی پیش آمده است !");
+        }
+        setShowLoading(false);
+      });
+  }
+
   const offices = [
     {
       title: "آژانس املاک سینا",
@@ -32,73 +102,13 @@ function Home() {
     },
   ];
 
-  const suggested = [
-    {
-      img: "./img/es1.png",
-      title: "کاربرعادی",
-      profile: "./img/profile2.png",
-      location: "معالی‌آباد",
-      price: "2.7 میلیارد",
-      bed: "2",
-      type: "مسکونی",
-      time: "۳ روز پیش",
-      meter: "160",
-    },
-    {
-      img: "./img/es2.png",
-      title: "کاربرعادی",
-      profile: "./img/profile1.png",
-      location: "معالی‌آباد",
-      price: "2.7 میلیارد",
-      bed: "3",
-      type: "مسکونی",
-      time: "۳ روز پیش",
-      meter: "200",
-    },
-    {
-      img: "./img/es1.png",
-      title: "کاربرعادی",
-      profile: "./img/profile2.png",
-      location: "معالی‌آباد",
-      price: "2.7 میلیارد",
-      bed: "2",
-      type: "مسکونی",
-      time: "۳ روز پیش",
-      meter: "160",
-    },
-    {
-      img: "./img/es2.png",
-      title: "کاربرعادی",
-      profile: "./img/profile1.png",
-      location: "معالی‌آباد",
-      price: "2.7 میلیارد",
-      bed: "3",
-      type: "مسکونی",
-      time: "۳ روز پیش",
-      meter: "200",
-    },
-  ];
-
-  const data = [
-    {
-      img: "./img/article1.png",
-      title: "خرید خانه در شیراز",
-      content:
-        "لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک است، چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است، و برای شرایط فعلی تکنولوژی مورد نیاز، و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد، کتابهای زیادی در شصت و سه درصد گذشته حال و آینده، شناخت فراوان جامعه و متخصصان را می طلبد،",
-    },
-    {
-      img: "./img/article2.png",
-      title: "خرید خانه در تهران",
-      content:
-        "لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک است، چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است، و برای شرایط فعلی تکنولوژی مورد نیاز، و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد، کتابهای زیادی در شصت و سه درصد گذشته حال و آینده، شناخت فراوان جامعه و متخصصان را می طلبد،",
-    },
-    {
-      img: "./img/article3.png",
-      title: "نکات قبل از خرید ملک",
-      content:
-        "لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک است، چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است، و برای شرایط فعلی تکنولوژی مورد نیاز، و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد، کتابهای زیادی در شصت و سه درصد گذشته حال و آینده، شناخت فراوان جامعه و متخصصان را می طلبد،",
-    },
-  ];
+  const getIdArticle = (e) => {
+      router.push(`/Articles/${e.target.getAttribute("data-reactid")}`)
+    
+  };
+  const getIdRealEstate = (e) => {
+      router.push(`/Rent/${e.target.getAttribute("data-reactid")}`)
+  };
   return (
     <Container className="Home pt-5 mt-5 pb-4">
       <Row>
@@ -115,7 +125,7 @@ function Home() {
         <Col sm={12} className="pt-5">
           <Row>
             <div className="col-sm-12 col-11 mx-auto" dir="ltr">
-              <Link href={"/"}>
+              <Link href={"/Agencies"}>
                 <a className="text-decoration-none text-secondary float-start">
                   مشاهده همه
                 </a>
@@ -146,21 +156,24 @@ function Home() {
                 </a>
               </Link>
             </div>
-            {suggested.map((suggest, index) => (
-              <Estate
-                key={index}
+            {realEstateList.map((data) => {
+              return (<Estate
+                key={data.id}
                 myClass="p-sm-2 p-3 my-lg-0  my-2 col-lg-3 col-md-6 col-11 mx-auto"
-                img={suggest.img}
-                title={suggest.title}
-                profile={suggest.profile}
-                location={suggest.location}
-                price={suggest.price}
-                bed={suggest.bed}
-                type={suggest.type}
-                time={suggest.time}
-                meter={suggest.meter}
-              />
-            ))}
+                img={data.estateImage}
+                title={(data.agency)? data.agency.name : "کاربر عادی" }
+                profile={(data.agency)? "/uploads/advertising/"+data.agency.agencyImage : "/img/avatar.jpeg" }
+                location={data.cityArea.name}
+                price={data.price.replace(/(\d)(?=(\d{3})+$)/g, '$1,')}
+                bed={room(data.roomCount)}
+                type={property(data.type)}
+                time={moment(data.createdAt, 'YYYY/MM/DD').locale('fa').format('YYYY/MM/DD')}
+                meter={meterage(data.meter)}
+                phoneNumber={data.phoneNumber}
+                to={data.id}
+                getId={getIdRealEstate}
+              />);
+              })}
           </Row>
         </Col>
         <Title title="ورود و ثبت‌نام" />
@@ -178,17 +191,20 @@ function Home() {
             btn="ثبت‌نام مشاور"
           />
         </Col>
-        <Title title="مجله املاک ساسان" />
+        <Title title="مجله املاک امیپ" />
 
-        {data.map((card, index) => (
+        {articleList?.map((card) => (
           <ArticleCards
-            key={index}
-            img={card.img}
+            key={card.id}
+            img={card.articleImage}
             title={card.title}
-            content={card.content}
+            content={card.summary}
+            id={card.id}
+            getId={getIdArticle}
           />
         ))}
       </Row>
+      <ToastContainer position="top-left" rtl={true} theme="colored" />
     </Container>
   );
 }

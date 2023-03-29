@@ -13,6 +13,7 @@ generator jsonSchema {
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
+  // url      = "postgresql://root:IAHkwDAXg93ywq29kOa7GJht@gina.iran.liara.ir:33662/postgres"
 }
 
 enum requestStatus {
@@ -35,11 +36,32 @@ enum assignmentType {
 }
 
 enum propertyType {
-  commercial
-  apartment
-  villaGarden
-  land
-  independents
+  c //commercial
+  a //apartment
+  v //villaGarden
+  l //land
+  i //independents
+}
+enum roomCount {
+ one
+ two
+ three
+ four
+ five
+}
+enum meter {
+  m10
+  m90
+  m150
+  m220
+}
+
+enum AdStatus {
+ awaitingPayment     
+  awaitingConfirmation
+  active
+  expired
+  Deleted
 }
 
 model tempUser {
@@ -49,31 +71,38 @@ model tempUser {
 }
 
 model user {
-  id           String                  @id @unique @default(cuid())
-  firstName    String?
-  lastName     String?
-  name         String?
-  email        String?
-  phoneNumber  String                  @unique
-  nationalCode Int?
-  address      String?
-  lastLogin    DateTime                @default(now())
-  role         role
-  agency       agency[]
-  agentOf      agentInterface[]
-  agencyRate   agencyRatingInterface[]
-  createdAt    DateTime                @default(now())
-  updatedAt    DateTime                @updatedAt
-  isActive     Boolean                 @default(true)
-  realEstate   realEstate[]
+  id              String                  @id @unique @default(cuid())
+  firstName       String?
+  lastName        String?
+  name            String?
+  email           String?
+  phoneNumber     String                  @unique
+  nationalCode    String? 
+  postalCode      String?
+  address         String?
+  userImage       String?
+  nationalImage   String?
+  lastLogin       DateTime                @default(now())
+  role            role                    @default(normal)
+  agency          agency[]
+  agentOf         agentInterface[]
+  agencyRate      agencyRatingInterface[]
+  createdAt       DateTime                @default(now())
+  updatedAt       DateTime                @default(now()) @updatedAt
+  isActive        Boolean                 @default(true)
+  realEstate      realEstate[]
   // AgencyRequest agencyRequest[]
+  article         article[]
+  note            note[]
+  save            save[]
+  report          report[]
 }
 
 model agencyRatingInterface {
   id        String   @id @unique @default(cuid())
-  User      user?    @relation(fields: [userId], references: [id])
+  user      user?    @relation(fields: [userId], references: [id],onDelete: NoAction, onUpdate: NoAction)
   userId    String?
-  agency    agency?  @relation(fields: [agencyId], references: [id])
+  agency    agency?  @relation(fields: [agencyId], references: [id],onDelete: NoAction, onUpdate: NoAction)
   agencyId  String?
   rate      Int
   createdAt DateTime @default(now())
@@ -81,77 +110,93 @@ model agencyRatingInterface {
 
 model agentInterface {
   id        String   @id @unique @default(cuid())
-  user      user     @relation(fields: [userId], references: [id])
+  user      user     @relation(fields: [userId], references: [id],onDelete: NoAction, onUpdate: NoAction)
   userId    String
-  agency    agency   @relation(fields: [agencyId], references: [id])
+  agency    agency   @relation(fields: [agencyId], references: [id],onDelete: NoAction, onUpdate: NoAction)
   agencyId  String
   createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  updatedAt DateTime @default(now()) @updatedAt
   isActive  Boolean  @default(false)
 }
 
 model agency {
-  id         String                  @id @unique @default(cuid())
-  name       String?
-  owner      user                    @relation(fields: [ownerId], references: [id])
-  ownerId    String
-  cityArea   cityArea                @relation(fields: [cityAreaId], references: [id])
-  agents     agentInterface[]
-  rate       agencyRatingInterface[]
-  createdAt  DateTime                @default(now())
-  updatedAt  DateTime                @updatedAt
-  isActive   Boolean                 @default(false)
-  RealEstate realEstate[]
-  status     requestStatus           @default(pending)
-  cityAreaId String
+  id                String                  @id @unique @default(cuid())
+  name              String?
+  agencyImage       String?
+  owner             user                    @relation(fields: [ownerId], references: [id],onDelete: NoAction, onUpdate: NoAction)
+  ownerId           String
+  city              city                    @relation(fields: [cityId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  cityId            String
+  cityArea          cityArea                @relation(fields: [cityAreaId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  cityAreaId        String
+  agents            agentInterface[]
+  rate              agencyRatingInterface[]
+  phoneNumber       String                  @unique
+  latitude          String?               
+  longitude         String?                 
+  createdAt         DateTime                @default(now())
+  updatedAt         DateTime                @default(now()) @updatedAt
+  isActive          Boolean                 @default(false)
+  RealEstate        realEstate[]
+  status            requestStatus           @default(pending)
 }
 
 model city {
-  id        String     @id @unique @default(cuid())
-  name      String
-  cityArea  cityArea[]
-  createdAt DateTime   @default(now())
+  id            String       @id @unique @default(cuid())
+  name          String
+  cityArea      cityArea[]
+  realEstate    realEstate[]
+  agency        agency[]
+  createdAt     DateTime     @default(now())
 }
 
 model cityArea {
-  id         String       @id @unique @default(cuid())
-  name       String
-  city       city         @relation(fields: [cityId], references: [id])
-  cityId     String
-  realEstate realEstate[]
-  agency     agency[]
-  createdAt  DateTime     @default(now())
+  id            String       @id @unique @default(cuid())
+  name          String
+  city          city         @relation(fields: [cityId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  cityId        String
+  agency        agency[]
+  realEstate    realEstate[]
+  createdAt     DateTime     @default(now())
 }
 
 model realEstate {
-  id             String         @id @unique @default(cuid())
+  id             String         @id @unique @default(cuid())  
   agency         agency?        @relation(fields: [agencyId], references: [id])
   agencyId       String?
-  user           user           @relation(fields: [userId], references: [id])
+  user           user     @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   userId         String
   name           String
   phoneNumber    String
   description    String
-  roomCount      Int
-  Photos         String[]
-  assignmentType assignmentType
-  type           propertyType
-  price          BigInt
-  areaName       String
-  cityName       String
-  cityArea       cityArea       @relation(fields: [cityAreaId], references: [id])
+  address        String?
+  roomCount      roomCount      @default(one)
+  meter          meter          @default(m10)
+  estateImage    String?
+  assignmentType assignmentType  @default(rental)
+  type           propertyType    @default(c)
+  price          String
+  city           city           @relation(fields: [cityId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  cityId         String
+  cityArea       cityArea       @relation(fields: [cityAreaId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   cityAreaId     String
-  longitude      String
-  latitude       String
+  latitude       String?      
+  longitude      String?       
   createdAt      DateTime       @default(now())
-  updatedAt      DateTime       @updatedAt
+  updatedAt      DateTime       @default(now()) @updatedAt
   isActive       Boolean        @default(false)
-
+  AdStatus       AdStatus       @default(awaitingConfirmation)
+  note           note[]
+  save           save[]
+  report         report[]
+  gallery        gallery[]
   // @@index([cityName, areaName, roomCount, price(sort: Asc), type, createdAt(sort: Asc)])
 }
 
 model article {
   id           String   @id @unique @default(cuid())
+  user         user     @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  userId       String
   title        String
   summary      String?
   text         String
@@ -170,9 +215,46 @@ model contactFrom {
 }
 
 model faq {
-  id          Int      @id @default(autoincrement())
-  question    String
-  answer      String
-  status      Boolean  @default(false)
-  createdAt   DateTime @default(now())
+  id        Int      @id @default(autoincrement())
+  question  String
+  answer    String
+  status    Boolean  @default(false)
+  createdAt DateTime @default(now())
+}
+
+model note {
+  id              String          @id @unique @default(cuid())
+  user            user            @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  userId          String
+  note            String
+  realEstate      realEstate?      @relation(fields: [realEstateId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  realEstateId    String?
+  createdAt DateTime @default(now())
+}
+
+model save {
+  id              String          @id @unique @default(cuid())
+  user            user            @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  userId          String
+  realEstate      realEstate      @relation(fields: [realEstateId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  realEstateId    String
+  createdAt DateTime @default(now())
+}
+
+model report {
+  id              String          @id @unique @default(cuid())
+  user            user?            @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  userId          String?
+  report          String
+  realEstate      realEstate?      @relation(fields: [realEstateId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  realEstateId    String?
+  createdAt       DateTime @default(now())
+}
+
+model gallery  {
+  id              String          @id @unique @default(cuid())
+  Photos          String          
+  realEstate      realEstate?      @relation(fields: [realEstateId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  realEstateId    String?
+  createdAt       DateTime @default(now())
 }

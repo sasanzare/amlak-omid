@@ -40,7 +40,9 @@
 .f-yekan{
   font-family: yekan;
 }
-
+.f-auto{
+  font-family: auto;
+}
 p {
   text-align: justify;
 }
@@ -217,6 +219,9 @@ p {
 .w-100 {
   width: 100% !important;
 }
+.vh-80{
+  height: 80vh;
+}
 
 .lh-xl {
   line-height: 2.5 !important;
@@ -373,3 +378,14 @@ a:hover {
 }
 
 
+.dashmain {
+  margin-top: -155px;
+}
+
+.h-150{
+  height: 150px;
+}
+
+.border-upload{
+  border: dashed 2px #92929240;
+}

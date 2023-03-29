@@ -40,12 +40,9 @@ role : { equals : req.query.role },
 isActive : { equals : req.query.isActive },
 
                 },
-                // orderBy: [
-                //     {
-                //         createdAt: req.query.dateSort , //'desc',
-                //     },
-                    
-                //   ],
+                orderBy: {
+                    createdAt: "desc",
+                  },
                 skip: 0,
                 take: 20,
               });

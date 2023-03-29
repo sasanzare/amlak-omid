@@ -14,7 +14,7 @@ export async function getServerSideProps(context: any) {
   return {
     props: {}, // will be passed to the page component as props
   }
-}
+} 
 const Buy = (props: any) => {
   const router = useRouter()
   // var { pageNumber, location, price } = router.query
@@ -56,14 +56,14 @@ const Buy = (props: any) => {
 
   return (
     <Container className="Home pt-5 mt-5 pb-4">
-      {/* 
+      
       <Row>
         <Col lg={12} sm={12} className='mx-auto'><BuySearch onChange={(e) => { }} /></Col>
       </Row>
 
       <SugessBox properties={properties} />
 
-      <ReactPaginate
+      {/* <ReactPaginate
         breakLabel="..."
         nextLabel=">"
         onPageChange={fetchData}

@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect, useContext,useCallback } from "react";
 import { AdminLayout } from "../../../layout";
 import axios from "axios";
 import { toast } from "react-toastify";
@@ -13,13 +13,43 @@ import {
   faCheckCircle,
   faXmarkCircle,
 } from "@fortawesome/free-solid-svg-icons";
+import { EditorState } from "draft-js";
+import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
+import { convertToHTML, convertFromHTML } from "draft-convert";
+import dynamic from "next/dynamic";
+
+
+
+
+
+
+
+
 
 export default () => {
+  const [editorState, setEditorState] = useState(() =>
+    EditorState.createEmpty()
+  );
+  const [convertedContent, setConvertedContent] = useState(null);
+  const handleEditorChange = (state) => {
+    setEditorState(state);
+    convertContentToHTML();
+  };
+  const convertContentToHTML = () => {
+    let currentContentAsHTML = convertToHTML(editorState.getCurrentContent());
+    setConvertedContent(currentContentAsHTML);
+  };
+
+
+
+  const Editor = dynamic(
+    () => import("react-draft-wysiwyg").then((mod) => mod.Editor),
+    { ssr: false }
+  );
+
   const { setShowLoading } = useContext(context);
   const [faqList, setFaqList] = useState([]);
   const [modalShow, setModalShow] = useState(false);
-  const [modalObj, setModalObj] = useState(null);
-
   const [ans, setAns] = useState("");
   const [que, setQue] = useState("");
   const [isSwitchOn, setIsSwitchOn] = useState(false);
@@ -30,10 +60,10 @@ export default () => {
   };
 
   useEffect(() => {
-    get();
+    getFaq();
   }, []);
 
-  function get() {
+  function getFaq() {
     setShowLoading(true);
     axios
       .get("/api/faq")
@@ -56,51 +86,50 @@ export default () => {
 
   function remove(data) {
     axios.delete("/api/faq?id=" + data.id).then((res) => {
-      get();
+      getFaq();
     });
   }
 
-  
-
-
-  
   function upsert() {
-    if(que != "" && ans != ""){
-      let object = { question: que, answer: ans, status: isSwitchOn };
+    if (que != "" && editorState != "") {
+      let object = {
+        question: que,
+        answer: convertedContent,
+        status: isSwitchOn,
+      };
       if (idQ != 0) {
         object = { ...object, id: idQ };
       }
       axios.post("/api/faq", object).then((res) => {
         setModalShow(false);
-        get();
+        getFaq();
         reset();
       });
     }
-   
   }
 
   function reset() {
     setQue("");
-    setAns("");
+    // setAns("");
+    setEditorState("");
     setIsSwitchOn(false);
     setIdQ(0);
   }
 
+
   function openDialoge(obj) {
     if (obj) {
       setQue(obj.question);
-      setAns(obj.answer);
+       setEditorState(EditorState.createWithContent(convertFromHTML(obj.answer)));
       setIsSwitchOn(obj.status);
       setIdQ(obj.id);
     }
     setModalShow(true);
   }
   function closeDialoge() {
-    setModalObj({});
+    reset()
     setModalShow(false);
-    // setIsSwitchOn(false);
   }
-
 
   return (
     <AdminLayout>
@@ -116,53 +145,44 @@ export default () => {
         </h2>
       </div>
 
-
-
       <FormModal
         show={modalShow}
         onCancel={() => closeDialoge()}
-        onSave={upsert}
-      
+        func={upsert}
         title="سوالات متداول"
       >
-       
-          <Form.Group className="mb-3">
-            <Form.Label>سوال</Form.Label>
-            <Form.Control
-            required
-              onChange={(e) => setQue(e.target.value)}
-              value={que}
-              // as="textarea"
-              // rows={3}
-              placeholder="سوال را وارد کنید..."
-              
-            />
-          </Form.Group>
+        <Form.Group className="mb-3">
+          <Form.Label>سوال</Form.Label>
+          <Form.Control
+            onChange={(e) => setQue(e.target.value)}
+            value={que}
+            as="textarea"
+            rows={3}
+            placeholder="سوال را وارد کنید..."
+          />
+        </Form.Group>
 
-          <Form.Group className="mb-3">
-            <Form.Label>پاسخ</Form.Label>
-            <Form.Control
-              value={ans}
-              onChange={(e) => setAns(e.target.value)}
-              as="textarea"
-              rows={4}
-              placeholder="پاسخ را وارد کنید..."
-              
-            />
-          </Form.Group>
+        <Form.Group className="mb-3">
+          <Form.Label>پاسخ</Form.Label>
 
-          <Form.Group className="mb-3" controlId="status">
-            <Form.Check
-              className="d-flex flex-column-reverse"
-              type="switch"
-              onChange={onSwitchAction}
-              checked={isSwitchOn}
-              label="نمایش"
-            />
-          </Form.Group>
+          <Editor
+            editorState={editorState}
         
+            onEditorStateChange={handleEditorChange}
+          />
+        </Form.Group>
+
+        <Form.Group className="mb-3" controlId="status">
+          <Form.Check
+            className="d-flex flex-column-reverse"
+            type="switch"
+            onChange={onSwitchAction}
+            checked={isSwitchOn}
+            label="نمایش"
+          />
+        </Form.Group>
       </FormModal>
-  
+
       <div className="row">
         <div className="col-md-12">
           <Card className="mb-4">
@@ -201,14 +221,17 @@ export default () => {
                           />
                         );
                       return (
-                        <tr key={i} className="align-middle">
-                          <td className="text-center">{++i} || {data.id}</td>
+                        <tr key={data.id} className="align-middle">
+                          <td className="text-center">{++i}</td>
                           <td>
                             <p>{data.question}</p>
                           </td>
-                          <td>
-                            <p>{data.answer}</p>
-                          </td>
+
+                          <td
+                            dangerouslySetInnerHTML={{ __html: data.answer }}
+
+                          />
+                        
                           <td className="text-center">{active}</td>
                           <td>
                             <span>{data.createdAt}</span>

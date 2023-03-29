@@ -1,50 +1,56 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from 'next'
-const Kavenegar = require("kavenegar");
+import Kavenegar from "kavenegar";
 import prisma from '../../../lib/prisma';
+import { SmsProvider } from '../../../lib/sms-provider';
+import initMiddleware from '../../../lib/init-middleware'
+import validateMiddleware from '../../../lib/validate-middleware'
+import { check, validationResult } from 'express-validator'
 
-const api = Kavenegar.KavenegarApi({
-  apikey:
-    "6841684B7A3576694F63544743304F6257666D2F4A7A4F4F4A376367566F745334394236366F2F556748733D",
-});
-
-
+const validateBody = initMiddleware(
+  validateMiddleware([
+    check('phoneNumber').isMobilePhone("fa-IR"),
+  ], validationResult)
+)
 type Data = {
   message: string
 }
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<Data>,
+  res: NextApiResponse<Data | any>,
 
 ) {
   try {
+    await validateBody(req, res)
+    const errors = validationResult(req)
+    if (!errors.isEmpty()) {
+      return res.status(422).json({ errors: errors.array() })
+    }
     const { phoneNumber } = req.body;
-
-    const verificationCode = Math.floor(Math.random() * 100000);
-
-   await prisma.tempUser.upsert({
-      where: {
-         phoneNumber,
-      },
-      update:{  verificationCode: verificationCode.toString() },
-      create: {
-        phoneNumber,
-        verificationCode:verificationCode.toString()
-      },
-    })
-  
-    api.VerifyLookup(
-      {
-        receptor: phoneNumber,
-        token: verificationCode,
-        template: "verify",
-      },
-      function (response, status) {
-        console.log(response);
-        console.log(status);
-      }
-    );
+    const verificationCode = String(Math.floor(Math.random() * 100000));
+    try {
+      await prisma.tempUser.upsert({
+        where: {
+          phoneNumber,
+        },
+        update: { verificationCode: verificationCode.toString() },
+        create: {
+          phoneNumber,
+          verificationCode: verificationCode.toString()
+        },
+      })
+    }
+    catch (error) {
+      console.log(error)
+    }
+    try {
+      const smsProvider = new SmsProvider()
+      smsProvider.sendMessage(`کد تایید با موفقیت ارسال شد ! ${verificationCode}`, [phoneNumber])
+    }
+    catch (error) {
+      console.log(error)
+    }
     res
       .status(200)
       .json({ message: "کد تایید با موفقیت ارسال شد !" + verificationCode });

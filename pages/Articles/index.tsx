@@ -5,29 +5,26 @@ import ArticleCards from "../../blocks/articleCards";
 import { useState, useEffect, useContext } from "react";
 import { context } from "../../context";
 import axios from "axios";
-
+import { useRouter,Router } from 'next/router';
+import { ToastContainer, toast } from "react-toastify";
 export default function Articles() {
+  const router = useRouter()
+
   const { setShowLoading } = useContext(context);
-  const [articleList, setarticleList] = useState([]);
-
-
- 
+  const [articleList, setArticleList] = useState([]);
 
   useEffect(() => {
     get();
   }, []);
-
- 
 
   function get() {
     setShowLoading(true);
     axios
       .get("/api/article")
       .then((res) => {
-        setarticleList(res.data);
+        setArticleList(res.data);
         if (res.status === 200) {
           setShowLoading(false);
-          // setPageCount(res.data.count / itemsPerPage)
         }
       })
       .catch((err) => {
@@ -39,7 +36,6 @@ export default function Articles() {
         setShowLoading(false);
       });
   }
-
 
 
   const data = [
@@ -126,30 +122,24 @@ export default function Articles() {
     circle: true,
     shadow: true,
   };
+  const getId = (e) => {
+    router.push(`/Articles/${e.target.getAttribute("data-reactid")}`)
+};
   return (
     <Container className="pt-5 pb-4 mt-3">
       <Row>
         <Title title="مجله‌های املاک امید" />
-        {data.map((item, index) => (
+        {articleList?.map((card) => (
           <ArticleCards
-          key={index}
-            data={data}
-            img={item.img}
-            title={item.title}
-            content={item.content}
-            myClass="pt-4 px-3 mt-2"
+            key={card.id}
+            img={card.articleImage}
+            title={card.title}
+            content={card.summary}
+            id={card.id}
+            getId={getId}
           />
         ))}
-       {/* {articleList?.map((data, i) => (
-          <ArticleCards
-            key={i}
-            data={data}
-            img={data.articleImage}
-            title={data.title}
-            content={data.text}
-            myClass="pt-4 px-3 mt-2"
-          />
-        ))} */}
+    
 
 
 
@@ -157,6 +147,7 @@ export default function Articles() {
           {/* <Pagination {...paginationConfig} /> */}
         </Col>
       </Row>
+      <ToastContainer />
     </Container>
   );
 }

@@ -10,7 +10,7 @@ import {
 import Link from "next/link";
 
 function Estate({
-  to = "#",
+  to ,
   img,
   title,
   profile,
@@ -22,16 +22,21 @@ function Estate({
   location,
   myClass,
   phoneNumber,
+  getId
 }) {
   return (
-    <Link href={to}>
-      <div className={myClass}>
-        <div
-          className="shadow-sm text-center pb-2 overflow-hidden rounded-3  d-block hover-zoom "
-          style={{ textDecoration: "none" }}
-        >
+    <div className={myClass}>
+      <div
+        className="shadow-sm text-center pb-2 overflow-hidden rounded-3  d-block hover-zoom "
+        // style={{ textDecoration: "none" }}
+      >
           <div className="p-0">
-            <img src={img} className="w-100" height={155} />
+            <img
+              src={"/uploads/advertising/" + img}
+              className="w-100"
+              height={155}
+              onClick={getId} data-reactid={to}
+            />
           </div>
           <div className="d-flex justify-content-between px-2 pt-3 dir-r">
             <div>
@@ -53,41 +58,41 @@ function Estate({
             </div>
             <div>
               <FontAwesomeIcon icon={faColumns} className="text-gery ms-1" />
-              <span>{meter} متر</span>
+              <span>{meter}</span>
             </div>
           </div>
           <div className="d-flex justify-content-between px-2 pt-1 mt-4 dir-r f-13">
             <div className="text-es">
               <span>قیمت: </span>
-              <span>{price}</span>
+              <span className="f-auto">{price}</span>
             </div>
             <div>
               <FontAwesomeIcon icon={faClock} className="text-gery ms-1" />
-              <span>{time}</span>
+              <span className="f-auto">{time}</span>
             </div>
           </div>
           <hr className="he-2 mb-2" />
-          <div className="d-flex justify-content-between px-2 pb-2  dir-r">
-            <div className="d-flex align-items-center">
-              <img
-                src={profile}
-                className="rounded-circle ms-1"
-                width={27}
-                height={27}
-              />
-              <span className="f-13">{title}</span>
-            </div>
-            <a
-              href={`tel:${phoneNumber}`}
-              className="btn fw-bold btn btn-danger mb-lg-0 mt-lg-0 mt-4 mb-4 px-2  he-fit"
-            >
-              <FontAwesomeIcon icon={faPhone} className="ms-1" />
-              تماس بگیرید
-            </a>
+  
+        <div className="d-flex justify-content-between px-2 pb-2  dir-r">
+          <div className="d-flex align-items-center">
+            <img
+              src={profile}
+              className="rounded-circle ms-1"
+              width={27}
+              height={27}
+            />
+            <span className="f-13">{title}</span>
           </div>
+          <a
+            href={`tel:${phoneNumber}`}
+            className="btn fw-bold btn btn-danger mb-lg-0 mt-lg-0 mt-4 mb-4 px-2  he-fit"
+          >
+            <FontAwesomeIcon icon={faPhone} className="ms-1" />
+            تماس بگیرید
+          </a>
         </div>
       </div>
-    </Link>
+    </div>
   );
 }
 

@@ -5,7 +5,16 @@ import { faLessThan } from "@fortawesome/free-solid-svg-icons";
 import SideBar from "../../blocks/sidebar";
 import ArticleCards from "../../blocks/articleCards";
 import SideBarLinks from "../../components/SideBarLinks";
+import { useState, useEffect, useContext } from "react";
+import { useRouter } from 'next/router';
+import axios from "axios";
+import { context } from "../../context";
+import { ToastContainer, toast } from "react-toastify";
 export default function ArticlesId() {
+  const router = useRouter()
+  const { setShowLoading } = useContext(context);
+  const [articleList, setArticleList] = useState([]);
+  const [article, setArticle] = useState([]);
     const data = [
         {
           img: "/img/article1.png",
@@ -26,8 +35,63 @@ export default function ArticlesId() {
             "لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک است، چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است، و برای شرایط فعلی تکنولوژی مورد نیاز، و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد، کتابهای زیادی در شصت و سه درصد گذشته حال و آینده، شناخت فراوان جامعه و متخصصان را می طلبد،",
         },
       ];
+
+
+  useEffect(() => {
+    getArticle();
+  }, []);
+
+  useEffect(() => {
+    const { articleid } = router.query
+  
+    getArticleById(articleid);
+
+  }, [router.query]);
+
+
+
+  function getArticle() {
+    setShowLoading(true);
+    axios
+      .get("/api/article?number=3")
+      .then((res) => {
+        setArticleList(res.data);
+        if (res.status === 200) {
+          setShowLoading(false);
+        }
+      })
+      .catch((err) => {
+        if (err.response?.data) {
+          err?.response?.data?.errors?.map((issue) => toast.error(issue));
+        } else {
+          // toast.error("مشکلی پیش آمده است !");
+          toast.error("مشکلی برای بارگذاری مقاله‌ها پیش آماده است!");
+        }
+        setShowLoading(false);
+      });
+  }
+
+
+const getArticleById = async (postId) => {
+    setShowLoading(true);
+      try {
+        const resp = await axios.get("/api/article?id=" + postId );
+        if (resp.status === 200) {
+                setShowLoading(false);
+                setArticle(resp.data);
+              }
+              
+    } catch (err) {
+        toast.error("مشکلی پیش آمده است !");
+        setShowLoading(false);
+    }
+  }
+
+  const getId = (e) => {
+      router.push(`/Articles/${e.target.getAttribute("data-reactid")}`)
+  };
   return (
-    <Container className=" pt-5 mt-5 pb-4">
+    <Container className="pt-5 mt-5 pb-4">
       <Row>
         <Col lg={9} md={8} sm={11} xs={10} className="mx-auto">
           <Row>
@@ -56,15 +120,12 @@ export default function ArticlesId() {
               xs={12}
               className="text-center  mt-3 shadow-sm rounded-4 py-4 px-4"
             >
-              <h1 className="h5 pt-2 pb-4 fw-bold">ثبت نام بیش از ۹۸۰۰ نفر</h1>
-              <p>
-                ایخود برایمسکناقدامکنند نهضت ملیمسکنیکیاز سیاستهایکلاندولت
-                ســــــیزدهمدر حوزه مســـکناست که بر اساساین سیاست، احداث۴
-                میلیــــونواحد مسکونیدر ۴ سالد برنامه ایندولت قرار گرفته است.
-                متقاضیانواقعیمسکنمیتوانند با داشتنچهار شرطتاهلو سرست خانوا بودن،
-                حداقل سابقه۵ سال سکونت در شهر موردتقاضا، فاقد مالکیت خصوصیو در
-                نهایت .عدماستفاده از امکاناتدولتیاز اولانقلابدر حوزه
-              </p>
+              <h1 className="h5 pt-2 pb-4 fw-bold">
+              {article?.title}
+              
+              </h1>
+           
+              <div  dangerouslySetInnerHTML={{ __html: article?.text }}/>
             </Col>
           </Row>
         </Col>
@@ -74,15 +135,18 @@ export default function ArticlesId() {
           </SideBar>
         </Col>
         <h5 className="col-md-12 col-sm-11 col-10 mx-auto pt-5 mb-0">نوشته‌های مشابه</h5>
-        {data.map((card, index) => (
+        {articleList?.map((card) => (
           <ArticleCards
-            key={index}
-            img={card.img}
+            key={card.id}
+            img={card.articleImage}
             title={card.title}
-            content={card.content}
+            content={card.summary}
+            id={card.id}
+            getId={getId}
           />
         ))}
       </Row>
+      <ToastContainer />
     </Container>
   );
 }
