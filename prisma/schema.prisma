@@ -77,8 +77,8 @@ model user {
   name            String?
   email           String?
   phoneNumber     String                  @unique
-  nationalCode    String? 
-  postalCode      String?
+  nationalCode    Int? 
+  postalCode      Int?
   address         String?
   userImage       String?
   nationalImage   String?
@@ -117,6 +117,7 @@ model agentInterface {
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt
   isActive  Boolean  @default(false)
+    // @@id([userId, agencyId])
 }
 
 model agency {

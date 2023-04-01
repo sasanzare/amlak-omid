@@ -8,25 +8,33 @@ import { ToastContainer, toast } from "react-toastify";
 import { context } from "../../context/index";
 import { useForm } from "react-hook-form";
 import LoginTypes from "../../components/LoginTypes";
+import {
+  getNameActiveAgency,
+  createAgencyAgent
+} from "../../api";
+import { useRouter } from 'next/router'
+
+//test 
+
+
+//end tst 
 
 export default function AdvisorRegistration() {
+  const navigate = useRouter()
   const { setShowLoading } = useContext(context);
 
-  const [firstName, setFirstName] = useState();
-  const [lastName, setLastName] = useState();
-  const [phoneNumber, setPhoneNumber] = useState();
-  const [id, setId] = useState();
-  const [nationalCode, setNationalCode] = useState();
-  const [postalCode, setPostalCode] = useState();
-  const [address, setaddress] = useState();
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [nationalCode, setNationalCode] = useState("");
+  const [postalCode, setPostalCode] = useState("");
+  const [address, setaddress] = useState("");
   const [nationalImage, setNationalImage] = useState<File>();
   const [selectedNationalImage, setSelectedNationalImage] = useState("");
   const [userImage, setUserImage] = useState<File>();
   const [selectedUserImage, setSelectedUserImage] = useState("");
-  const [passport, setPassport] = useState();
-  const [agency, setAgency] = useState("");
+  const [agency, setAgency] = useState([]);
   const [agencyList, setAgencyList] = useState([]);
-  const [pic, setPic] = useState();
+
 
   useEffect(() => {
     getAgency();
@@ -37,7 +45,7 @@ export default function AdvisorRegistration() {
   function getAgency() {
     setShowLoading(true);
     axios
-      .get()
+      .get(getNameActiveAgency)
       .then((res) => {
         setAgencyList(res.data);
         if (res.status === 200) {
@@ -53,50 +61,89 @@ export default function AdvisorRegistration() {
         setShowLoading(false);
       });
   }
-  // validation
-  const {
-    register,
-    handleSubmit,
-    watch,
-    formState: { errors },
-  } = useForm();
 
-  // console.log(errors);
+ 
 
-  async function BtnHandeller() {
-    try {
-      // e.preventDefault();
-      setShowLoading(true);
-      const AdvisorRegistration = new FormData();
-      AdvisorRegistration.append("name", firstName);
-      AdvisorRegistration.append("phoneNumberNumber", phoneNumber);
-      AdvisorRegistration.append("businessId", businessId);
-      AdvisorRegistration.append("address", address);
-      AdvisorRegistration.append("nationalCode", id);
-      AdvisorRegistration.append("postalCode", PostalCode);
-      AdvisorRegistration.append("passport", passport);
-      AdvisorRegistration.append("pic", pic);
-
-      const res = await axios({
-        method: "post",
-        url: AdvisorRegistreApi,
-        data: AdvisorRegistration,
-        headers: { "Content-Type": "multipart/form-data" },
-      });
-
-      // const res = await axios.post(AdvisorRegistreApi,AdvisorRegistration)
-      if (res.status === 201) {
-        toast.success("حساب شما با موفقیت ساخته شد");
-        setShowLoading(false);
-      }
-    } catch (err) {
-      if (err.response?.data) {
-        err?.response?.data?.errors?.map((issue) => toast.error(issue));
-      } else {
-        toast.error("مشکلی پیش آمده است !");
-      }
-      setShowLoading(false);
+  function creteAgent(e) {
+    e.preventDefault();
+    if (firstName == "") {
+      return toast.error("لطفا نام را وارد کنید!");
     }
+    if (lastName == "") {
+      return toast.error("لطفا نام خانوادگی را وارد کنید!");
+    }
+    if (nationalCode == "") {
+      return toast.error("لطفا کدملی را وارد کنید!");
+    }
+    if (postalCode == "") {
+      return toast.error("لطفا کدپستی را وارد کنید!");
+    }
+    if (address == "") {
+      return toast.error("لطفا آدرس را وارد کنید!");
+    }
+    if (agency.length === 0) {
+      return toast.error("لطفا آژانس مورد نظر را انتخاب کنید!");
+    }
+    if (selectedNationalImage == "") {
+      return toast.error("لطفا عکس کارت ملی را آپلود کنید!");
+    }
+    if (selectedUserImage == "") {
+      return toast.error("لطفا عکس پرسنلی را آپلود کنید!");
+    }
+
+      const AdvisorRegistration = new FormData();
+      AdvisorRegistration.append("firstName", firstName);
+      AdvisorRegistration.append("lastName", lastName);
+      AdvisorRegistration.append("nationalCode", nationalCode);
+      AdvisorRegistration.append("postalCode", postalCode);
+      AdvisorRegistration.append("address", address);
+      AdvisorRegistration.append("media", nationalImage);
+      AdvisorRegistration.append("media", userImage);
+      AdvisorRegistration.append("agentOf", agency);
+    setShowLoading(true);
+    axios
+      .post(createAgencyAgent, AdvisorRegistration, {
+        headers: {
+          Authorization: `${
+            JSON.parse(localStorage.getItem("userData")).token
+          }`,
+          "Content-Type": "multipart/form-data",
+        },
+      })
+      .then((res) => {
+        if (res.status === 200) {
+          formReset();
+          setShowLoading(false);
+                toast.success("حساب شما با موفقیت ساخته شد");
+                
+              }
+              // setTimeout(function(){ navigate.push("/dashboard") }, 3000);
+              navigate.replace("/dashboard");
+        
+      })
+      .catch((err) => {
+        if (err.response) {
+          // err?.response?.data?.errors?.map((issue) => toast.error(issue));
+          toast.error("مشکلی پیش آمده است !");
+          console.log(err.response);
+        } else {
+          toast.error("مشکلی پیش آمده است !");
+        }
+        
+      });
+  }
+
+ function formReset(){ 
+     setFirstName("");
+     setLastName("");
+     setNationalCode("");
+     setPostalCode("");
+    setaddress("");
+    setNationalImage("");
+    setUserImage("");
+   setSelectedNationalImage("");
+    setSelectedUserImage("");
+    setAgency("")
   }
 
   return (
@@ -109,7 +156,7 @@ export default function AdvisorRegistration() {
               <Title title="دعوت به همکاری" />
 
               <Col xl={8} md={9} xs={10} className="mx-auto pt-4">
-                <Form onSubmit={handleSubmit(BtnHandeller)} className="row">
+                <Form  className="row" id="AdvisorRegistration">
                   <Form.Group className="col-lg-6  col-11 mx-auto mb-4 ">
                     <Form.Control
                       className=" shadow-es py-2 border-0 rounded-3 "
@@ -128,17 +175,6 @@ export default function AdvisorRegistration() {
                       placeholder="نام خانوادگی"
                     />
                   </Form.Group>
-
-                  <Form.Group className="col-lg-6  col-11 mx-auto mb-4 ">
-                    <Form.Control
-                      className=" shadow-es py-2 border-0 rounded-3"
-                      type="tel"
-                      placeholder="شماره تماس "
-                      onChange={(e) => setPhoneNumber(e.target.value)}
-                      value={phoneNumber}
-                    />
-                  </Form.Group>
-
                   <Form.Group className="col-lg-6  col-11 mx-auto mb-4 ">
                     <Form.Control
                       className=" shadow-es py-2 border-0 rounded-3"
@@ -148,9 +184,15 @@ export default function AdvisorRegistration() {
                       value={nationalCode}
                     />
                   </Form.Group>
-
-                
-
+                  <Form.Group className="col-lg-6 col-11 mx-auto mb-4 ">
+                    <Form.Control
+                      className=" shadow-es py-2 border-0 rounded-3"
+                      type="number"
+                      placeholder="کد پستی"
+                      onChange={(e) => setPostalCode(e.target.value)}
+                      value={postalCode}
+                    />
+                  </Form.Group>
                   <Form.Group className="col-lg-12 col-11 mx-auto mb-4 ">
                     <Form.Control
                       className=" shadow-es py-2 border-0 rounded-3"
@@ -161,20 +203,12 @@ export default function AdvisorRegistration() {
                       value={address}
                     />
                   </Form.Group>
-                  <Form.Group className="col-lg-7 col-11 mx-auto mb-4 ">
-                    <Form.Control
-                      className=" shadow-es py-2 border-0 rounded-3"
-                      type="number"
-                      placeholder="کد پستی"
-                      onChange={(e) => setPostalCode(e.target.value)}
-                      value={postalCode}
-                    />
-                  </Form.Group>
-               
-                  <Form.Group className="col-lg-7 col-11 mx-auto mb-4 ">
+                  <Form.Group className="col-lg-7 col-11 mx-auto mb-4 " >
             <p className="f-14 text-right pe-1 mb-2">دفتر مشاوره املاک</p>
 
-            <Form.Select onChange={(e) => setAgency(e.target.value)} value={agency} className="shadow-es  border-0 rounded-3 py-1">
+            <Form.Select multiple  value={agency}
+            onChange={e => setAgency([].slice.call(e.target.selectedOptions).map(item => item.value))}
+            className="shadow-es  border-0 rounded-3 py-1">
             <option>---
                   </option>
               {agencyList?.map((data, i) => {
@@ -285,7 +319,7 @@ export default function AdvisorRegistration() {
                     </Form.Label>
                   </Form.Group>
                   <button
-                    // onClick={(e) => BtnHandeller(e)}
+                    onClick={(e) => creteAgent(e)}
                     className="btn fw-bold btn btn-es col-xl-3 col-lg-4 col-md-5 col-sm-5  col-10 mx-auto mb-3"
                   >
                     ثبت نام

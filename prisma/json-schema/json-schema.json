@@ -54,6 +54,12 @@
             "null"
           ]
         },
+        "postalCode": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
         "address": {
           "type": [
             "string",
@@ -61,6 +67,12 @@
           ]
         },
         "userImage": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "nationalImage": {
           "type": [
             "string",
             "null"

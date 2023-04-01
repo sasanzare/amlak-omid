@@ -11,9 +11,11 @@ export const PropertiesApi = `/api/properties`
 export const SinglePropertyApi = (id) => `api/properties/single?id=${id}`
 export const SingleBlogApi = (normalName) => `api/articles/single?normalName=${normalName}`
 export const getAgencyInfoApi = `/api/agency`
+export const getNameActiveAgency = `/api/agency/getNameActiveAgency`
 export const getUsersApi = `/api/user`
 export const upsertUser = `/api/user/post`
 export const removeUser = `/api/user/remove`
+export const createAgencyAgent = `/api/user/createAgencyAgent`
 export const getRealEstateApi = `/api/realEstate`
 export const createRealEstateApi = `/api/realEstate/create`
 export const searchRealEstateApi = `/api/realEstate/search`
