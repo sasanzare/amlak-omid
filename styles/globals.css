@@ -389,3 +389,8 @@ a:hover {
 .border-upload{
   border: dashed 2px #92929240;
 }
+
+.color-select{
+  color: #6c757d!important;
+  font-weight: 500 !important;
+}

@@ -31,7 +31,7 @@ export const parseForm = async (
 
         const form = formidable({
             multiples: true,
-            maxFiles: 2,
+            maxFiles: 5,
             // maxFileSize: 8 * 1024 * 1024, // 1mb
             maxFileSize: 20 * 1024 * 1024, // 20mb
             uploadDir,

@@ -156,7 +156,7 @@ export default function AdvisorRegistration() {
               <Title title="دعوت به همکاری" />
 
               <Col xl={8} md={9} xs={10} className="mx-auto pt-4">
-                <Form  className="row" id="AdvisorRegistration">
+                <Form  className="row">
                   <Form.Group className="col-lg-6  col-11 mx-auto mb-4 ">
                     <Form.Control
                       className=" shadow-es py-2 border-0 rounded-3 "
@@ -204,22 +204,22 @@ export default function AdvisorRegistration() {
                     />
                   </Form.Group>
                   <Form.Group className="col-lg-7 col-11 mx-auto mb-4 " >
-            <p className="f-14 text-right pe-1 mb-2">دفتر مشاوره املاک</p>
+                       <p className="f-14 text-right pe-1 mb-2">دفتر مشاوره املاک</p>
 
-            <Form.Select multiple  value={agency}
-            onChange={e => setAgency([].slice.call(e.target.selectedOptions).map(item => item.value))}
-            className="shadow-es  border-0 rounded-3 py-1">
-            <option>---
-                  </option>
-              {agencyList?.map((data, i) => {
-                return (
-                  <option key={data.id} value={data.id}>
-                    {data.name}
-                  </option>
-                );
-              })}
-            </Form.Select>
-          </Form.Group>
+                    <Form.Select multiple  value={agency}
+                    onChange={e => setAgency([].slice.call(e.target.selectedOptions).map(item => item.value))}
+                    className="shadow-es  border-0 rounded-3 py-1">
+                    <option>---
+                          </option>
+                      {agencyList?.map((data, i) => {
+                        return (
+                          <option key={data.id} value={data.id}>
+                            {data.name}
+                          </option>
+                        );
+                      })}
+                    </Form.Select>
+                  </Form.Group>
                   <Form.Group className="col-lg-6 col-11 mx-auto mb-4">
                     <p className="f-14 pe-1 mb-2"> عکس کارت ملی</p>
                     <Form.Label className="w-100">

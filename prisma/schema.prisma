@@ -124,6 +124,7 @@ model agency {
   id                String                  @id @unique @default(cuid())
   name              String?
   agencyImage       String?
+  businessIdImage   String? 
   owner             user                    @relation(fields: [ownerId], references: [id],onDelete: NoAction, onUpdate: NoAction)
   ownerId           String
   city              city                    @relation(fields: [cityId], references: [id], onDelete: Cascade, onUpdate: Cascade)
@@ -132,7 +133,8 @@ model agency {
   cityAreaId        String
   agents            agentInterface[]
   rate              agencyRatingInterface[]
-  phoneNumber       String                  @unique
+  phoneNumber       String                  @unique              
+  businessId        String?               
   latitude          String?               
   longitude         String?                 
   createdAt         DateTime                @default(now())

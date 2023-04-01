@@ -233,6 +233,12 @@
             "null"
           ]
         },
+        "businessIdImage": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
         "owner": {
           "$ref": "#/definitions/user"
         },
@@ -256,6 +262,12 @@
         },
         "phoneNumber": {
           "type": "string"
+        },
+        "businessId": {
+          "type": [
+            "string",
+            "null"
+          ]
         },
         "latitude": {
           "type": [
