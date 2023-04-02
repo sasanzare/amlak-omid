@@ -59,9 +59,6 @@ async function update(req: NextApiRequest, res: NextApiResponse) {
       role: "agencyOwner",
     },
   });
-//   const createMany = await prisma.agentInterface.createMany({
-//     data: createDate(user._id, agentOf),
-//   });
 const agency = await prisma.agency.create({
     data: {
         ownerId :  user._id,

@@ -7,8 +7,99 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPencil } from "@fortawesome/free-solid-svg-icons";
 import ExpertCard from "../../components/ExpertCard";
 import LoginTypes from "../../components/LoginTypes";
+import { useContext, useEffect, useState } from "react";
+import { getInfoUser,getAdvertisingByUserId } from "../../api";
+import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
+import { context } from "../../context";
+import { useRouter } from 'next/router';
+import {
+  property,
+  room,
+  meterage,
+  assignment,
+  advertisingStatus,
+} from "./../../lib/enum-converter";
+import moment from 'jalali-moment'
 
 export default function Dashboard() {
+  const router = useRouter();
+  const { setShowLoading } = useContext(context);
+  //state
+  const [infoUser, setInfoUser] = useState([]);
+  const [role, setRole] = useState("normal");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [userImg, setUserImg] = useState("/img/profile2.png");
+  const [realEstateList, setRealEstateList] = useState([]);
+  const [advertisingList, setAdvertisingList] = useState([]);
+
+  let test;
+
+  useEffect(() => {
+    getRoleUser();
+  }, []);
+
+
+
+  async function getRoleUser() {
+    setShowLoading(true);
+    try {
+      const res = await axios.post(getInfoUser, null, {
+        headers: {
+          Authorization: `${
+            JSON.parse(localStorage.getItem("userData")).token
+          }`,
+        },
+      });
+      // console.log(res.data)
+      setInfoUser(res.data);
+      test = res.data;
+      setUserImg(`/uploads/users/${res.data.userImage}`);
+      setFirstName(res.data.firstName);
+      setLastName(res.data.lastName);
+
+      if (res.status === 200) {
+        setRole(res.data.role);
+        setShowLoading(false);
+        toast.success("خوش آمدید");
+      }
+    } catch (err) {
+      if (err.response) {
+        toast.error("مشکلی پیش آمده است !");
+        console.log(err.response);
+      } else {
+        toast.error("مشکلی پیش آمده است !");
+      }
+    }
+  }
+
+  function getAdvertising() {
+    setShowLoading(true);
+    axios
+      .post(getAdvertisingByUserId,null,{
+        headers: {
+          Authorization: `${
+            JSON.parse(localStorage.getItem("userData")).token
+          }`,
+        },
+      })
+      .then((res) => {
+        setAdvertisingList(res.data);
+        if (res.status === 200) {
+          setShowLoading(false);
+       
+        }
+      })
+      .catch((err) => {
+        if (err.response?.data) {
+          err?.response?.data?.errors?.map((issue) => toast.error(issue));
+        } else {
+          toast.error("مشکلی پیش آمده است !");
+        }
+        setShowLoading(false);
+      });
+  }
   const suggested = [
     {
       img: "./img/es1.png",
@@ -69,6 +160,9 @@ export default function Dashboard() {
       title: "‌حمید فدایی",
     },
   ];
+  const getIdRealEstate = (e) => {
+    router.push(`/Rent/${e.target.getAttribute("data-reactid")}`)
+};
   return (
     <div className="About mt-5">
       <BgTop img="/img/userpanel/Group-209.jpg" />
@@ -84,28 +178,33 @@ export default function Dashboard() {
               <SideBar>
                 <Col xs={10} className="border-bottom mx-auto text-center">
                   <img
-                    src="/img/profile2.png"
+                    src={userImg}
                     className="col-md-9  col-sm-4 col-5 rounded-3"
                     alt=""
                   />
-                  <h6 className="pt-2 text-secondary">کاربر شماره ۲۴۵</h6>
+                  <h6 className="pt-2 text-secondary">
+                    {firstName + " " + lastName}
+                  </h6>
                 </Col>
                 <Col xs={10} className="mx-auto">
                   <Row>
-                    <Col
-                      xl={10}
-                      md={12}
-                      sm={6}
-                      xs={9}
-                      className="px-1 pt-3 mx-auto"
-                    >
-                      <Nav.Link
-                        eventKey="register"
-                        className="btn btn-border w-100 f-14 "
+                    {role == "normal" ? (
+                      <Col
+                        xl={10}
+                        md={12}
+                        sm={6}
+                        xs={9}
+                        className="px-1 pt-3 mx-auto"
                       >
+                        <Nav.Link
+                          eventKey="register"
+                          className="btn btn-border w-100 f-14 "
+                        >
                           ثبت نام
-                      </Nav.Link>
-                    </Col>
+                        </Nav.Link>
+                      </Col>
+                    ) : null}
+
                     <Col
                       xl={10}
                       md={12}
@@ -116,6 +215,7 @@ export default function Dashboard() {
                       <Nav.Link
                         eventKey="advertisements"
                         className="btn btn-border w-100 f-14 "
+                        onClick={()=>getAdvertising()}
                       >
                         آگهی های من
                       </Nav.Link>
@@ -242,30 +342,41 @@ export default function Dashboard() {
                   className="text-center shadow-sm rounded-4 pb-4 pt-3  px-4 bg-white"
                 >
                   <Tab.Content>
-                  <Tab.Pane eventKey="register">
-                  <LoginTypes />
-                  </Tab.Pane>
+                    {role == "normal" ? (
+                      <Tab.Pane eventKey="register">
+                        <LoginTypes />
+                      </Tab.Pane>
+                    ) : (
+                      <Tab.Pane eventKey="register">
+                        <div className="alert alert-success mb-0" role="alert">
+                          {`${firstName} ${lastName} به پنل کاربری خوش آمدید!`}
+                        </div>
+                      </Tab.Pane>
+                    )}
+
                     <Tab.Pane eventKey="advertisements">
                       <Row>
-                        {suggested.map((suggest, index) => (
-                          <Estate
-                            key={index}
-                            myClass="p-sm-2 p-3 my-lg-0  my-2 col-xl-4 col-lg-6 col-md-12 col-sm-6 col-11 mx-auto"
-                            img={suggest.img}
-                            title={suggest.title}
-                            profile={suggest.profile}
-                            location={suggest.location}
-                            price={suggest.price}
-                            bed={suggest.bed}
-                            type={suggest.type}
-                            time={suggest.time}
-                            meter={suggest.meter}
-                          />
-                        ))}
+                      {advertisingList.map((data) => {
+              return (<Estate
+                key={data.id}
+                myClass=" p-3 my-lg-0  my-2 col-xl-5 col-lg-6 col-md-10 col-11 mx-auto"
+                img={data.estateImage}
+                title={(data.agency)? data.agency.name : "کاربر عادی" }
+                profile={(data.agency)? "/uploads/advertising/"+data.agency.agencyImage : "/img/avatar.jpeg" }
+                location={data.cityArea.name}
+                price={data.price.replace(/(\d)(?=(\d{3})+$)/g, '$1,')}
+                bed={room(data.roomCount)}
+                type={property(data.type)}
+                time={moment(data.createdAt, 'YYYY/MM/DD').locale('fa').format('YYYY/MM/DD')}
+                meter={meterage(data.meter)}
+                phoneNumber={data.phoneNumber}
+                to={data.id}
+                getId={getIdRealEstate}
+              />);
+              })}
                       </Row>
                     </Tab.Pane>
                     <Tab.Pane eventKey="note">note</Tab.Pane>
-                    
 
                     <Tab.Pane eventKey="transactions">
                       <Table borderless hover className="text-end">
@@ -356,17 +467,19 @@ export default function Dashboard() {
                       </Row>
                     </Tab.Pane>
                     <Tab.Pane eventKey="experts">
-                        <Row>
+                      <Row>
                         {ExpertData.map((item, index) => (
-                        <ExpertCard
-                          key={index}
-                          img={item.img}
-                          title={item.title}
-                        >
-                          <button className="btn-danger rounded-3 mb-2 f-14">حذف کارشناس</button>
-                        </ExpertCard>
-                      ))}
-                        </Row>
+                          <ExpertCard
+                            key={index}
+                            img={item.img}
+                            title={item.title}
+                          >
+                            <button className="btn-danger rounded-3 mb-2 f-14">
+                              حذف کارشناس
+                            </button>
+                          </ExpertCard>
+                        ))}
+                      </Row>
                     </Tab.Pane>
                     <Tab.Pane eventKey="reports">
                       <Col
@@ -393,6 +506,7 @@ export default function Dashboard() {
             </Col>
           </Row>
         </Tab.Container>
+        <ToastContainer position="top-left" rtl={true} theme="colored" />
       </Container>
     </div>
   );

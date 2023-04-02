@@ -22,7 +22,6 @@ export default async function handler(
 
 async function get(req, res) {
   const { id } = req.query;
-  console.log(id);
   let { number } = req.query;
   let obj = null;
   if (id) {

@@ -13,11 +13,13 @@ export const SingleBlogApi = (normalName) => `api/articles/single?normalName=${n
 export const getAgencyInfoApi = `/api/agency`
 export const getNameActiveAgency = `/api/agency/getNameActiveAgency`
 export const getUsersApi = `/api/user`
+export const getInfoUser = `/api/user/getInfoUser`
 export const upsertUser = `/api/user/post`
 export const removeUser = `/api/user/remove`
 export const createAgency = `/api/user/createAgency`
 export const createAgencyAgent = `/api/user/createAgencyAgent`
 export const getRealEstateApi = `/api/realEstate`
+export const getAdvertisingByUserId = `/api/realEstate/getAdvertisingByUserId`
 export const createRealEstateApi = `/api/realEstate/create`
 export const searchRealEstateApi = `/api/realEstate/search`
 export const creatAagencyApi = `/api/agency/create`

@@ -232,7 +232,7 @@ model note {
   note            String
   realEstate      realEstate?      @relation(fields: [realEstateId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   realEstateId    String?
-  createdAt DateTime @default(now())
+  createdAt       DateTime @default(now())
 }
 
 model save {
@@ -241,7 +241,7 @@ model save {
   userId          String
   realEstate      realEstate      @relation(fields: [realEstateId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   realEstateId    String
-  createdAt DateTime @default(now())
+  createdAt       DateTime @default(now())
 }
 
 model report {
