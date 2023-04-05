@@ -8,7 +8,7 @@ import { faPencil } from "@fortawesome/free-solid-svg-icons";
 import ExpertCard from "../../components/ExpertCard";
 import LoginTypes from "../../components/LoginTypes";
 import { useContext, useEffect, useState } from "react";
-import { getInfoUser,getAdvertisingByUserId } from "../../api";
+import { getInfoUser,getAdvertisingByUserId,getNoteByUserId } from "../../api";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import { context } from "../../context";
@@ -21,6 +21,7 @@ import {
   advertisingStatus,
 } from "./../../lib/enum-converter";
 import moment from 'jalali-moment'
+import Note from "../../components/Note";
 
 export default function Dashboard() {
   const router = useRouter();
@@ -33,6 +34,7 @@ export default function Dashboard() {
   const [userImg, setUserImg] = useState("/img/profile2.png");
   const [realEstateList, setRealEstateList] = useState([]);
   const [advertisingList, setAdvertisingList] = useState([]);
+  const [advertisingNotes, setAdvertisingNotes] = useState([]);
 
   let test;
 
@@ -100,52 +102,33 @@ export default function Dashboard() {
         setShowLoading(false);
       });
   }
-  const suggested = [
-    {
-      img: "./img/es1.png",
-      title: "کاربرعادی",
-      profile: "./img/profile2.png",
-      location: "معالی‌آباد",
-      price: "2.7 میلیارد",
-      bed: "2",
-      type: "مسکونی",
-      time: "۳ روز پیش",
-      meter: "160",
-    },
-    {
-      img: "./img/es2.png",
-      title: "کاربرعادی",
-      profile: "./img/profile1.png",
-      location: "معالی‌آباد",
-      price: "2.7 میلیارد",
-      bed: "3",
-      type: "مسکونی",
-      time: "۳ روز پیش",
-      meter: "200",
-    },
-    {
-      img: "./img/es1.png",
-      title: "کاربرعادی",
-      profile: "./img/profile2.png",
-      location: "معالی‌آباد",
-      price: "2.7 میلیارد",
-      bed: "2",
-      type: "مسکونی",
-      time: "۳ روز پیش",
-      meter: "160",
-    },
-    {
-      img: "./img/es2.png",
-      title: "کاربرعادی",
-      profile: "./img/profile1.png",
-      location: "معالی‌آباد",
-      price: "2.7 میلیارد",
-      bed: "3",
-      type: "مسکونی",
-      time: "۳ روز پیش",
-      meter: "200",
-    },
-  ];
+  function getAdvertisingNotes() {
+    setShowLoading(true);
+    axios
+      .post(getNoteByUserId,null,{
+        headers: {
+          Authorization: `${
+            JSON.parse(localStorage.getItem("userData")).token
+          }`,
+        },
+      })
+      .then((res) => {
+        setAdvertisingNotes(res.data);
+        if (res.status === 200) {
+          setShowLoading(false);
+       
+        }
+      })
+      .catch((err) => {
+        if (err.response?.data) {
+          err?.response?.data?.errors?.map((issue) => toast.error(issue));
+        } else {
+          toast.error("مشکلی پیش آمده است !");
+        }
+        setShowLoading(false);
+      });
+  }
+
   const ExpertData = [
     {
       img: "/img/realState/user-pic1.png",
@@ -229,7 +212,8 @@ export default function Dashboard() {
                     >
                       <Nav.Link
                         eventKey="note"
-                        className="btn btn-border w-100 f-14 "
+                        className="btn btn-border w-100 f-14"
+                        onClick={()=>getAdvertisingNotes()}
                       >
                         یادداشت‌ها
                       </Nav.Link>
@@ -376,7 +360,18 @@ export default function Dashboard() {
               })}
                       </Row>
                     </Tab.Pane>
-                    <Tab.Pane eventKey="note">note</Tab.Pane>
+                    <Tab.Pane eventKey="note">
+                      <Row>
+                      {advertisingNotes.map((data) => {
+              return (<div>
+                
+                <Note title={data.note}   to={data.id}
+                getId={getIdRealEstate}/>
+              </div>
+              );
+              })}
+                      </Row>
+                    </Tab.Pane>
 
                     <Tab.Pane eventKey="transactions">
                       <Table borderless hover className="text-end">
