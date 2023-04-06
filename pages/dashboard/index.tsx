@@ -8,7 +8,7 @@ import { faPencil } from "@fortawesome/free-solid-svg-icons";
 import ExpertCard from "../../components/ExpertCard";
 import LoginTypes from "../../components/LoginTypes";
 import { useContext, useEffect, useState } from "react";
-import { getInfoUser,getAdvertisingByUserId,getNoteByUserId } from "../../api";
+import { getInfoUser,getAdvertisingByUserId,getNoteByUserId,getAdmissionRequest } from "../../api";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import { context } from "../../context";
@@ -22,6 +22,7 @@ import {
 } from "./../../lib/enum-converter";
 import moment from 'jalali-moment'
 import Note from "../../components/Note";
+import RequestCard from "../../components/RequestCard";
 
 export default function Dashboard() {
   const router = useRouter();
@@ -32,9 +33,11 @@ export default function Dashboard() {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [userImg, setUserImg] = useState("/img/profile2.png");
+  const [agencyId, setAgencyId] = useState("");
   const [realEstateList, setRealEstateList] = useState([]);
   const [advertisingList, setAdvertisingList] = useState([]);
   const [advertisingNotes, setAdvertisingNotes] = useState([]);
+  const [agentrequest, setAgentrequest] = useState([]);
 
   let test;
 
@@ -57,12 +60,19 @@ export default function Dashboard() {
       // console.log(res.data)
       setInfoUser(res.data);
       test = res.data;
-      setUserImg(`/uploads/users/${res.data.userImage}`);
-      setFirstName(res.data.firstName);
-      setLastName(res.data.lastName);
+    
 
       if (res.status === 200) {
         setRole(res.data.role);
+        setUserImg(`/uploads/users/${res.data.userImage}`);
+        setFirstName(res.data.firstName);
+        setLastName(res.data.lastName);
+        if( res.data.role == "agencyOwner"){
+          setAgencyId(res.data.agency[0].id);
+          // console.log(res.data.agency[0].id);
+          // console.log(agencyId);
+          
+        }
         setShowLoading(false);
         toast.success("خوش آمدید");
       }
@@ -116,6 +126,33 @@ export default function Dashboard() {
         setAdvertisingNotes(res.data);
         if (res.status === 200) {
           setShowLoading(false);
+       
+        }
+      })
+      .catch((err) => {
+        if (err.response?.data) {
+          err?.response?.data?.errors?.map((issue) => toast.error(issue));
+        } else {
+          toast.error("مشکلی پیش آمده است !");
+        }
+        setShowLoading(false);
+      });
+  }
+  function getAgentrequest() {
+    setShowLoading(true);
+    axios
+      .post(getAdmissionRequest,null,{
+        headers: {
+          Authorization: `${
+            JSON.parse(localStorage.getItem("userData")).token
+          }`,
+        },
+      })
+      .then((res) => {
+        setAgentrequest(res.data);
+        if (res.status === 200) {
+          setShowLoading(false);
+          console.log(res.data);
        
         }
       })
@@ -283,6 +320,7 @@ export default function Dashboard() {
                       <Nav.Link
                         eventKey="invite"
                         className="btn btn-border w-100 f-14 "
+                        onClick={()=>getAgentrequest()}
                       >
                         فرم دعوت به همکاری
                       </Nav.Link>
@@ -401,64 +439,20 @@ export default function Dashboard() {
                     </Tab.Pane>
                     <Tab.Pane eventKey="invite">
                       <Row>
-                        <Col lg={3} className="pe-lg-2 ">
-                          <img
-                            src="/img/realState/user-pic2.png"
-                            className="col-lg-12 col-sm-5 rounded-3 h-100"
-                            alt=""
+                        <Col sm={12}>
+                        {agentrequest.map((data) => (
+                          <RequestCard
+                          key={data.id}
+                          name={data.firstName + data.lastName}
+                          address={data.address}
+                          number={data.phoneNumber}
+                          nCode={data.nationalCode}
+                          pCode={data.postalCode}
                           />
-                          <div
-                            className="col-lg-12 col-sm-5 col-6 mx-auto d-flex justify-content-between px-1"
-                            style={{ marginTop: "-33px" }}
-                          >
-                            <button className="rounded-5 btn-es col-6 f-13">
-                              پذیرش
-                            </button>
-                            <button className="rounded-5 btn-danger col-sm-5 col-6 f-13">
-                              رد کردن
-                            </button>
-                          </div>
+                        ))}
                         </Col>
-                        <Col lg={9}>
-                          <Row>
-                            <Col
-                              lg={6}
-                              className="ps-lg-2 pe-lg-0 ps-2 pe-2 mt-lg-0 mt-3"
-                            >
-                              <span className="btn shadow-es col-12 rounded-4 py-2 text-secondary text-end f-14">
-                                {" "}
-                                نام و نام‌خانوادگی: پارمیدا زارع
-                              </span>
-                            </Col>
-                            <Col
-                              lg={6}
-                              className="pe-lg-2 ps-2 pe-2 mt-lg-0 mt-3"
-                            >
-                              <span className="btn shadow-es col-12 rounded-4 py-2 text-secondary text-end f-14">
-                                شماره تماس: 09171102056
-                              </span>
-                            </Col>
-                            <Col
-                              lg={6}
-                              className="ps-lg-2 pe-lg-0 ps-2 pe-2 mt-3"
-                            >
-                              <span className="btn shadow-es col-12 rounded-4 py-2 text-secondary text-end f-14">
-                                کدملی: 2420187459
-                              </span>
-                            </Col>
-                            <Col lg={6} className="pe-lg-2 ps-2 pe-2 mt-3">
-                              <span className="btn shadow-es col-12 rounded-4 py-2 text-secondary text-end f-14">
-                                کدپستی: 731875648
-                              </span>
-                            </Col>
-                            <Col lg={12} className="pe-lg-0 ps-2 pe-2 mt-3">
-                              <span className="btn shadow-es col-12 rounded-4 py-2 text-secondary text-end f-14">
-                                آدرس محل سکونت: شیراز خیابان قدوسی غربی نرسیده
-                                به شهید محلاتی طبقه فوقانی فروشگاه واحد سوم ۳۶۱
-                              </span>
-                            </Col>
-                          </Row>
-                        </Col>
+                    
+                        
                       </Row>
                     </Tab.Pane>
                     <Tab.Pane eventKey="experts">

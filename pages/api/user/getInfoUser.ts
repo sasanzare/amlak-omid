@@ -36,6 +36,7 @@ async function getInfo(req: NextApiRequest, res: NextApiResponse) {
     lastName: true,
     userImage: true,
     role: true,
+    agency: true,
     note: {
         select: {
             id          : true,
