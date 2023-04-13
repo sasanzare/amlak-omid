@@ -1,20 +1,24 @@
 import { Col, Row } from "react-bootstrap";
-// import styles from "./index.css"
 import styles from "./RequestCard.module.css";
 export default (props) => {
   return (
     <Row className="pb-4 mb-4 border-bottom">
       <Col lg={3} className="pe-lg-2">
         <img
-          src="/img/realState/user-pic2.png"
-          className="col-lg-12 col-sm-5 rounded-3 h-100"
-          alt=""
+          src={"/uploads/users/"+ props.img}
+          className="col-lg-12 col-sm-5 rounded-3 "
+          height={200}
+          alt={props.name}
         />
         <div
           className={"col-lg-12 col-sm-5 col-6 mx-auto d-flex justify-content-between px-1 " + styles.mt33}
         >
-          <button className="rounded-5 btn-es col-6 f-13">پذیرش</button>
-          <button className="rounded-5 btn-danger col-sm-5 col-6 f-13">
+          <button className="rounded-5 btn-es col-6 f-13"
+          onClick={props.getId} data-reactid={props.to}
+          >پذیرش</button>
+          <button className="rounded-5 btn-danger col-sm-5 col-6 f-13"
+          onClick={props.deleteId} data-reactid={props.to}
+          >
             رد کردن
           </button>
         </div>

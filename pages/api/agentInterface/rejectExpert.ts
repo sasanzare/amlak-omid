@@ -19,7 +19,8 @@ export default async function handler(
 async function get(req: NextApiRequest, res: NextApiResponse) {
   const user = await verify(req, String(env.JWT_SECRET));
 
-  const idAgency = await prisma.agency.findFirst({
+  const idExpert = req.body.idExpert;
+  const agency = await prisma.agency.findFirst({
     where: {
       ownerId: user._id,
     },
@@ -28,16 +29,23 @@ async function get(req: NextApiRequest, res: NextApiResponse) {
     },
   });
 
-  const obj = await prisma.user.findMany({
+  const targetUser = await prisma.agentInterface.findFirst({
     where: {
-      agentOf: {
-        some: {
-          agencyId: idAgency.id,
-          isActive : false
-        },
-      },
+      userId: idExpert,
+      agencyId: agency.id,
+    },
+    select: {
+      id: true,
     },
   });
 
-  res.status(200).json(obj);
+  const { id } = targetUser;
+
+  const deleteAgent = await prisma.agentInterface.delete({
+    where: {
+        id : id
+    },
+  });
+
+  res.status(200).json(deleteAgent);
 }

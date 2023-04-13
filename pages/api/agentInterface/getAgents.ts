@@ -33,7 +33,7 @@ async function get(req: NextApiRequest, res: NextApiResponse) {
       agentOf: {
         some: {
           agencyId: idAgency.id,
-          isActive : false
+          isActive : true
         },
       },
     },

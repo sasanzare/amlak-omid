@@ -8,7 +8,7 @@ import { faPencil } from "@fortawesome/free-solid-svg-icons";
 import ExpertCard from "../../components/ExpertCard";
 import LoginTypes from "../../components/LoginTypes";
 import { useContext, useEffect, useState } from "react";
-import { getInfoUser,getAdvertisingByUserId,getNoteByUserId,getAdmissionRequest } from "../../api";
+import { getInfoUser,getAdvertisingByUserId,getNoteByUserId,getAdmissionRequest,acceptExpert,rejectExpert,getAgents } from "../../api";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import { context } from "../../context";
@@ -165,23 +165,89 @@ export default function Dashboard() {
         setShowLoading(false);
       });
   }
+  function getAgent() {
+    setShowLoading(true);
+    axios
+      .post(getAgents,null,{
+        headers: {
+          Authorization: `${
+            JSON.parse(localStorage.getItem("userData")).token
+          }`,
+        },
+      })
+      .then((res) => {
+        setAgentrequest(res.data);
+        if (res.status === 200) {
+          setShowLoading(false);
+          console.log(res.data);
+       
+        }
+      })
+      .catch((err) => {
+        if (err.response?.data) {
+          err?.response?.data?.errors?.map((issue) => toast.error(issue));
+        } else {
+          toast.error("مشکلی پیش آمده است !");
+        }
+        setShowLoading(false);
+      });
+  }
 
-  const ExpertData = [
-    {
-      img: "/img/realState/user-pic1.png",
-      title: "سینا رحمان پور",
-    },
-    {
-      img: "/img/realState/user-pic2.png",
-      title: "فاطمه قاسمی",
-    },
-    {
-      img: "/img/realState/user-pic3.png",
-      title: "‌حمید فدایی",
-    },
-  ];
+
   const getIdRealEstate = (e) => {
     router.push(`/Rent/${e.target.getAttribute("data-reactid")}`)
+};
+  const acceptRequest = (e) => {
+    setShowLoading(true);
+    axios
+      .post(acceptExpert,{idExpert : e.target.getAttribute("data-reactid")},{
+        headers: {
+          Authorization: `${
+            JSON.parse(localStorage.getItem("userData")).token
+          }`,
+        },
+      })
+      .then((res) => {
+        if (res.status === 200) {
+          setShowLoading(false);
+          getAgentrequest()
+          
+        }
+      })
+      .catch((err) => {
+        if (err.response?.data) {
+          err?.response?.data?.errors?.map((issue) => toast.error(issue));
+        } else {
+          toast.error("مشکلی پیش آمده است !");
+        }
+        setShowLoading(false);
+      });
+};
+  const rejectRequest = (e) => {
+    setShowLoading(true);
+    axios
+      .post(rejectExpert,{idExpert : e.target.getAttribute("data-reactid")},{
+        headers: {
+          Authorization: `${
+            JSON.parse(localStorage.getItem("userData")).token
+          }`,
+        },
+      })
+      .then((res) => {
+        if (res.status === 200) {
+          setShowLoading(false);
+          getAgentrequest()
+          
+        }
+      })
+      .catch((err) => {
+        if (err.response?.data) {
+          err?.response?.data?.errors?.map((issue) => toast.error(issue));
+        } else {
+          toast.error("مشکلی پیش آمده است !");
+        }
+        setShowLoading(false);
+      });
 };
   return (
     <div className="About mt-5">
@@ -335,6 +401,7 @@ export default function Dashboard() {
                       <Nav.Link
                         eventKey="experts"
                         className="btn btn-border w-100 f-14 "
+                        onClick={()=>getAgent()}
                       >
                         مدیریت کارشناس‌ها
                       </Nav.Link>
@@ -448,6 +515,10 @@ export default function Dashboard() {
                           number={data.phoneNumber}
                           nCode={data.nationalCode}
                           pCode={data.postalCode}
+                          img={data.userImage}
+                          to={data.id}
+                          getId={acceptRequest}
+                          deleteId={rejectRequest}
                           />
                         ))}
                         </Col>
@@ -457,17 +528,23 @@ export default function Dashboard() {
                     </Tab.Pane>
                     <Tab.Pane eventKey="experts">
                       <Row>
-                        {ExpertData.map((item, index) => (
+            
+
+<Col sm={12}>
+                        {agentrequest.map((data) => (
                           <ExpertCard
-                            key={index}
-                            img={item.img}
-                            title={item.title}
-                          >
-                            <button className="btn-danger rounded-3 mb-2 f-14">
-                              حذف کارشناس
-                            </button>
-                          </ExpertCard>
+                          key={data.id}
+                          name={data.firstName + data.lastName}
+                          address={data.address}
+                          number={data.phoneNumber}
+                          nCode={data.nationalCode}
+                          pCode={data.postalCode}
+                          img={data.userImage}
+                          to={data.id}
+                          deleteId={rejectRequest}
+                          />
                         ))}
+                        </Col>
                       </Row>
                     </Tab.Pane>
                     <Tab.Pane eventKey="reports">
