@@ -394,3 +394,7 @@ a:hover {
   color: #6c757d!important;
   font-weight: 500 !important;
 }
+
+.new-input:focus , .new-input::placeholder,.new-input:-ms-input-placeholder,.new-input::-ms-input-placeholder{
+  color: #6768ab;
+}

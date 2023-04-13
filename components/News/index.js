@@ -2,16 +2,36 @@ import SingleSelect from "../SingleSelect";
 import { Form } from 'react-bootstrap';
 import './NewsForm.module.css'
 import MyMap from './../map/Map';
-import React, { useState, useContext } from "react";
+import React, { useState, useContext,useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { ToastContainer, toast } from "react-toastify";
 import { context } from './../../context/index';
 import axios from "axios";
 import { NewsApi } from './../../api/index';
-
-
+import {getCityApi,getCityAreaByIdApi} from "../../api"
+import dynamic from "next/dynamic";
+import { EditorState } from "draft-js";
+import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
+import { convertToHTML, convertFromHTML } from "draft-convert";
 
 const NewsForm = () => {
+    const [editorState, setEditorState] = useState(() =>
+    EditorState.createEmpty()
+  );
+  const [convertedContent, setConvertedContent] = useState(null);
+  const handleEditorChange = (state) => {
+    setEditorState(state);
+    convertContentToHTML();
+  };
+  const convertContentToHTML = () => {
+    let currentContentAsHTML = convertToHTML(editorState.getCurrentContent());
+    setConvertedContent(currentContentAsHTML);
+  };
+
+  const Editor = dynamic(
+    () => import("react-draft-wysiwyg").then((mod) => mod.Editor),
+    { ssr: false }
+  );
 
     const { setShowLoading } = useContext(context);
 
@@ -35,12 +55,61 @@ const NewsForm = () => {
     const [pictures, setPictures] = useState();
     const [lat, setLat] = useState();
     const [lang, setLang] = useState();
+    const [cityList, setCityList] = useState([]);
+    const [cityAreaList, setCityAreaList] = useState([]);
     const [showImg, setShowImg] = useState(null);
     const RealStateRegistration = new FormData();
 
     const { register, handleSubmit, watch, formState: { errors } } = useForm();
 
+    useEffect(() => {
+        getCity();
+      }, [city]);
+    useEffect(() => {
+        getCityArea();
+      }, [city]);
 
+    function getCity() {
+        setShowLoading(true);
+        axios
+          .get(getCityApi)
+          .then((res) => {
+            setCityList(res.data);
+            if (res.status === 200) {
+              setShowLoading(false);
+            }
+          })
+          .catch((err) => {
+            if (err.response?.data) {
+              err?.response?.data?.errors?.map((issue) => toast.error(issue));
+            } else {
+              toast.error("مشکلی پیش آمده است !");
+            }
+            setShowLoading(false);
+          });
+      }
+
+
+
+  function getCityArea() {
+    setShowLoading(true);
+    axios
+      .get(`${getCityAreaByIdApi}?cityId=${city}`)
+      .then((res) => {
+        setCityAreaList(res.data);
+        if (res.status === 200) {
+          setShowLoading(false);
+        }
+      })
+      .catch((err) => {
+        if (err.response?.data) {
+          err?.response?.data?.errors?.map((issue) => toast.error(issue));
+        } else {
+          toast.error("مشکلی پیش آمده است !");
+        }
+        setShowLoading(false);
+      });
+  }
 
     async function BtnHandeller(e) {
         e.preventDefault();
@@ -105,107 +174,109 @@ const NewsForm = () => {
     }
     return (
         <Form className="col-lg-6 col-md-8  newsForm mx-auto flex-column flex-lg-row py-3 mt-5" >
-            <SingleSelect val={[
-                "مرودشت",
-                "شیراز",
-                "لار",
-                "زرقان",
-                "نورآباد",
-                "فسا"
-            ]}
-                name="city"
-                title="شهر"
-                {...register("city", {
-                    required: "شهر وارد نشده",
-                    onChange: (e) => setCity(e.target.value)
-                })}
+ 
+
+<Form.Group className="mb-3">
+   
+
+            <Form.Select className="border-0 shadow-es" onChange={(e) => setCity(e.target.value)} value={city}>
+            <option>شهر
+                  </option>
+              {cityList?.map((data, i) => {
+                return (
+                  <option key={data.id} value={data.id}>
+                    {data.name}
+                  </option>
+                );
+              })}
+            </Form.Select>
+          </Form.Group>
+          <Form.Group className="mb-3">
+            <Form.Select className="border-0 shadow-es" onChange={(e) => setArea(e.target.value)} value={area}>
+              <option>محدوده</option>
+              {cityAreaList?.map((data, i) => {
+                return (
+                  <option key={data.id} value={data.id}>
+                    {data.name}
+                  </option>
+                );
+              })}
+            </Form.Select>
+          </Form.Group>
+   
+
+          <Form.Group className="mb-3">
+            <Form.Select className="border-0 shadow-es"
+              onChange={(e) => setType(e.target.value)}
+              value={type}
+            >
+              <option>نوع ملک (انتخاب نشده)</option>
+              <option value="c">اداری / تجاری</option>
+              <option value="a">آپارتمان</option>
+              <option value="v">ویلایی / باغ و باغچه</option>
+              <option value="l">زمین / کلنگی</option>
+              <option value="i">مستقلات / پنت هاوس</option>
+            </Form.Select>
+          </Form.Group>
+
+          <Form.Group className="mb-3">
+            <Form.Control
+            className="border-0 shadow-es text-es py-2 new-input"
+              onChange={(e) => setPrice(e.target.value)}
+              value={price}
+              placeholder="قیمت برحسب تومان"
             />
+          </Form.Group>
 
-            <SingleSelect val={[
-                "معالی آباد",
-                "قصردشت",
-                "فرهنگ شهر",
-                "تاچارا",
-            ]}
-                name="location"
-                title="محدوده"
-                {...register("area", {
-                    required: "شهر وارد نشده",
-                    onChange: (e) => setArea(e.target.value)
-                })}
+          <Form.Group className="mb-3">
 
-
-            />
-
-
-            <SingleSelect val={[
-                "فروش مسکونی",
-                "اجاره مسکونی",
-                "فروش اداری و تجاری",
-                "اجاره اداری و تجاری",
-                "اجاره کوتاه مدت",
-                "پروژه های ساخت و ساز",
-
-            ]}
-                name="type"
-                title="نوع ملک"
-                {...register("type", {
-                    required: "شهر وارد نشده",
-                    onChange: (e) => setType(e.target.value)
-                })}
-
-            />
+            <Form.Select
+            className="border-0 shadow-es"
+              onChange={(e) => setMetrage(e.target.value)}
+              value={metrage}
+            >
+              <option>متراژ</option>
+              <option value="m10">۱۰ تا ۹۰ متر</option>
+              <option value="m90">۹۰ تا ۱۵۰ متر</option>
+              <option value="m150">۱۵۰ تا ۲۲۰ متر</option>
+              <option value="m220">۲۲۰ متر به بالا</option>
+            </Form.Select>
+          </Form.Group>
 
 
-            <div>
-                <Form.Control
-                    {...register("price", {
-                        required: "قیمت وارد نشده",
-                        onChange: (e) => setPrice(e.target.value)
-                    })}
-                    className="input-form shadow-es border-0 mb-3" type="text" placeholder="برحسب تومان" />
+          <Form.Group className="mb-3">
+            <Form.Select
+               className="border-0 shadow-es"
+              onChange={(e) => setAssignmentType(e.target.value)}
+              value={assignmentType}
+            >
+              <option>نوع واگذاری</option>
+              <option value="rental">رهن و اجاره</option>
+              <option value="forSale">خرید</option>
+              <option value="fastSale">فروش فوری</option>
+            </Form.Select>
+          </Form.Group>
 
-            </div>
 
-
-            <div>
-                <Form.Control
-                    {...register("metrage", {
-                        required: "متراژ وارد نشده",
-                        onChange: (e) => setMetrage(e.target.value)
-                    })}
-                    className="input-form shadow-es border-0 mb-3" type="text" placeholder="بر حسب متر" />
-
-            </div>
+          <Form.Group className="mb-3">
+            <Form.Select
+             className="border-0 shadow-es"
+              onChange={(e) => setBedRooms(e.target.value)}
+              value={bedRooms}
+            >
+              <option>تعداد اتاق</option>
+              <option value="one">۱</option>
+              <option value="two">۲</option>
+              <option value="three">۳</option>
+              <option value="four">۴</option>
+              <option value="five">۵</option>
+            </Form.Select>
+          </Form.Group>
+  
 
 
 
-            <SingleSelect val={[
-                "45",
-                "50",
-                "60",
-                "65",
-            ]}
-                name="assignment"
-                title="نوع واگذاری"
-                {...register("assignmentType", {
-                    required: "شهر وارد نشده",
-                    onChange: (e) => setAssignmentType(e.target.value)
-                })}
-            />
-            <SingleSelect val={[
-                "1",
-                "2",
-                "3",
-                "4",
-            ]}
-                name="room"
-                title="تعداد خواب"
-                {...register("bedRooms", {
-                    required: "شهر وارد نشده",
-                    onChange: (e) => setBedRooms(e.target.value)
-                })}
-            />
+      
 
             {/* <SingleSelect val={[
             "1",
@@ -237,33 +308,31 @@ const NewsForm = () => {
 
 
 
-            <div>
-                <Form.Control
-                    {...register("phoneNumber", {
-                        required: "شماره تماس وارد نشده",
-                        onChange: (e) => setPhoneNumber(e.target.value)
-                    })}
-                    className="input-form shadow-es border-0 mb-3" type="text" placeholder="شماره تماس" />
-            </div>
+        
+        <Form.Group className="mb-3">
+            <Form.Control
+            className="border-0 shadow-es text-es py-2 new-input"
+              onChange={(e) => setPhoneNumber(e.target.value)}
+              value={phoneNumber}
+              placeholder="شماره تماس"
+            />
+          </Form.Group>
+          <Form.Group className="mb-3">
+            <Form.Control
+                   className="border-0 shadow-es text-es py-2"
+              onChange={(e) => setTitle(e.target.value)}
+              value={title}
+              placeholder="عنوان"
+            />
+          </Form.Group>
+          <Form.Group className="mb-3" controlId="text">
+            <Editor
+              editorState={editorState}
+              onEditorStateChange={handleEditorChange}
+            />
+          </Form.Group>
+            
 
-
-            <div>
-                <Form.Control
-                    {...register("Title", {
-                        required: "عنوان آگهی وارد نشده",
-                        onChange: (e) => setTitle(e.target.value)
-                    })}
-                    className="input-form shadow-es border-0 mb-3" type="text" placeholder="عنوان آگهی" />
-            </div>
-
-            <div>
-                <Form.Control
-                    {...register("description", {
-                        required: "توضیحات آگهی وارد نشده",
-                        onChange: (e) => setDescription(e.target.value)
-                    })}
-                    as="textarea" className='news-textArea shadow-es border-0 mb-3 f-16 pr-5' placeholder='توضیحات آگهی' rows={5} />
-            </div>
 
 
             <Form.Group
@@ -291,7 +360,7 @@ const NewsForm = () => {
             </Form.Group>
 
             <div className="mt-5">
-                <MyMap />
+                
             </div>
 
             <button onClick={(e) => BtnHandeller(e)} className="btn btn-es fw-bold px-3 w-50 mx-auto mt-4" href="#home">ثبت آگهی</button>
