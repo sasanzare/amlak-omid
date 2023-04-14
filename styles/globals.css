@@ -398,3 +398,7 @@ a:hover {
 .new-input:focus , .new-input::placeholder,.new-input:-ms-input-placeholder,.new-input::-ms-input-placeholder{
   color: #6768ab;
 }
+
+.h-250{
+  height: 250px;
+}
