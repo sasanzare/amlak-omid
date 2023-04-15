@@ -402,3 +402,12 @@ a:hover {
 .h-250{
   height: 250px;
 }
+
+.image-gallery-image{
+  height: 400px;
+  border-radius: 0.3rem !important;
+}
+.image-gallery-thumbnail-image{
+  height: 100px;
+  border-radius: 0.3rem !important;
+}

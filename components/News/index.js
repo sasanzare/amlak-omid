@@ -18,13 +18,10 @@ import { createAdvertise } from "../../api";
 import { useRouter } from "next/router";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-  faEllipsisVertical,
-  faCheckCircle,
-  faXmarkCircle,
   faUpload
 } from "@fortawesome/free-solid-svg-icons";
 
-const NewsForm = () => {
+export default () => {
   const navigate = useRouter();
   const [editorState, setEditorState] = useState(() =>
     EditorState.createEmpty()
@@ -71,7 +68,7 @@ const NewsForm = () => {
   const [cityList, setCityList] = useState([]);
   const [cityAreaList, setCityAreaList] = useState([]);
   const [showImg, setShowImg] = useState(null);
-  const RealStateRegistration = new FormData();
+  
 
   const [image1, setImage1] = useState();
   const [selectedImage1, setSelectedImage1] = useState("");
@@ -137,6 +134,7 @@ const NewsForm = () => {
   }
 
   async function BtnHandeller(e) {
+    const RealStateRegistration = new FormData();
     e.preventDefault();
 
     try {
@@ -154,7 +152,6 @@ const NewsForm = () => {
       RealStateRegistration.append("description", convertedContent);
       RealStateRegistration.append("media", estateImage);
       if(selectedImage1 != ""){
-        alert(1)
         RealStateRegistration.append("media", image1);
       }
       if(selectedImage2 != ""){
@@ -620,4 +617,4 @@ const NewsForm = () => {
   );
 };
 
-export default NewsForm;
+// export default NewsForm;

@@ -8,7 +8,7 @@ import { useEffect } from 'react'
 function News() {
   const navigate = useRouter()
   useEffect(() => {
-    let form = document.getElementById('submitForm')
+    // let form = document.getElementById('submitForm')
     let userData = localStorage.getItem('userData');
 
     if (!userData) {

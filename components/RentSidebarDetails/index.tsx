@@ -18,17 +18,18 @@ export default function RentSidebarDetails(props) {
         <img
           src={props.img ? props.img : "/img/avatar.jpeg"}
           className="w-25 rounded-circle"
-          alt=""
+          alt="avatar"
         />
       </div>
       <div className="d-flex justify-content-between  border-bottom pt-3 text-secondary">
         <small>کاربر شماره 245</small>
         <div>
+        <small>{props.time}</small>
           <FontAwesomeIcon icon={faClock} className=" ms-1" />
-          <small>{props.time}</small>
+          
         </div>
       </div>
-      <h6 className="pt-4 fw-bold">آپارتمان فرهنگشهر 110 متر دوخوابه</h6>
+      <h6 className="pt-4 fw-bold">{props.name}</h6>
       <div className="d-flex justify-content-between  border-bottom pt-3 text-secondary">
         <div>
           <FontAwesomeIcon icon={faHome} className=" ms-1" />
@@ -55,7 +56,7 @@ export default function RentSidebarDetails(props) {
           <FontAwesomeIcon icon={faColumns} className="ms-1" />
           <small>متراژ</small>
         </div>
-        <small>{props.bed}</small>
+        <small>{props.meter}</small>
       </div>
       <div className="d-flex justify-content-between  border-bottom pt-3 text-secondary">
         <div>
@@ -87,3 +88,5 @@ export default function RentSidebarDetails(props) {
     </div>
   );
 }
+
+

@@ -33,3 +33,37 @@ module.exports = nextConfig
 
 
 
+// module.exports = {
+//   async headers() {
+//     return [
+//       {
+//         source: '/api/:path*',
+//         headers: [
+//           {
+//             key: 'Access-Control-Allow-Origin',
+//             value: '*',
+//           },
+//           {
+//             key: 'Access-Control-Allow-Headers',
+//             value: 'X-Requested-With, Content-Type, Authorization',
+//           },
+//         ],
+//       },
+//     ];
+//   },
+// };
+
+
+// module.exports = {
+//     reactStrictMode: true,
+//   swcMinify: true,
+
+//   typescript: {
+//     ignoreBuildErrors: true,
+//   },
+//   i18n: {
+//     locales: ["fa"],
+//     defaultLocale: "fa",
+//   },
+//   output: 'standalone',
+// }

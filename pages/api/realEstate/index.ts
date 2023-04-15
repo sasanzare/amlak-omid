@@ -29,6 +29,40 @@ async function get(req, res) {
       where: {
         id: id,
       },
+      select: {
+        id: true,
+        name: true,
+        phoneNumber: true,
+        description: true,
+        roomCount: true,
+        meter: true,
+        estateImage: true,
+        assignmentType: true,
+        type: true,
+        price: true,
+        latitude: true,
+        longitude: true,
+        createdAt: true,
+        isActive: true,
+        AdStatus: true,
+        cityArea: {
+          select: {
+            name: true,
+          },
+        },
+        city: {
+          select: {
+            name: true,
+          },
+        },
+        agency: {
+          select: {
+            name: true,
+            agencyImage: true,
+          },
+        },
+        gallery: true
+      },
     });
   } else {
     obj = await prisma.realEstate.findMany({
