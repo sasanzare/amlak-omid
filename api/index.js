@@ -25,6 +25,7 @@ export const createAdvertise = `/api/realEstate/createAdvertise`
 export const searchRealEstateApi = `/api/realEstate/search`
 export const getRealEstateByArea = `/api/realEstate/getRealEstateByArea`
 export const getRentRealEstate = `/api/realEstate/getRentRealEstate`
+export const getBuyRealEstate = `/api/realEstate/getBuyRealEstate`
 export const creatAagencyApi = `/api/agency/create`
 export const removeAagencyApi = `/api/agency/remove`
 export const getCityApi = "/api/city"

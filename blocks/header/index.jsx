@@ -101,7 +101,7 @@ function Header() {
                     as="ul"
                   >
                     <Nav.Item as="li">
-                      <Nav.Link href="/buy">خرید</Nav.Link>
+                      <Nav.Link href="/Buy">خرید</Nav.Link>
                     </Nav.Item>
                     <Nav.Item as="li">
                       <Nav.Link href="/Rent" eventKey="link-1">رهن و اجاره</Nav.Link>

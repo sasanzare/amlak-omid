@@ -18,8 +18,8 @@ import Estate from "../../components/Estate";
 import axios from "axios";
 import { context } from "../../context";
 import { ToastContainer, toast } from "react-toastify";
-import { getRealEstateApi,createNote } from "./../../api";
-import { property, room, meterage,assignment } from "./../../lib/enum-converter";
+import { getRealEstateApi,createNote,getBuyRealEstate } from "../../api";
+import { property, room, meterage,assignment } from "../../lib/enum-converter";
 import moment from "jalali-moment";
 
 
@@ -37,15 +37,16 @@ export default function RentId() {
   }, []);
 
   useEffect(() => {
-    const { rentid } = router.query;
-    getRealEstateId(rentid);
+    const { buyid } = router.query;
+    getRealEstateId(buyid);
+    console.log(buyid)
   }, [router.query]);
 
 
   const getRealEstate = async () => {
     setShowLoading(true);
     try {
-      const resp = await axios.get(getRealEstateApi + "?number=4");
+      const resp = await axios.get(getBuyRealEstate + "?number=4");
       if (resp.status === 200) {
         setShowLoading(false);
       }
@@ -75,7 +76,7 @@ export default function RentId() {
   };
 
   const getIdRealEstate = (e) => {
-    router.push(`/Rent/${e.target.getAttribute("data-reactid")}`);
+    router.push(`/Buy/${e.target.getAttribute("data-reactid")}`);
   };
 
 

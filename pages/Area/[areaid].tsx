@@ -25,11 +25,11 @@ export default () => {
         getRealEstate(areaid);
       }, [router.query]);
 
-  function getRealEstate(cityAreaId) {
+  function getRealEstate(cityArea) {
     setShowLoading(true);
     axios
       .post(getRealEstateByArea, {
-        cityAreaId,
+        cityArea,
       }, {
         headers: {
           Authorization: `${

@@ -7,13 +7,13 @@ import { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import { useRouter } from 'next/router';
-import { property, room, meterage } from "./../../lib/enum-converter";
+import { property, room, meterage } from "../../lib/enum-converter";
 import {
-    getRentRealEstate
+  getBuyRealEstate
   } from "../../api";
   import moment from "jalali-moment";
 
-export default function Rent() {
+export default () => {
 
   const router = useRouter();
   const { setShowLoading } = useContext(context);
@@ -26,7 +26,7 @@ useEffect(() =>{
   const getRealEstate = async () => {
     setShowLoading(true);
     try {
-      const resp = await axios.get(getRentRealEstate );
+      const resp = await axios.get(getBuyRealEstate );
 
       if (resp.status === 200) {
         setShowLoading(false);
@@ -39,8 +39,35 @@ useEffect(() =>{
   };
 
   const getIdRealEstate = (e) => {
-    router.push(`/Rent/${e.target.getAttribute("data-reactid")}`);
+    router.push(`/Buy/${e.target.getAttribute("data-reactid")}`);
   };
+
+
+    // Invoke when user click to request another page.
+  // const fetchData = (event: any) => {
+  //   let searchQuery: string[] = [];
+  //   router.query.pageNumber = event.selected || 1;
+  //   Object.keys(router.query).forEach((e) => {
+  //     searchQuery.push(`${e}=${router.query[e]}`);
+  //   })
+  //   setShowLoading(true);
+  //   console.log(PropertiesApi + `/search?${searchQuery.join('&')}`);
+  //   fetch(PropertiesApi + `/search?${searchQuery.join('&')}`).then((res) => {
+  //     // setProperties(res.data.properties)
+  //     if (res.status === 200) {
+  //       setShowLoading(false);
+  //       // setPageCount(res.data.count / itemsPerPage)
+  //     }
+  //   })
+  //     .catch((err) => {
+  //       // if (err.response?.data) {
+  //       //   err?.response?.data?.errors?.map(issue => toast.error(issue));
+  //       // } else {
+  //       toast.error('مشکلی پیش آمده است !')
+  //       // }
+  //       setShowLoading(false);
+  //     })
+  // };
   return (
     <>
       <Container fluid className="bg-light pb-4">
