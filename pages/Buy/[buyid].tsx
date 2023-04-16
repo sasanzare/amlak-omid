@@ -70,7 +70,7 @@ export default function RentId() {
         setGallery(items);
       }
     } catch (err) {
-      toast.error("مشکلی پیش آمده است !");
+      // toast.error("مشکلی پیش آمده است !");
       setShowLoading(false);
     }
   };

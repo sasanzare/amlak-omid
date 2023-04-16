@@ -95,6 +95,7 @@ useEffect(() =>{
               />);
               })}
         </Row>
+        <ToastContainer position="top-left" rtl={true} theme="colored" />
       </Container>
     </>
   );

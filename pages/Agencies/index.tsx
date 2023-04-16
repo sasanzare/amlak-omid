@@ -2,30 +2,61 @@ import { Container, Form, Button,Row } from "react-bootstrap";
 import Card from "../../components/CardEstae";
 import BgTop from "../../components/bgTop/BgTop";
 import Title from "../../microComponents/Title";
+import { useState, useEffect, useContext } from "react";
+import { useRouter } from "next/router";
+
+import axios from "axios";
+import { context } from "../../context";
+import { ToastContainer, toast } from "react-toastify";
+import { getAllAgency } from "../../api";
 
 export default function Agencies() {
-    const offices = [
-        {
-          title: "آژانس املاک سینا",
-          img: "./img/card1.png",
-        },
-        {
-          title: "آژانس املاک صادقیه",
-          img: "./img/card2.png",
-        },
-        {
-          title: "آژانس املاک خروشان",
-          img: "./img/card3.png",
-        },
-        {
-          title: "آژانس املاک فدک",
-          img: "./img/card4.png",
-        },
-        {
-          title: "آژانس املاک بهینه",
-          img: "./img/card5.png",
-        },
-      ];
+  const router = useRouter();
+  const { setShowLoading } = useContext(context);
+  const [realAgencyList, setAgencyList] = useState([]);
+
+
+  useEffect(() => {
+    getAgency();
+  }, []);
+
+    // const offices = [
+    //     {
+    //       title: "آژانس املاک سینا",
+    //       img: "./img/card1.png",
+    //     },
+    //     {
+    //       title: "آژانس املاک صادقیه",
+    //       img: "./img/card2.png",
+    //     },
+    //     {
+    //       title: "آژانس املاک خروشان",
+    //       img: "./img/card3.png",
+    //     },
+    //     {
+    //       title: "آژانس املاک فدک",
+    //       img: "./img/card4.png",
+    //     },
+    //     {
+    //       title: "آژانس املاک بهینه",
+    //       img: "./img/card5.png",
+    //     },
+    //   ];
+
+      const getAgency = async () => {
+        setShowLoading(true);
+        try {
+          const resp = await axios.get(getAllAgency );
+    
+          if (resp.status === 200) {
+            setShowLoading(false);
+            setAgencyList(resp.data);
+          }
+        } catch (err) {
+          toast.error("مشکلی پیش آمده است !");
+          setShowLoading(false);
+        }
+      };    
   return (
     <div className="About mt-5">
       <BgTop img="./img/bg-about.png" content="جستجوی آسان آژانس املاک" myClass="h4">
@@ -41,25 +72,28 @@ export default function Agencies() {
       <Container>
         <Row>
             <Title title="آژانس‌های املاک برتر" classes="mb-4" />
-        {offices.map((office) => (
+        {realAgencyList.map((office) => (
               <Card
-                key={office.img}
-                img={office.img}
-                title={office.title}
-                myclass=" p-sm-2 p-3 col-lg col-sm-4 "
+                key={office.id}
+                img={"/uploads/agency/"+office.agencyImage}
+                title={office.name}
+                myclass="p-sm-2 p-3 col-lg-3 col-sm-4 "
+                to={office.id}
               />
             ))}
             <Title title="همه آژانس‌های املاک" classes="mb-4 mt-5" />
-        {offices.map((office) => (
+        {realAgencyList.map((office) => (
               <Card
-                key={office.img}
-                img={office.img}
-                title={office.title}
-                myclass="p-sm-2 p-3 col-lg col-sm-4 "
+                key={office.id}
+                img={"/uploads/agency/"+office.agencyImage}
+                title={office.name}
+                myclass="p-sm-2 p-3 col-lg-3 col-sm-4 "
+                to={office.id}
               />
             ))}
         </Row>
       </Container>
+      <ToastContainer position="top-left" rtl={true} theme="colored" />
     </div>
   );
 }
