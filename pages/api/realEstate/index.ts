@@ -47,6 +47,7 @@ async function get(req, res) {
         AdStatus: true,
         cityArea: {
           select: {
+            id :true,
             name: true,
           },
         },
@@ -84,6 +85,7 @@ async function get(req, res) {
         AdStatus: true,
         cityArea: {
           select: {
+            id : true,
             name: true,
           },
         },
@@ -109,50 +111,6 @@ async function get(req, res) {
   }
   res.status(200).json(obj);
 }
-
-// async function upsert(req, res) {
-//     console.log("kir")
-//     const uploadDirCategory = 'advertising'
-//     const { fields, files } = await parseForm(req, uploadDirCategory);
-//     const media = JSON.stringify(files.media.filepath).split("advertising/")[1].replace('"','');
-//     const user = await verify(req, String(env.JWT_SECRET));
-//     const estateId : string = String(fields.id) || '';
-//     delete fields.id;
-//     console.log("khar")
-//     let obj = await prisma.realEstate.upsert({
-//         where: {
-//             id: estateId,
-//         },
-//         update: {
-//             ...fields,
-//             Photos: media
-//         },
-//         create: {
-//             ...fields,
-//             Photos: media,
-//             userId: user._id
-//         },
-//     });
-//     res.status(200).json(obj);
-// }
-
-// // async function upsert(req, res) {
-// //     const { id }  = req.query;
-// //     delete req.body.id;
-// //     // req.body.status = (parseInt(req.body.status) == 1)? true :false ;
-// //     let obj = await prisma.realEstate.upsert({
-// //       where: {
-// //         id,
-// //       },
-// //       update: {
-// //         ...req.body,
-// //       },
-// //       create: {
-// //         ...req.body,
-// //       },
-// //     });
-// //     res.status(200).json(obj);
-// //   }
 
 async function remove(req, res) {
   let obj = await prisma.realEstate.delete({ where: { id: req.query.id } });

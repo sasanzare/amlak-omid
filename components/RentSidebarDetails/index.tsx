@@ -15,17 +15,18 @@ export default function RentSidebarDetails(props) {
   return (
     <div className="px-4">
       <div>
-        <img
+        {/* <img
           src={props.img ? props.img : "/img/avatar.jpeg"}
           className="w-25 rounded-circle"
           alt="avatar"
-        />
+        /> */}
       </div>
       <div className="d-flex justify-content-between  border-bottom pt-3 text-secondary">
-        <small>کاربر شماره 245</small>
+        {/* <small>کاربر </small> */}
+        <small><FontAwesomeIcon icon={faClock} className=" ms-1" /> </small>
         <div>
         <small>{props.time}</small>
-          <FontAwesomeIcon icon={faClock} className=" ms-1" />
+          
           
         </div>
       </div>
