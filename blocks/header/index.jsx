@@ -128,7 +128,9 @@ function Header() {
                   className="dir-r pt-1 fw-bold h3 text-lg-end text-center px-0"
                 >
                   <Link href="/">
-                    <a className="text-decoration-none text-es">Amlak Omid</a>
+                    <a className="text-decoration-none text-es">
+                      <img src="/img/logo-melko.png" alt="logo melko" width={150} />
+                    </a>
                   </Link>
                 </Col>
               </Row>

@@ -1,0 +1,7 @@
+.img{
+    width: 300px;
+    height: unset;
+}
+.zIndex{
+    z-index:10000;
+}
