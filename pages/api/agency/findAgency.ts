@@ -5,7 +5,7 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  if (req.method === "GET") {
+  if (req.method === "POST") {
     get(req, res);
   } else {
     throw new Error(
@@ -16,22 +16,26 @@ export default async function handler(
 
 async function get(req, res) {
   const obj = await prisma.agency.findMany({
-    where: { isActive: true },
+    where: {
+      isActive: true,
+      name: {
+        contains: req.body.name,
+      },
+    },
     select: {
       id: true,
       name: true,
-      agencyImage : true,
-        rate:{
-          select:{
-            rate : true,
-          }
-        }
+      agencyImage: true,
+      rate: {
+        select: {
+          rate: true,
+        },
+      },
     },
     orderBy: {
       name: "asc",
     },
   });
-
 
   const agencies = obj.map((agency) => {
     const totalRate = agency.rate.reduce((acc, curr) => acc + curr.rate, 0);

@@ -28,19 +28,19 @@ export default async function handler(
 async function update(req: NextApiRequest, res: NextApiResponse) {
   const { fields} = await parseForm(req);
   const user = await verify(req, String(env.JWT_SECRET));
-
-  let obj = await prisma.agencyRatingInterface.upsert({
+  const rate = parseInt(fields.rate)
+  const del = await prisma.agencyRatingInterface.deleteMany({
     where: {
         userId: user._id,
-        agencyId : fields.agencyId
+        agencyId : fields.agencyId,
     },
-    update: {
-        ...fields,
-    },
-    create: {
-        ...fields,
+  });
+
+  const obj = await prisma.agencyRatingInterface.create({
+    data: {
         userId: user._id,
-        
+        agencyId : fields.agencyId,
+        rate
     },
   });
 

@@ -1,6 +1,6 @@
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {faStar} from '@fortawesome/free-solid-svg-icons'
-import { useMemo, useState } from "react";
+import React,{ useMemo, useState } from "react";
 import PropTypes from "prop-types";
 
 
@@ -41,18 +41,18 @@ Rate.propTypes = {
   count: PropTypes.number,
   rating: PropTypes.number,
   onChange: PropTypes.func,
-  color: {
+  color: PropTypes.shape({
     filled: PropTypes.string,
     unfilled: PropTypes.string,
-  },
+  }),
 };
 
 Rate.defaultProps = {
   count: 5,
   rating: 0,
   color: {
-    filled: "#f5eb3b",
-    unfilled: "#DCDCDC",
+    filled: '#f5eb3b',
+    unfilled: '#DCDCDC',
   },
 };
 

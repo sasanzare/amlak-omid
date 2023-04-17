@@ -20,20 +20,26 @@ async function get(req, res) {
     select: {
       id: true,
       name: true,
-      agencyImage : true,
-        rate:{
-          select:{
-            rate : true,
-          }
-        }
-    },
-    orderBy: {
-      name: "asc",
+      agencyImage: true,
+      rate: {
+        select: {
+          rate: true,
+        },
+      },
     },
   });
 
+  const sortedAgencies = obj.sort((a, b) => {
+    const aTotalRate = a.rate.reduce((acc, curr) => acc + curr.rate, 0);
+    const aAvgRate = aTotalRate / a.rate.length;
+    const bTotalRate = b.rate.reduce((acc, curr) => acc + curr.rate, 0);
+    const bAvgRate = bTotalRate / b.rate.length;
+    return bAvgRate - aAvgRate;
+  });
 
-  const agencies = obj.map((agency) => {
+  const top5Agencies = sortedAgencies.slice(0, 6);
+
+  const agencies = top5Agencies.map((agency) => {
     const totalRate = agency.rate.reduce((acc, curr) => acc + curr.rate, 0);
     const avgRate = totalRate / agency.rate.length;
     return { ...agency, rate: avgRate };
