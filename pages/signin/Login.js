@@ -1,7 +1,7 @@
 import { Container, Row, Col, Form } from "react-bootstrap";
 import Title from "../../microComponents/Title";
 import styles from "./SignIn.module.css";
-import React, { useState, useContext } from "react";
+import React, { useState, useContext,useEffect } from "react";
 import axios from "axios";
 import { PhoneNamberApi } from "../../api";
 import { toast,ToastContainer } from "react-toastify";
@@ -10,12 +10,23 @@ import { authenticationApi } from "../../api/index";
 import { useRouter } from "next/router";
 
 const Login = () => {
+  const navigate = useRouter()
   axios.delete;
   const router = useRouter();
   const [phoneNumber, setPhoneNumber] = useState();
   const searchParams = router.query;
   const [verifyPhoneNumber, setVerifyPhoneNumber] = useState();
   const { setShowLoading } = useContext(context);
+
+  
+  useEffect(() => {
+    // let form = document.getElementById('submitForm')
+    let userData = localStorage.getItem('userData');
+
+    if (userData) {
+      navigate.push('/dashboard')
+    }
+  }, [])
   ///Phone Btn
   const phoneNumberHandeller = async (e) => {
     e.preventDefault();

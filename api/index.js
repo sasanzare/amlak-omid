@@ -19,6 +19,7 @@ export const removeUser = `/api/user/remove`
 export const createAgency = `/api/user/createAgency`
 export const createAgencyAgent = `/api/user/createAgencyAgent`
 export const getRealEstateApi = `/api/realEstate`
+export const getSpecialRealEstate = `/api/realEstate/getSpecialRealEstate`
 export const getAdvertisingByUserId = `/api/realEstate/getAdvertisingByUserId`
 export const createRealEstateApi = `/api/realEstate/create`
 export const createAdvertise = `/api/realEstate/createAdvertise`

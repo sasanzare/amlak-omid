@@ -10,11 +10,38 @@ import {
 import SideBar from "../../blocks/sidebar";
 import AgencieSidebarDetails from "../../components/AgencieSidebarDetails";
 import ExpertCard from "../../components/ExpertCard";
-
+import axios from "axios";
 import Estate from "../../components/Estate";
 import SearchCase from "../../blocks/SearchCase";
-
+import {useEffect,useContext,useState} from "react"
+import { context } from "../../context";
+import { getAllAgency } from "../../api";
+import { ToastContainer, toast } from "react-toastify";
 export default function AgencieId() {
+  const { setShowLoading } = useContext(context);
+  const [modalShow, setModalShow] = useState(false);
+  const [agency, setAgency] = useState([]);
+
+
+  useEffect(() => {
+    getAgency();
+  }, []);
+
+
+
+  const getAgency = async () => {
+    setShowLoading(true);
+    try {
+      const resp = await axios.get(getAllAgency);
+      if (resp.status === 200) {
+        setShowLoading(false);
+        setAgency(resp.data);
+      }
+    } catch (err) {
+      toast.error("مشکلی پیش آمده است !");
+      setShowLoading(false);
+    }
+  };
   const ExpertData = [
     {
       img: "/img/realState/user-pic1.png",
@@ -149,6 +176,12 @@ export default function AgencieId() {
           </Row>
         </Col>
       </Row>
+      <ToastContainer
+        position="top-left"
+        rtl={true}
+        theme="colored"
+        autoClose={2000}
+      />
     </Container>
   );
 }

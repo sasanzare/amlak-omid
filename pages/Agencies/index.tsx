@@ -25,28 +25,6 @@ export default function Agencies() {
     getAgency();
   }, []);
 
-  // const offices = [
-  //     {
-  //       title: "آژانس املاک سینا",
-  //       img: "./img/card1.png",
-  //     },
-  //     {
-  //       title: "آژانس املاک صادقیه",
-  //       img: "./img/card2.png",
-  //     },
-  //     {
-  //       title: "آژانس املاک خروشان",
-  //       img: "./img/card3.png",
-  //     },
-  //     {
-  //       title: "آژانس املاک فدک",
-  //       img: "./img/card4.png",
-  //     },
-  //     {
-  //       title: "آژانس املاک بهینه",
-  //       img: "./img/card5.png",
-  //     },
-  //   ];
 
   const getAgency = async () => {
     setShowLoading(true);
@@ -98,9 +76,6 @@ export default function Agencies() {
     }
   };
 
-  // function openDialoge() {
-  //   setModalShow(true);
-  // }
   function closeDialoge() {
     setModalShow(false);
     
