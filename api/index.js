@@ -24,6 +24,7 @@ export const getAdvertisingByUserId = `/api/realEstate/getAdvertisingByUserId`
 export const createRealEstateApi = `/api/realEstate/create`
 export const createAdvertise = `/api/realEstate/createAdvertise`
 export const searchRealEstateApi = `/api/realEstate/search`
+export const searchUnique = `/api/realEstate/searchUnique`
 export const getRealEstateByArea = `/api/realEstate/getRealEstateByArea`
 export const getRentRealEstate = `/api/realEstate/getRentRealEstate`
 export const getBuyRealEstate = `/api/realEstate/getBuyRealEstate`

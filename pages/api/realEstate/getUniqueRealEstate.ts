@@ -77,7 +77,7 @@ async function get(req: NextApiRequest, res: NextApiResponse) {
     });
 
     userAgency.push(req.body.agencyManagerId) 
-    // console.log(userAgency)
+ 
 
     const userReal = await prisma.realEstate.findMany({
       where : {
@@ -123,8 +123,7 @@ async function get(req: NextApiRequest, res: NextApiResponse) {
         },
   
       });
-    // console.log(userReal)
-    // console.log(user)
+ 
   
   res.status(200).json(userReal);
 }
