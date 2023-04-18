@@ -20,6 +20,7 @@ export default () => {
     const router = useRouter();
     const { setShowLoading } = useContext(context);
     const [realEstateList, setRealEstateList] = useState([]);
+    
     useEffect(() => {
         const { areaid } = router.query;
         getRealEstate(areaid);
