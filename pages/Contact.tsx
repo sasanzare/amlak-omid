@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faMobileAlt, faMapMarkerAlt } from '@fortawesome/free-solid-svg-icons'
 import { faInstagram } from '@fortawesome/free-brands-svg-icons'
 import Btn from '../microComponents/Btn';
-import MyMap from '../components/map/Map';
+import MyMap from '../components/map';
 import axios from 'axios';
 import { ContactApi } from '../api';
 import { context } from '../context/index';

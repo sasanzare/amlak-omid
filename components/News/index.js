@@ -1,7 +1,7 @@
 import SingleSelect from "../SingleSelect";
 import { Form } from "react-bootstrap";
 import "./NewsForm.module.css";
-import MyMap from "./../map/Map";
+import Map from "../map";
 import { useState, useEffect, useContext } from "react";
 import { useForm } from "react-hook-form";
 import { ToastContainer, toast } from "react-toastify";
@@ -63,8 +63,8 @@ export default () => {
   const [title, setTitle] = useState();
   const [description, setDescription] = useState();
   const [pictures, setPictures] = useState();
-  const [lat, setLat] = useState();
-  const [lang, setLang] = useState();
+  const [lat, setLat] = useState("");
+  const [lang, setLang] = useState("");
   const [cityList, setCityList] = useState([]);
   const [cityAreaList, setCityAreaList] = useState([]);
   const [showImg, setShowImg] = useState(null);
@@ -150,6 +150,15 @@ export default () => {
       RealStateRegistration.append("phoneNumber", phoneNumber);
       RealStateRegistration.append("name", title);
       RealStateRegistration.append("description", convertedContent);
+
+      if(lat != ""){
+        RealStateRegistration.append("latitude", lat);
+      }
+      
+      if(lang != ""){
+        RealStateRegistration.append("longitude", lang);
+      }
+      
       RealStateRegistration.append("media", estateImage);
       if(selectedImage1 != ""){
         RealStateRegistration.append("media", image1);
@@ -163,8 +172,6 @@ export default () => {
       if(selectedImage4 != ""){
         RealStateRegistration.append("media", image4);
       }
-      // RealStateRegistration.append("lat", 2);
-      // RealStateRegistration.append("lang", 2);
       const res = await axios({
         method: "post",
         url: createAdvertise,
@@ -191,23 +198,15 @@ export default () => {
     }
   }
 
-  // function selectPhoto(e) {
-  //     let img = e.target.files[0]
-  //     console.log(img)
-  //     setPictures(e.target.files[0])
-  //     RealStateRegistration.append('photo', img)
 
-  //     var reader = new FileReader();
-  //     // it's onload event and you forgot (parameters)
-  //     reader.onload = function (e) {
-  //         var image = document.createElement("img");
-  //         // the result image data
-  //         setShowImg(e.target.result);
-  //     }
-  //     // you have to declare the file loading
-  //     reader.readAsDataURL(img);
-  // }
+  const handleCoordinate = (value) => {
+    setLang(value.lng);
+    setLat(value.lat);
+  };
+
   return (
+
+
     <Form className="col-lg-6 col-md-8  newsForm mx-auto flex-column flex-lg-row py-3 mt-5">
       <Form.Group className="mb-3">
         <Form.Select
@@ -602,6 +601,7 @@ export default () => {
       </Form.Group>
         </div>
       </div>
+      <Map getCoordinate={handleCoordinate} />
 
       <div className="d-flex justify-content-center">
         <button
@@ -614,6 +614,8 @@ export default () => {
       </div>
       <ToastContainer position="top-left" rtl={true} theme="colored" />
     </Form>
+   
+
   );
 };
 
