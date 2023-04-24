@@ -1,6 +1,7 @@
 import { useState, useEffect, useContext } from "react";
 import { AdminLayout } from "../../../layout";
 import axios from "axios";
+import Image from "next/image";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { context } from "../../../context";
@@ -107,9 +108,10 @@ export default () => {
     axios
       .post("/api/article", object, {
         headers: {
-          Authorization: `${
+          'Authorization': `${
             JSON.parse(localStorage.getItem("userData")).token
           }`,
+          Accept: 'application/json',
           "Content-Type": "multipart/form-data",
         },
       })
@@ -356,10 +358,17 @@ export default () => {
                          
 
                           <td>
-                            <img
+                          <Image
+                            width={128}
+                            height={128}
+                              src={"/uploads/articles/" + data.articleImage}
+                            alt="user@email.com"
+                          />
+                           {/* <img
                               src={"/uploads/articles/" + data.articleImage}
                               width={120}
-                            />
+                              alt={data.title}
+                            /> */}
                           </td>
                           <td dangerouslySetInnerHTML={{ __html: data.text.split(' ').slice(0, 20).join(' ') }} />
                           <td>

@@ -2,6 +2,7 @@ export const STATICS = `api/static/uploads/`
 export const AdvisorRegistreApi = `api/auth/register/moshaver`
 export const RealStateRegistrationApi = `api/auth/register/amlak`
 export const PhoneNamberApi = `api/auth/sendVerificationCode`
+export const adminLogin = `/api/admin/login`
 export const authenticationApi = `api/auth`
 export const getAgencyOwnerApi = `/api/user/getAgencyOwner`
 export const ArticlesApi = `/api/article`
