@@ -20,18 +20,6 @@ const Login: NextPage = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
-  // const login = (e: SyntheticEvent) => {
-  //   e.stopPropagation()
-  //   e.preventDefault()
-
-  //   setSubmitting(true)
-
-  //   // setTimeout(() => {
-  //   //   setSubmitting(false)
-  //   //   router.push('/')
-  //   // }, 2000)
-  // }
-
   const login = async (event: { preventDefault: () => void }) => {
     event.preventDefault()
     setSubmitting(true);
@@ -42,8 +30,7 @@ const Login: NextPage = () => {
     })
     const data = await res.json()
     if (data.token) {
-      // Redirect to the dashboard page
-      Cookies.set('tokenAdmin', data.token, { expires: 1 })
+      Cookies.set('token', data.token, { expires: 1 })
       toast.success("خوش آمدید")
       router.replace('/Admin')
       setSubmitting(false);

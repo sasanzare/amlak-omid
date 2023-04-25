@@ -40,24 +40,15 @@ import {
   faLinkedinIn,
   faTwitter,
 } from "@fortawesome/free-brands-svg-icons";
-import React, { useEffect } from "react";
-
 import Head from "next/head";
-import Cookies from "js-cookie";
-import jwt from 'jsonwebtoken'
-// import { env } from "process";
 import { useRouter } from "next/router";
+
+
 
 
 
 // const Home: NextPage = () => (
 export default ()=> {
-// for test 
-
-
-
-
-
   const router = useRouter()
   Chart.register(
     CategoryScale,
@@ -69,27 +60,8 @@ export default ()=> {
     Filler
   );
 
-  useEffect(()=>{
-    const token = Cookies.get('tokenAdmin')
-    if (!token){
-      router.replace('/Admin/login')
-    }else{
-     
-      // console.log(String(process.env.JWT_SECRET))
-      // const decodedToken = jwt.verify(token,  "secret_j_secret_w_secrt_t")
-
-    }
-      // console.log(token)
-   
-    
-    // console.log(decodedToken)
-  },[])
- 
-
-
   const random = (min: number, max: number) =>
     Math.floor(Math.random() * (max - min + 1) + min);
-
 
   return (
     <AdminLayout>

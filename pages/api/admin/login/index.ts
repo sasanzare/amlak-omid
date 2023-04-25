@@ -42,12 +42,12 @@ export default async function handler(
         console.log(token)
         res.status(200).json({ token })
       } else {
-        res.status(401).json({ message: 'پسورد اشتباه است!' })
+        res.status(401).json({ message: 'نام کاربری یا کلمه عبور اشتباه است!' })
       }
     // const token = jwt.sign({ username }, 'secretKey', { expiresIn: '1h' })
     // res.status(200).json({ token })
   } else {
-    res.status(401).json({ message: 'نام کاربری اشتباه است!' })
+    res.status(401).json({ message: 'نام کاربری یا کلمه عبور اشتباه است!' })
   }
 }
 
