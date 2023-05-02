@@ -177,6 +177,9 @@ export default function SidebarNav() {
         <SidebarNavItem href="/Admin/RealEstate">
           آگهی ها
         </SidebarNavItem>
+        <SidebarNavItem href="/Admin/Special">
+           فروش فوری
+        </SidebarNavItem>
       </SidebarNavGroup>
 
       <SidebarNavGroup toggleIcon={faNewspaper} toggleText="مقاله ها">

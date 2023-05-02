@@ -66,6 +66,7 @@
     "swr": "^1.3.0"
   },
   "devDependencies": {
+    "@types/draft-convert": "^2.1.4",
     "@types/draft-js": "^0.11.10",
     "@types/formidable": "^2.0.5",
     "@types/js-cookie": "^3.0.3",

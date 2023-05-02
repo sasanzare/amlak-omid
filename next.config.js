@@ -92,7 +92,8 @@
 
 
 module.exports = {
-  reactStrictMode: true,
+  // reactStrictMode: true,
+  reactStrictMode: false,
   swcMinify: true,
 
   typescript: {

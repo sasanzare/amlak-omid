@@ -976,6 +976,14 @@
   dependencies:
     "@types/ms" "*"
 
+"@types/draft-convert@^2.1.4":
+  version "2.1.4"
+  resolved "https://registry.npmjs.org/@types/draft-convert/-/draft-convert-2.1.4.tgz"
+  integrity sha512-NbhE0ijzENK6ZQa3zO0KK6cNS80XESnQ03Bg7DEzE/qBg6YvpIEni6vzruYCYPkm1Sc6z0K7XbtJu4p53elGdA==
+  dependencies:
+    "@types/draft-js" "*"
+    "@types/react" "*"
+
 "@types/draft-js@*", "@types/draft-js@^0.11.10":
   version "0.11.10"
   resolved "https://registry.npmjs.org/@types/draft-js/-/draft-js-0.11.10.tgz"

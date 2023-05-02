@@ -66,8 +66,11 @@ export function property(data){
       case "forSale":
         outPut = "خرید"
         break;
-      default:
+      case "fastSale":
         outPut = "فروش فوری"
+        break;
+      default:
+        outPut = "فروش خاص"
     }
     return outPut;
   }

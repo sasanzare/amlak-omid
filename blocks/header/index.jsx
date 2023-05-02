@@ -17,6 +17,7 @@ function Header() {
   function logOut() {
     setUserData(null);
     localStorage.clear("userData");
+    location.replace("/signin?goTo=/")
   }
   return (
     <div className="Header position-fixed w-100">
@@ -31,7 +32,7 @@ function Header() {
       >
         <Container fluid>
           <Link href="/New">
-            <a className="btn btn-es fw-bold col-xl-1 col-lg-2 col-md-2 col-sm-3 col-4">
+            <a className="btn btn-es fw-bold col-xl-1 col-lg-2 col-md-2 col-sm-3 col-4 mt-1">
               ثبت آگهی
             </a>
           </Link>
@@ -45,7 +46,7 @@ function Header() {
                 >
                   {userData ? (
                     <Dropdown>
-                      <Dropdown.Toggle className="btn-es" id="dropdown-basic">
+                      <Dropdown.Toggle className="btn-es mt-1" id="dropdown-basic">
                         پروفایل من
                       </Dropdown.Toggle>
                       <Dropdown.Menu className="text-end">
@@ -84,7 +85,7 @@ function Header() {
                     //   </Dropdown.Menu>
                     // </Dropdown>
                     <Link href="/signin?goTo=/">
-                      <a className="btn btn-border fw-bold col-xxl-7 col-xl-9 col-lg-12 ">
+                      <a className="btn btn-border fw-bold col-xxl-7 col-xl-9 col-lg-12 mt-1">
                         ثبت نام 
                       </a>
                     </Link>

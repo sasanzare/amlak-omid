@@ -440,7 +440,8 @@
           "enum": [
             "rental",
             "forSale",
-            "fastSale"
+            "fastSale",
+            "special"
           ]
         },
         "type": {

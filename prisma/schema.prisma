@@ -13,7 +13,7 @@ generator jsonSchema {
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
-  // url      = "postgresql://root:mnA1wRY7WAOapDW3cvLo2QvA@michael.iran.liara.ir:33308/postgres"
+  // url      = "postgresql://root:V7xDkuzNePo7KG7HKlW5JBst@luca.iran.liara.ir:32033/postgres"
 }
 
 enum requestStatus {
@@ -33,6 +33,7 @@ enum assignmentType {
   rental
   forSale
   fastSale
+  special
 }
 
 enum propertyType {

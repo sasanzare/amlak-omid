@@ -30,8 +30,8 @@ export default function Dashboard() {
   //state
   const [infoUser, setInfoUser] = useState([]);
   const [role, setRole] = useState("normal");
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
+  const [firstName, setFirstName] = useState("کاربر");
+  const [lastName, setLastName] = useState("عادی");
   const [userImg, setUserImg] = useState("/img/profile2.png");
   const [agencyId, setAgencyId] = useState("");
   const [realEstateList, setRealEstateList] = useState([]);
@@ -42,9 +42,15 @@ export default function Dashboard() {
   let test;
 
   useEffect(() => {
-    getRoleUser();
+    if(localStorage.getItem("userData")){
+      getRoleUser();
+    }else{
+      router.replace('signin?goTo=/')
+    }
+    
   }, []);
 
+  
 
 
   async function getRoleUser() {
@@ -57,16 +63,19 @@ export default function Dashboard() {
           }`,
         },
       });
-      // console.log(res.data)
       setInfoUser(res.data);
       test = res.data;
     
 
       if (res.status === 200) {
         setRole(res.data.role);
-        setUserImg(`/uploads/users/${res.data.userImage}`);
-        setFirstName(res.data.firstName);
+        if(res.data.role != "normal"){
+          setUserImg(`/uploads/users/${res.data.userImage}`);
+          setFirstName(res.data.firstName);
         setLastName(res.data.lastName);
+        }
+        
+        
         if( res.data.role == "agencyOwner"){
           setAgencyId(res.data.agency[0].id);
           // console.log(res.data.agency[0].id);
@@ -376,14 +385,18 @@ export default function Dashboard() {
                         </a>
                       </Link>
                     </Col>
-                    <Col
+                  
+                      {role == "agencyOwner" ?(<>
+                      
+                        <Col
                       xl={10}
                       md={12}
                       sm={6}
                       xs={9}
                       className="px-1 pt-3  mx-auto"
                     >
-                      <Nav.Link
+
+                        <Nav.Link
                         eventKey="invite"
                         className="btn btn-border w-100 f-14 "
                         onClick={()=>getAgentrequest()}
@@ -420,6 +433,9 @@ export default function Dashboard() {
                         دیدن گزارش‌ها
                       </Nav.Link>
                     </Col>
+                      
+                      </>): null }
+                    
                   </Row>
                 </Col>
               </SideBar>
@@ -504,7 +520,10 @@ export default function Dashboard() {
                         </tbody>
                       </Table>
                     </Tab.Pane>
-                    <Tab.Pane eventKey="invite">
+
+                    {role == "agencyOwner" ?(<>
+
+                      <Tab.Pane eventKey="invite">
                       <Row>
                         <Col sm={12}>
                         {agentrequest.map((data) => (
@@ -566,6 +585,10 @@ export default function Dashboard() {
                         </Link>
                       </Col>
                     </Tab.Pane>
+                    </>):null}
+
+
+
                   </Tab.Content>
                 </Col>
               </Row>

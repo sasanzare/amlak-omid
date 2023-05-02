@@ -13,7 +13,8 @@ export const parseForm = async (
 ): Promise<{ fields: formidable.Fields; files: formidable.Files }> => {
     return new Promise(async (resolve, reject) => {
 
-        // const uploadDir = `/run/media/open/Program/amlak-omid/public/uploads/${uploadDirCategory}/${dateFn.format(Date.now(), "dd-MM-Y")}`
+        //  const uploadDir = `/run/media/open/Program/amlak-omid/public/uploads/${uploadDirCategory}/${dateFn.format(Date.now(), "dd-MM-Y")}`
+        //  const uploadDir = `/run/media/open/Program/amlak-omid/public/${uploadDirCategory}/${dateFn.format(Date.now(), "dd-MM-Y")}`
         const uploadDir = join(
             process.env.ROOT_DIR || process.cwd(),
             `public/uploads/${uploadDirCategory}/${dateFn.format(Date.now(), "dd-MM-Y")}`
