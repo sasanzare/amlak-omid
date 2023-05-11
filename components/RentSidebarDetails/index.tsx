@@ -15,20 +15,22 @@ export default function RentSidebarDetails(props) {
   return (
     <div className="px-4">
       <div>
-        <img
+        {/* <img
           src={props.img ? props.img : "/img/avatar.jpeg"}
           className="w-25 rounded-circle"
-          alt=""
-        />
+          alt="avatar"
+        /> */}
       </div>
       <div className="d-flex justify-content-between  border-bottom pt-3 text-secondary">
-        <small>کاربر شماره 245</small>
+        {/* <small>کاربر </small> */}
+        <small><FontAwesomeIcon icon={faClock} className=" ms-1" /> </small>
         <div>
-          <FontAwesomeIcon icon={faClock} className=" ms-1" />
-          <small>{props.time}</small>
+        <small>{props.time}</small>
+          
+          
         </div>
       </div>
-      <h6 className="pt-4 fw-bold">آپارتمان فرهنگشهر 110 متر دوخوابه</h6>
+      <h6 className="pt-4 fw-bold">{props.name}</h6>
       <div className="d-flex justify-content-between  border-bottom pt-3 text-secondary">
         <div>
           <FontAwesomeIcon icon={faHome} className=" ms-1" />
@@ -55,7 +57,7 @@ export default function RentSidebarDetails(props) {
           <FontAwesomeIcon icon={faColumns} className="ms-1" />
           <small>متراژ</small>
         </div>
-        <small>{props.bed}</small>
+        <small>{props.meter}</small>
       </div>
       <div className="d-flex justify-content-between  border-bottom pt-3 text-secondary">
         <div>
@@ -64,7 +66,7 @@ export default function RentSidebarDetails(props) {
         </div>
         <small className="f-auto">{props.price}</small>
       </div>
-      <div className="border-bottom py-3 text-secondary opacity-75 ">
+      {/* <div className="border-bottom py-3 text-secondary opacity-75 ">
         <Link href={props.virtual}>
           <a className="btn btn-es  d-flex justify-content-between mx-auto col-md-12 col-sm-6 col-8 mx-auto">
           <FontAwesomeIcon icon={faCirclePlay} className="ms-1 mt-1" />
@@ -72,7 +74,7 @@ export default function RentSidebarDetails(props) {
             
           </a>
         </Link>
-      </div>
+      </div> */}
       <div className="pt-3 text-secondary col-md-12 col-sm-6 col-8 mx-auto">
         <Link href={"tel:" +props.phone+""}>
           <a className=" px-2 py-1 rounded-3 text-decoration-none border btn-es col-10 d-flex justify-content-between mx-auto">
@@ -87,3 +89,5 @@ export default function RentSidebarDetails(props) {
     </div>
   );
 }
+
+

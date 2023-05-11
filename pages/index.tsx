@@ -14,7 +14,7 @@ import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import { useRouter,Router } from 'next/router';
 import {
-  getRealEstateApi,ArticlesApi
+ArticlesApi,bestAgency,getFastRealEstate
 } from "./../api";
 import {
   property,
@@ -32,21 +32,26 @@ function Home() {
   const { setShowLoading } = useContext(context);
   const [realEstateList, setRealEstateList] = useState([]);
   const [articleList, setArticleList] = useState([]);
+  const [bestAgencyList, setBestAgencyList] = useState([]);
 
   useEffect(() => {
     get();
     getRealEstate();
+    getBestAgency();
   }, []);
 
 
   function getRealEstate() {
     setShowLoading(true);
     axios
-      .get(getRealEstateApi+"?number=4")
+      .get(getFastRealEstate+"?number=4")
       .then((res) => {
-        setRealEstateList(res.data);
+       
         if (res.status === 200) {
           setShowLoading(false);
+          setRealEstateList(res.data);
+          console.log(res.data);
+          
        
         }
       })
@@ -79,28 +84,20 @@ function Home() {
       });
   }
 
-  const offices = [
-    {
-      title: "آژانس املاک سینا",
-      img: "./img/card1.png",
-    },
-    {
-      title: "آژانس املاک صادقیه",
-      img: "./img/card2.png",
-    },
-    {
-      title: "آژانس املاک خروشان",
-      img: "./img/card3.png",
-    },
-    {
-      title: "آژانس املاک فدک",
-      img: "./img/card4.png",
-    },
-    {
-      title: "آژانس املاک بهینه",
-      img: "./img/card5.png",
-    },
-  ];
+
+  const getBestAgency = async () => {
+    setShowLoading(true);
+    try {
+      const resp = await axios.get(bestAgency);
+      if (resp.status === 200) {
+        setShowLoading(false);
+        setBestAgencyList(resp.data);
+      }
+    } catch (err) {
+      toast.error("مشکلی پیش آمده است !");
+      setShowLoading(false);
+    }
+  };
 
   const getIdArticle = (e) => {
       router.push(`/Articles/${e.target.getAttribute("data-reactid")}`)
@@ -131,14 +128,16 @@ function Home() {
                 </a>
               </Link>
             </div>
-            {offices.map((office, index) => (
-              <Card
-                key={index}
-                img={office.img}
-                title={office.title}
-                myclass="p-sm-2 p-3 col-lg col-sm-4 col-6 mx-auto"
-              />
-            ))}
+            {bestAgencyList.map((office) => (
+            <Card
+              key={office.id}
+              img={"/uploads/agency/" + office.agencyImage}
+              title={office.name}
+              myclass="p-sm-2 p-3 col-xl-2 col-sm-4 col-6"
+              to={office.id}
+              rate={office.rate}
+            />
+          ))}
           </Row>
         </Col>
         <Title title="ملک فروش فوری" />
@@ -147,7 +146,7 @@ function Home() {
 
           <Row>
             <div className="col-sm-12 col-11 mx-auto" dir="ltr">
-              <Link href={"/"}>
+              <Link href={"/SpecialSale"}>
                 <a
                   href=""
                   className="text-decoration-none text-secondary float-start"
@@ -161,9 +160,9 @@ function Home() {
                 key={data.id}
                 myClass="p-sm-2 p-3 my-lg-0  my-2 col-lg-3 col-md-6 col-11 mx-auto"
                 img={data.estateImage}
-                title={(data.agency)? data.agency.name : "کاربر عادی" }
-                profile={(data.agency)? "/uploads/advertising/"+data.agency.agencyImage : "/img/avatar.jpeg" }
-                location={data.cityArea.name}
+                title={(data?.agency?.name)? data?.agency?.name : "املاک" }
+                profile={(data?.agency?.agencyImage)? "/uploads/agency/"+data.agency.agencyImage : "/img/avatar.jpeg" }
+                location={data?.cityArea?.name}
                 price={data.price.replace(/(\d)(?=(\d{3})+$)/g, '$1,')}
                 bed={room(data.roomCount)}
                 type={property(data.type)}
@@ -191,7 +190,7 @@ function Home() {
             btn="ثبت‌نام مشاور"
           />
         </Col>
-        <Title title="مجله املاک امیپ" />
+        <Title title="مجله ملکو" />
 
         {articleList?.map((card) => (
           <ArticleCards

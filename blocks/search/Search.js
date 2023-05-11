@@ -100,7 +100,7 @@ export default function Search() {
 
         <Form.Group className="SingleSelect mb-3 col-sm-6 col-11 mx-auto" >
             <Form.Select onChange={(e) => setCity(e.target.value)} value={city} className='border-0 shadow-es'>
-            <option>---
+            <option>شهر
                   </option>
               {cityList?.map((data, i) => {
                 return (
@@ -118,7 +118,7 @@ export default function Search() {
         
 
             <Form.Select onChange={(e) => setArea(e.target.value)} value={area} className='border-0 shadow-es'>
-              <option>---</option>
+              <option>محدوده</option>
               {cityAreaList?.map((data, i) => {
                 return (
                   <option key={data.id} value={data.id}>

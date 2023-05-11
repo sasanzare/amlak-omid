@@ -1,7 +1,7 @@
 import CarouselHomeDetails from './CarouselHomeDetails';
 import HomeDetailsBtn from './HomeDetailsBtn';
 import DescriptionParagraph from './DescriptionParagraph';
-import MyMap from './../map/Map';
+import MyMap from '../map';
 
 
 

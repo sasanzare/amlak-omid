@@ -16,8 +16,11 @@ import Header from "../blocks/header/";
 import Footer from "../blocks/footer/";
 import ContextProvider from "../context";
 import { SSRProvider } from "react-bootstrap";
+// import { SSRProvider } from 'next-ssr';
 import AdminBlock from "../blocks/adminBlock";
 import { useRouter } from "next/router";
+
+
 
 function MyApp({ Component, pageProps }: AppProps) {
   const router = useRouter();
@@ -44,5 +47,8 @@ function MyApp({ Component, pageProps }: AppProps) {
     </ContextProvider>
   );
 }
+
+
+
 
 export default MyApp;

@@ -7,9 +7,10 @@ export default function AgencieSidebarDetails(props) {
   return (
     <div className="px-4 ">
         <img
-          src={props.img ? props.img : "/img/avatar.jpeg"}
-          className="w-75"
-          alt=""
+          src={props.img != undefined ? `/uploads/agency/${props.img}` : "/img/avatar.jpeg"}
+          className="w-75 rounded-5"
+          alt={props.title}
+          height={150}
         />
      
       <div className="border-bottom pb-2 text-secondary">
@@ -24,7 +25,14 @@ export default function AgencieSidebarDetails(props) {
       <div className="d-flex justify-content-between  border-bottom py-2 px-1 text-secondary">
           <small>حوزه فعالیت</small>
         
-        <small>{props.location}</small>
+        <small>{props.city}
+        {" , "}
+        <Link href={`/Area/${props.location}`}>
+        <a className="text-decoration-none text-es">
+        {props.location}
+        </a>
+        </Link>
+         </small>
       </div>
       <div className="d-flex justify-content-between  border-bottom py-2 px-1 text-secondary">
         

@@ -12,13 +12,13 @@ import { useRouter } from "next/router";
 export default function AdminLayout({ children }: PropsWithChildren) {
 
 
-  const navigate = useRouter();
-  useEffect(() => {
-    let userData = localStorage.getItem('userData');
-    if (!userData) {
-      navigate.push('/Admin/login?goTo=/Admin')
-    }
-  }, []);
+  // const navigate = useRouter();
+  // useEffect(() => {
+  //   let userData = localStorage.getItem('userData');
+  //   if (!userData) {
+  //     navigate.push('/Admin/login?goTo=/Admin')
+  //   }
+  // }, []);
 
 
   // Show status for xs screen

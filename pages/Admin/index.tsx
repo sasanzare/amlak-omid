@@ -40,13 +40,16 @@ import {
   faLinkedinIn,
   faTwitter,
 } from "@fortawesome/free-brands-svg-icons";
-import React from "react";
-
 import Head from "next/head";
+import { useRouter } from "next/router";
+
+
+
 
 
 // const Home: NextPage = () => (
 export default ()=> {
+  const router = useRouter()
   Chart.register(
     CategoryScale,
     LinearScale,
@@ -60,11 +63,11 @@ export default ()=> {
   const random = (min: number, max: number) =>
     Math.floor(Math.random() * (max - min + 1) + min);
 
-
   return (
     <AdminLayout>
       <Head>
         <title>پنل ادمین</title>
+     
       </Head>
       <div className="row">
         <div className="col-sm-6 col-lg-3">
@@ -1536,5 +1539,4 @@ export default ()=> {
   );
 
 }
-
 

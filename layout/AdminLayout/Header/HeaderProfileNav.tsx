@@ -17,6 +17,8 @@ import {
   faGear, faListCheck, faLock, faPowerOff,
 } from '@fortawesome/free-solid-svg-icons'
 import Link from 'next/link'
+import Cookies from 'js-cookie'
+import { useRouter } from "next/router";
 
 type NavItemProps = {
   icon: IconDefinition;
@@ -34,6 +36,11 @@ const ProfileDropdownItem = (props: NavItemProps) => {
 }
 
 export default function HeaderProfileNav() {
+  const router = useRouter()
+  function logOut() {
+   Cookies.remove('token')
+    router.replace('/Admin/login')
+  }
   return (
     <Nav>
       <Dropdown as={NavItem}>
@@ -43,14 +50,14 @@ export default function HeaderProfileNav() {
               width={128}
               height={128}
               className="rounded-circle"
-              src="/assets/img/avatars/8.jpg"
+              src="/img/avatar.jpeg"
               alt="user@email.com"
             />
           </div>
         </Dropdown.Toggle>
         <Dropdown.Menu className="pt-0 text-end">
           <Dropdown.Header className="bg-light fw-bold rounded-top">حساب</Dropdown.Header>
-          <Link href="/" passHref>
+          {/* <Link href="/" passHref>
             <Dropdown.Item>
               <ProfileDropdownItem icon={faBell}>
                 Updates
@@ -111,12 +118,12 @@ export default function HeaderProfileNav() {
             <Dropdown.Item>
               <ProfileDropdownItem icon={faLock}>Lock Account</ProfileDropdownItem>
             </Dropdown.Item>
-          </Link>
-          <Link href="/login" passHref>
-            <Dropdown.Item>
-              <ProfileDropdownItem icon={faPowerOff}>خروج</ProfileDropdownItem>
+          </Link> */}
+         
+            <Dropdown.Item onClick={logOut}>
+              <ProfileDropdownItem icon={faPowerOff} >خروج</ProfileDropdownItem>
             </Dropdown.Item>
-          </Link>
+         
         </Dropdown.Menu>
       </Dropdown>
     </Nav>

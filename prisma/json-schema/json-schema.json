@@ -54,6 +54,12 @@
             "null"
           ]
         },
+        "postalCode": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
         "address": {
           "type": [
             "string",
@@ -61,6 +67,12 @@
           ]
         },
         "userImage": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "nationalImage": {
           "type": [
             "string",
             "null"
@@ -221,6 +233,12 @@
             "null"
           ]
         },
+        "businessIdImage": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
         "owner": {
           "$ref": "#/definitions/user"
         },
@@ -244,6 +262,12 @@
         },
         "phoneNumber": {
           "type": "string"
+        },
+        "businessId": {
+          "type": [
+            "string",
+            "null"
+          ]
         },
         "latitude": {
           "type": [
@@ -366,7 +390,14 @@
           ]
         },
         "user": {
-          "$ref": "#/definitions/user"
+          "anyOf": [
+            {
+              "$ref": "#/definitions/user"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "name": {
           "type": "string"
@@ -416,7 +447,8 @@
           "enum": [
             "rental",
             "forSale",
-            "fastSale"
+            "fastSale",
+            "special"
           ]
         },
         "type": {
