@@ -186,7 +186,7 @@ export default () => {
       if (res.status === 200) {
         toast.success(res.data.message);
         setShowLoading(false);
-        navigate.replace("/dashboard");
+        navigate.replace(`/Rent/${res.data}`)
       }
     } catch (err) {
       if (err?.response?.data) {

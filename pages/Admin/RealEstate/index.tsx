@@ -203,26 +203,26 @@ export default () => {
     RealStateRegistration.append("isActive", isSwitchOn);
     RealStateRegistration.append("AdStatus", AdStatus);
 
-   
+
     // if(lat != ""){
     //   RealStateRegistration.append("latitude", lat);
     // }
-    
+
     // if(lang != ""){
     //   RealStateRegistration.append("longitude", lang);
     // }
-    
+
     RealStateRegistration.append("media", estateImage);
-    if(selectedImage1 != ""){
+    if (selectedImage1 != "") {
       RealStateRegistration.append("media", image1);
     }
-    if(selectedImage2 != ""){
+    if (selectedImage2 != "") {
       RealStateRegistration.append("media", image2);
     }
-    if(selectedImage3 != ""){
+    if (selectedImage3 != "") {
       RealStateRegistration.append("media", image3);
     }
-    if(selectedImage4 != ""){
+    if (selectedImage4 != "") {
       RealStateRegistration.append("media", image4);
     }
 
@@ -257,17 +257,19 @@ export default () => {
     }
     axios
       .post(createAdvertise, RealStateRegistration
-      //   ,{
-      //   headers: {
-      //     Authorization: `${
-      //       JSON.parse(localStorage.getItem("userData")).token
-      //     }`,
-      //     "Content-Type": "multipart/form-data",
-      //   },
-      // }
-      
+        //   ,{
+        //   headers: {
+        //     Authorization: `${
+        //       JSON.parse(localStorage.getItem("userData")).token
+        //     }`,
+        //     "Content-Type": "multipart/form-data",
+        //   },
+        // }
+
       )
       .then((res) => {
+        console.log(res)
+        console.log("here")
         setModalShow(false);
         getRealEstate();
         reset();
@@ -369,8 +371,8 @@ export default () => {
             <Form.Label>شهر</Form.Label>
 
             <Form.Select onChange={(e) => setCity(e.target.value)} value={city}>
-            <option>---
-                  </option>
+              <option>---
+              </option>
               {cityList?.map((data, i) => {
                 return (
                   <option key={data.id} value={data.id}>
@@ -533,278 +535,278 @@ export default () => {
             </Form.Label>
           </Form.Group> */}
 
-<Form.Group className="mb-3 text-center">
-        <p className="f-14 text-right">افزودن تصاویر آگهی</p>
-        <Form.Label className="w-100">
-          <Form.Control
-            onChange={({ target }) => {
-              if (target.files) {
-                const file = target.files[0];
-                setSelectedImage(URL.createObjectURL(file));
-                setEstateImage(file);
-              }
-            }}
-            multiple
-            accept="image/*"
-            type="file"
-            hidden={true}
-          />
+          <Form.Group className="mb-3 text-center">
+            <p className="f-14 text-right">افزودن تصاویر آگهی</p>
+            <Form.Label className="w-100">
+              <Form.Control
+                onChange={({ target }) => {
+                  if (target.files) {
+                    const file = target.files[0];
+                    setSelectedImage(URL.createObjectURL(file));
+                    setEstateImage(file);
+                  }
+                }}
+                multiple
+                accept="image/*"
+                type="file"
+                hidden={true}
+              />
 
-          <div className="d-flex justify-content-center">
-            {!estateImage ? (
-              selectedImage ? (
-                <img src={selectedImage} value={selectedImage} width={250} />
-              ) : (
-                <div className="border-upload shadow-es rounded-3 p-5 d-flex justify-content-center  align-items-center col-lg-5 col-md-6 col-sm-6 col-7 h-250">
-                 
-                  <div>
-                  <FontAwesomeIcon
-                                    icon={faUpload}
-                                    className="text-secandery f-25 d-block mx-auto mb-2 text-muted"
-                                    fixedWidth
-                                  />
-                  <span className="text-muted">آپلود عکس اصلی</span>
-                 
+              <div className="d-flex justify-content-center">
+                {!estateImage ? (
+                  selectedImage ? (
+                    <img src={selectedImage} value={selectedImage} width={250} />
+                  ) : (
+                    <div className="border-upload shadow-es rounded-3 p-5 d-flex justify-content-center  align-items-center col-lg-5 col-md-6 col-sm-6 col-7 h-250">
+
+                      <div>
+                        <FontAwesomeIcon
+                          icon={faUpload}
+                          className="text-secandery f-25 d-block mx-auto mb-2 text-muted"
+                          fixedWidth
+                        />
+                        <span className="text-muted">آپلود عکس اصلی</span>
+
+                      </div>
+                    </div>
+                  )
+                ) : selectedImage ? (
+                  <img src={selectedImage} value={selectedImage} width={250} />
+                ) : (
+                  <img
+                    src={"/uploads/articles/" + estateImage}
+                    value={selectedImage}
+                    width={200}
+                  />
+                )}
+              </div>
+            </Form.Label>
+          </Form.Group>
+          <div className="col-12">
+            <div className="row">
+              <Form.Group className="col-lg-3  col-6 mx-auto mb-4">
+                <Form.Label className="w-100">
+                  <Form.Control
+                    onChange={({ target }) => {
+                      if (target.files) {
+                        const file = target.files[0];
+                        setSelectedImage3(URL.createObjectURL(file));
+                        setImage3(file);
+                      }
+                    }}
+                    multiple
+                    accept="image/*"
+                    type="file"
+                    hidden={true}
+                  />
+
+                  <div className="">
+                    {!image3 ? (
+                      selectedImage3 ? (
+                        <img
+                          src={selectedImage3}
+                          value={selectedImage3}
+                          height={150}
+                          className="w-100 rounded-3"
+                        />
+                      ) : (
+                        <div className="rounded-3 border-upload h-150 d-flex justify-content-center align-items-center">
+                          <div>
+                            <FontAwesomeIcon
+                              icon={faUpload}
+                              className="text-secandery f-25 d-block mx-auto mb-2 text-muted"
+                              fixedWidth
+                            />
+                            <span className="text-muted">آپلود عکس اول</span>
+                          </div>
+                        </div>
+                      )
+                    ) : selectedImage3 ? (
+                      <img
+                        src={selectedImage3}
+                        value={selectedImage3}
+                        height={150}
+                        className="w-100 rounded-3"
+                      />
+                    ) : (
+                      <img
+                        src={"/uploads/users/" + image3}
+                        value={selectedImage3}
+                        height={150}
+                        className="w-100 rounded-3"
+                      />
+                    )}
                   </div>
-                </div>
-              )
-            ) : selectedImage ? (
-              <img src={selectedImage} value={selectedImage} width={250} />
-            ) : (
-              <img
-                src={"/uploads/articles/" + estateImage}
-                value={selectedImage}
-                width={200}
-              />
-            )}
-          </div>
-        </Form.Label>
-      </Form.Group>
-      <div className="col-12">
-        <div className="row">
-        <Form.Group className="col-lg-3  col-6 mx-auto mb-4">
-        <Form.Label className="w-100">
-          <Form.Control
-            onChange={({ target }) => {
-              if (target.files) {
-                const file = target.files[0];
-                setSelectedImage3(URL.createObjectURL(file));
-                setImage3(file);
-              }
-            }}
-            multiple
-            accept="image/*"
-            type="file"
-            hidden={true}
-          />
+                </Form.Label>
+              </Form.Group>
+              <Form.Group className="col-lg-3 col-6 mx-auto mb-4">
+                <Form.Label className="w-100">
+                  <Form.Control
+                    onChange={({ target }) => {
+                      if (target.files) {
+                        const file = target.files[0];
+                        setSelectedImage1(URL.createObjectURL(file));
+                        setImage1(file);
+                      }
+                    }}
+                    multiple
+                    accept="image/*"
+                    type="file"
+                    hidden={true}
+                  />
 
-          <div className="">
-            {!image3 ? (
-              selectedImage3 ? (
-                <img
-                  src={selectedImage3}
-                  value={selectedImage3}
-                  height={150}
-                  className="w-100 rounded-3"
-                />
-              ) : (
-                <div className="rounded-3 border-upload h-150 d-flex justify-content-center align-items-center">
-                  <div>
-                  <FontAwesomeIcon
-                                    icon={faUpload}
-                                    className="text-secandery f-25 d-block mx-auto mb-2 text-muted"
-                                    fixedWidth
-                                  />
-                  <span className="text-muted">آپلود عکس اول</span>
+                  <div className="">
+                    {!image1 ? (
+                      selectedImage1 ? (
+                        <img
+                          src={selectedImage1}
+                          value={selectedImage1}
+                          height={150}
+                          className="w-100 rounded-3"
+                        />
+                      ) : (
+                        <div className=" rounded-3 border-upload h-150 d-flex justify-content-center align-items-center">
+                          <div>
+                            <FontAwesomeIcon
+                              icon={faUpload}
+                              className="text-secandery f-25 d-block mx-auto mb-2 text-muted"
+                              fixedWidth
+                            />
+                            <span className="text-muted">آپلود عکس دوم</span>
+                          </div>
+                        </div>
+                      )
+                    ) : selectedImage1 ? (
+                      <img
+                        src={selectedImage1}
+                        value={selectedImage1}
+                        height={150}
+                        className="w-100 rounded-3"
+                      />
+                    ) : (
+                      <img
+                        src={"/uploads/articles/" + image1}
+                        value={selectedImage1}
+                        height={150}
+                        className="w-100 rounded-3"
+                      />
+                    )}
                   </div>
-                </div>
-              )
-            ) : selectedImage3 ? (
-              <img
-                src={selectedImage3}
-                value={selectedImage3}
-                height={150}
-                className="w-100 rounded-3"
-              />
-            ) : (
-              <img
-                src={"/uploads/users/" + image3}
-                value={selectedImage3}
-                height={150}
-                className="w-100 rounded-3"
-              />
-            )}
-          </div>
-        </Form.Label>
-      </Form.Group>
-      <Form.Group className="col-lg-3 col-6 mx-auto mb-4">
-        <Form.Label className="w-100">
-          <Form.Control
-            onChange={({ target }) => {
-              if (target.files) {
-                const file = target.files[0];
-                setSelectedImage1(URL.createObjectURL(file));
-                setImage1(file);
-              }
-            }}
-            multiple
-            accept="image/*"
-            type="file"
-            hidden={true}
-          />
+                </Form.Label>
+              </Form.Group>
 
-          <div className="">
-            {!image1 ? (
-              selectedImage1 ? (
-                <img
-                  src={selectedImage1}
-                  value={selectedImage1}
-                  height={150}
-                  className="w-100 rounded-3"
-                />
-              ) : (
-                <div className=" rounded-3 border-upload h-150 d-flex justify-content-center align-items-center">
-                     <div>
-                  <FontAwesomeIcon
-                                    icon={faUpload}
-                                    className="text-secandery f-25 d-block mx-auto mb-2 text-muted"
-                                    fixedWidth
-                                  />
-                  <span className="text-muted">آپلود عکس دوم</span>
+              <Form.Group className="col-lg-3 col-6 mx-auto mb-4">
+                <Form.Label className="w-100">
+                  <Form.Control
+                    onChange={({ target }) => {
+                      if (target.files) {
+                        const file = target.files[0];
+                        setSelectedImage4(URL.createObjectURL(file));
+                        setImage4(file);
+                      }
+                    }}
+                    multiple
+                    accept="image/*"
+                    type="file"
+                    hidden={true}
+                  />
+
+                  <div className="">
+                    {!image4 ? (
+                      selectedImage4 ? (
+                        <img
+                          src={selectedImage4}
+                          value={selectedImage4}
+                          height={150}
+                          className="w-100 rounded-3"
+                        />
+                      ) : (
+                        <div className="rounded-3  border-upload h-150 d-flex justify-content-center align-items-center">
+                          <div>
+                            <FontAwesomeIcon
+                              icon={faUpload}
+                              className="text-secandery f-25 d-block mx-auto mb-2 text-muted"
+                              fixedWidth
+                            />
+                            <span className="text-muted">آپلود عکس سوم</span>
+                          </div>
+                        </div>
+                      )
+                    ) : selectedImage4 ? (
+                      <img
+                        src={selectedImage4}
+                        value={selectedImage4}
+                        height={150}
+                        className="w-100 rounded-3"
+                      />
+                    ) : (
+                      <img
+                        src={"/uploads/users/" + image4}
+                        value={selectedImage4}
+                        height={150}
+                        className="w-100 rounded-3"
+                      />
+                    )}
                   </div>
-                </div>
-              )
-            ) : selectedImage1 ? (
-              <img
-                src={selectedImage1}
-                value={selectedImage1}
-                height={150}
-                className="w-100 rounded-3"
-              />
-            ) : (
-              <img
-                src={"/uploads/articles/" + image1}
-                value={selectedImage1}
-                height={150}
-                className="w-100 rounded-3"
-              />
-            )}
-          </div>
-        </Form.Label>
-      </Form.Group>
+                </Form.Label>
+              </Form.Group>
+              <Form.Group className="col-lg-3 col-6 mx-auto mb-4">
+                <Form.Label className="w-100">
+                  <Form.Control
+                    onChange={({ target }) => {
+                      if (target.files) {
+                        const file = target.files[0];
+                        setSelectedImage2(URL.createObjectURL(file));
+                        setImage2(file);
+                      }
+                    }}
+                    multiple
+                    accept="image/*"
+                    type="file"
+                    hidden={true}
+                  />
 
-      <Form.Group className="col-lg-3 col-6 mx-auto mb-4">
-        <Form.Label className="w-100">
-          <Form.Control
-            onChange={({ target }) => {
-              if (target.files) {
-                const file = target.files[0];
-                setSelectedImage4(URL.createObjectURL(file));
-                setImage4(file);
-              }
-            }}
-            multiple
-            accept="image/*"
-            type="file"
-            hidden={true}
-          />
-
-          <div className="">
-            {!image4 ? (
-              selectedImage4 ? (
-                <img
-                  src={selectedImage4}
-                  value={selectedImage4}
-                  height={150}
-                  className="w-100 rounded-3"
-                />
-              ) : (
-                <div className="rounded-3  border-upload h-150 d-flex justify-content-center align-items-center">
-                       <div>
-                  <FontAwesomeIcon
-                                    icon={faUpload}
-                                    className="text-secandery f-25 d-block mx-auto mb-2 text-muted"
-                                    fixedWidth
-                                  />
-                  <span className="text-muted">آپلود عکس سوم</span>
+                  <div className="">
+                    {!image2 ? (
+                      selectedImage2 ? (
+                        <img
+                          src={selectedImage2}
+                          value={selectedImage2}
+                          height={150}
+                          className="w-100 rounded-3"
+                        />
+                      ) : (
+                        <div className="rounded-3  border-upload h-150 d-flex justify-content-center align-items-center">
+                          <div>
+                            <FontAwesomeIcon
+                              icon={faUpload}
+                              className="text-secandery f-25 d-block mx-auto mb-2 text-muted"
+                              fixedWidth
+                            />
+                            <span className="text-muted">آپلود عکس چهارم</span>
+                          </div>
+                        </div>
+                      )
+                    ) : selectedImage2 ? (
+                      <img
+                        src={selectedImage2}
+                        value={selectedImage2}
+                        height={150}
+                        className="w-100 rounded-3"
+                      />
+                    ) : (
+                      <img
+                        src={"/uploads/users/" + image2}
+                        value={selectedImage2}
+                        height={150}
+                        className="w-100 rounded-3"
+                      />
+                    )}
                   </div>
-                </div>
-              )
-            ) : selectedImage4 ? (
-              <img
-                src={selectedImage4}
-                value={selectedImage4}
-                height={150}
-                className="w-100 rounded-3"
-              />
-            ) : (
-              <img
-                src={"/uploads/users/" + image4}
-                value={selectedImage4}
-                height={150}
-                className="w-100 rounded-3"
-              />
-            )}
+                </Form.Label>
+              </Form.Group>
+            </div>
           </div>
-        </Form.Label>
-      </Form.Group>
-      <Form.Group className="col-lg-3 col-6 mx-auto mb-4">
-        <Form.Label className="w-100">
-          <Form.Control
-            onChange={({ target }) => {
-              if (target.files) {
-                const file = target.files[0];
-                setSelectedImage2(URL.createObjectURL(file));
-                setImage2(file);
-              }
-            }}
-            multiple
-            accept="image/*"
-            type="file"
-            hidden={true}
-          />
-
-          <div className="">
-            {!image2 ? (
-              selectedImage2 ? (
-                <img
-                  src={selectedImage2}
-                  value={selectedImage2}
-                  height={150}
-                  className="w-100 rounded-3"
-                />
-              ) : (
-                <div className="rounded-3  border-upload h-150 d-flex justify-content-center align-items-center">
-                     <div>
-                  <FontAwesomeIcon
-                                    icon={faUpload}
-                                    className="text-secandery f-25 d-block mx-auto mb-2 text-muted"
-                                    fixedWidth
-                                  />
-                  <span className="text-muted">آپلود عکس چهارم</span>
-                  </div>
-                </div>
-              )
-            ) : selectedImage2 ? (
-              <img
-                src={selectedImage2}
-                value={selectedImage2}
-                height={150}
-                className="w-100 rounded-3"
-              />
-            ) : (
-              <img
-                src={"/uploads/users/" + image2}
-                value={selectedImage2}
-                height={150}
-                className="w-100 rounded-3"
-              />
-            )}
-          </div>
-        </Form.Label>
-      </Form.Group>
-        </div>
-      </div>
           <Form.Group className="mb-3" controlId="status">
             <Form.Check
               className="d-flex flex-column-reverse"

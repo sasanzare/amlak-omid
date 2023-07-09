@@ -26,6 +26,7 @@ export default async function handler(
 async function create(req: NextApiRequest, res: NextApiResponse) {
   const { fields } = await parseForm(req);
   const user = await verify(req, String(env.JWT_SECRET));
+  console.log(user)
   const obj = await prisma.note.create({
     data: {
       ...fields,

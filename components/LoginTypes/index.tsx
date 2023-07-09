@@ -7,12 +7,12 @@ export default () => {
           ثبت نام کاربر
         </a>
       </Link> */}
-      <Link href="/signin/RealStateRegistration?goTo=/dashboard">
+      <Link href="/signin/RealStateRegistration?goTo=/">
         <a className="btn btn-es col-lg-3 col-md-3 col-sm-5 col-6   mt-3">
           ثبت نام املاک
         </a>
       </Link>
-      <Link href="/signin/AdvisorRegistration?goTo=/dashboard">
+      <Link href="/signin/AdvisorRegistration?goTo=/">
         <a className="btn btn-es col-lg-3 col-md-3 col-sm-5 col-6 mt-3">
           {" "}
           دعوت به همکاری

@@ -8,7 +8,8 @@ export default async function handler(
   res: NextApiResponse
 ) {
   if (req.method === "POST") {
-    get(req, res);
+    const obj = await get(req, res);
+    res.status(200).json(obj);
   } else {
     throw new Error(
       `The HTTP ${req.method} method is not supported at this route.`
@@ -17,53 +18,51 @@ export default async function handler(
 }
 
 async function get(req: NextApiRequest, res: NextApiResponse) {
-    const user = await verify(req, String(env.JWT_SECRET));
-
-   const obj = await prisma.realEstate.findMany({
-    where : {
-        userId : user._id
+  const user = await verify(req, String(env.JWT_SECRET));
+  const obj = await prisma.realEstate.findMany({
+    where: {
+      userId: user._id
     },
-      select: {
-        id: true,
-        name: true,
-        phoneNumber: true,
-        description: true,
-        roomCount: true,
-        meter: true,
-        estateImage: true,
-        assignmentType: true,
-        type: true,
-        price: true,
-        latitude: true,
-        longitude: true,
-        createdAt: true,
-        isActive: true,
-        AdStatus: true,
-        cityArea: {
-          select: {
-            name: true,
-          },
-        },
-        city: {
-          select: {
-            name: true,
-          },
-        },
-        agency: {
-          select: {
-            name: true,
-            agencyImage: true,
-          },
+    select: {
+      id: true,
+      name: true,
+      phoneNumber: true,
+      description: true,
+      roomCount: true,
+      meter: true,
+      estateImage: true,
+      assignmentType: true,
+      type: true,
+      price: true,
+      latitude: true,
+      longitude: true,
+      createdAt: true,
+      isActive: true,
+      AdStatus: true,
+      cityArea: {
+        select: {
+          name: true,
         },
       },
-      orderBy: {
-        createdAt: "desc",
+      city: {
+        select: {
+          name: true,
+        },
       },
+      agency: {
+        select: {
+          name: true,
+          agencyImage: true,
+        },
+      },
+    },
+    orderBy: {
+      createdAt: "desc",
+    },
 
-      skip: 0,
-      take: 20,
-    });
-  
-  res.status(200).json(obj);
+    skip: 0,
+    take: 20,
+  });
+  return obj
 }
 

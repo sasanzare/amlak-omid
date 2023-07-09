@@ -8,7 +8,7 @@ import { faPencil } from "@fortawesome/free-solid-svg-icons";
 import ExpertCard from "../../components/ExpertCard";
 import LoginTypes from "../../components/LoginTypes";
 import { useContext, useEffect, useState } from "react";
-import { getInfoUser,getAdvertisingByUserId,getNoteByUserId,getAdmissionRequest,acceptExpert,rejectExpert,getAgents } from "../../api";
+import { getInfoUser, getAdvertisingByUserId, getNoteByUserId, getAdmissionRequest, acceptExpert, rejectExpert, getAgents, getSavedRealEstates } from "../../api";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import { context } from "../../context";
@@ -36,21 +36,22 @@ export default function Dashboard() {
   const [agencyId, setAgencyId] = useState("");
   const [realEstateList, setRealEstateList] = useState([]);
   const [advertisingList, setAdvertisingList] = useState([]);
+  const [savedRealEstatesList, setSavedRealEstatesList] = useState([]);
   const [advertisingNotes, setAdvertisingNotes] = useState([]);
   const [agentrequest, setAgentrequest] = useState([]);
 
   let test;
 
   useEffect(() => {
-    if(localStorage.getItem("userData")){
+    if (localStorage.getItem("userData")) {
       getRoleUser();
-    }else{
+    } else {
       router.replace('signin?goTo=/')
     }
-    
+
   }, []);
 
-  
+
 
 
   async function getRoleUser() {
@@ -58,29 +59,28 @@ export default function Dashboard() {
     try {
       const res = await axios.post(getInfoUser, null, {
         headers: {
-          Authorization: `${
-            JSON.parse(localStorage.getItem("userData")).token
-          }`,
+          Authorization: `${JSON.parse(localStorage.getItem("userData")).token
+            }`,
         },
       });
       setInfoUser(res.data);
       test = res.data;
-    
+
 
       if (res.status === 200) {
         setRole(res.data.role);
-        if(res.data.role != "normal"){
+        if (res.data.role != "normal") {
           setUserImg(`/uploads/users/${res.data.userImage}`);
           setFirstName(res.data.firstName);
-        setLastName(res.data.lastName);
+          setLastName(res.data.lastName);
         }
-        
-        
-        if( res.data.role == "agencyOwner"){
+
+
+        if (res.data.role == "agencyOwner") {
           setAgencyId(res.data.agency[0].id);
           // console.log(res.data.agency[0].id);
           // console.log(agencyId);
-          
+
         }
         setShowLoading(false);
         toast.success("خوش آمدید");
@@ -98,20 +98,44 @@ export default function Dashboard() {
   function getAdvertising() {
     setShowLoading(true);
     axios
-      .post(getAdvertisingByUserId,null,{
+      .post(getAdvertisingByUserId, null, {
         headers: {
-          Authorization: `${
-            JSON.parse(localStorage.getItem("userData")).token
-          }`,
+          Authorization: `${JSON.parse(localStorage.getItem("userData")).token
+            }`,
         },
       })
       .then((res) => {
+        console.log('data')
+        console.log(res.data)
         setAdvertisingList(res.data);
         if (res.status === 200) {
           setShowLoading(false);
-       
+
         }
       })
+      .catch((err) => {
+        if (err.response?.data) {
+          err?.response?.data?.errors?.map((issue) => toast.error(issue));
+        } else {
+          toast.error("مشکلی پیش آمده است !");
+        }
+        setShowLoading(false);
+      });
+  }
+  function getSaved() {
+    setShowLoading(true);
+    axios.get(getSavedRealEstates, {
+      headers: {
+        Authorization: `${JSON.parse(String(localStorage.getItem("userData"))).token}`,
+      },
+    }).then((res) => {
+      console.log(res.data)
+      setSavedRealEstatesList(res.data);
+      if (res.status === 200) {
+        setShowLoading(false);
+
+      }
+    })
       .catch((err) => {
         if (err.response?.data) {
           err?.response?.data?.errors?.map((issue) => toast.error(issue));
@@ -124,18 +148,18 @@ export default function Dashboard() {
   function getAdvertisingNotes() {
     setShowLoading(true);
     axios
-      .post(getNoteByUserId,null,{
+      .post(getNoteByUserId, null, {
         headers: {
-          Authorization: `${
-            JSON.parse(localStorage.getItem("userData")).token
-          }`,
+          Authorization: `${JSON.parse(localStorage.getItem("userData")).token
+            }`,
         },
       })
       .then((res) => {
+        console.log(res.data)
         setAdvertisingNotes(res.data);
         if (res.status === 200) {
           setShowLoading(false);
-       
+
         }
       })
       .catch((err) => {
@@ -150,11 +174,10 @@ export default function Dashboard() {
   function getAgentrequest() {
     setShowLoading(true);
     axios
-      .post(getAdmissionRequest,null,{
+      .post(getAdmissionRequest, null, {
         headers: {
-          Authorization: `${
-            JSON.parse(localStorage.getItem("userData")).token
-          }`,
+          Authorization: `${JSON.parse(localStorage.getItem("userData")).token
+            }`,
         },
       })
       .then((res) => {
@@ -162,7 +185,7 @@ export default function Dashboard() {
         if (res.status === 200) {
           setShowLoading(false);
           console.log(res.data);
-       
+
         }
       })
       .catch((err) => {
@@ -177,11 +200,10 @@ export default function Dashboard() {
   function getAgent() {
     setShowLoading(true);
     axios
-      .post(getAgents,null,{
+      .post(getAgents, null, {
         headers: {
-          Authorization: `${
-            JSON.parse(localStorage.getItem("userData")).token
-          }`,
+          Authorization: `${JSON.parse(localStorage.getItem("userData")).token
+            }`,
         },
       })
       .then((res) => {
@@ -189,7 +211,7 @@ export default function Dashboard() {
         if (res.status === 200) {
           setShowLoading(false);
           console.log(res.data);
-       
+
         }
       })
       .catch((err) => {
@@ -205,22 +227,21 @@ export default function Dashboard() {
 
   const getIdRealEstate = (e) => {
     router.push(`/Rent/${e.target.getAttribute("data-reactid")}`)
-};
+  };
   const acceptRequest = (e) => {
     setShowLoading(true);
     axios
-      .post(acceptExpert,{idExpert : e.target.getAttribute("data-reactid")},{
+      .post(acceptExpert, { idExpert: e.target.getAttribute("data-reactid") }, {
         headers: {
-          Authorization: `${
-            JSON.parse(localStorage.getItem("userData")).token
-          }`,
+          Authorization: `${JSON.parse(localStorage.getItem("userData")).token
+            }`,
         },
       })
       .then((res) => {
         if (res.status === 200) {
           setShowLoading(false);
           getAgentrequest()
-          
+
         }
       })
       .catch((err) => {
@@ -231,22 +252,21 @@ export default function Dashboard() {
         }
         setShowLoading(false);
       });
-};
+  };
   const rejectRequest = (e) => {
     setShowLoading(true);
     axios
-      .post(rejectExpert,{idExpert : e.target.getAttribute("data-reactid")},{
+      .post(rejectExpert, { idExpert: e.target.getAttribute("data-reactid") }, {
         headers: {
-          Authorization: `${
-            JSON.parse(localStorage.getItem("userData")).token
-          }`,
+          Authorization: `${JSON.parse(localStorage.getItem("userData")).token
+            }`,
         },
       })
       .then((res) => {
         if (res.status === 200) {
           setShowLoading(false);
           getAgentrequest()
-          
+
         }
       })
       .catch((err) => {
@@ -257,7 +277,7 @@ export default function Dashboard() {
         }
         setShowLoading(false);
       });
-};
+  };
   return (
     <div className="About mt-5">
       <BgTop img="/img/userpanel/Group-209.jpg" />
@@ -283,22 +303,28 @@ export default function Dashboard() {
                 </Col>
                 <Col xs={10} className="mx-auto">
                   <Row>
-                    {role == "normal" ? (
-                      <Col
-                        xl={10}
-                        md={12}
-                        sm={6}
-                        xs={9}
-                        className="px-1 pt-3 mx-auto"
+
+                    <Col
+                      xl={10}
+                      md={12}
+                      sm={6}
+                      xs={9}
+                      className="px-1 pt-3 mx-auto"
+                    >
+                      <Nav.Link
+                        eventKey="register"
+                        className="btn btn-border w-100 f-14 "
                       >
-                        <Nav.Link
-                          eventKey="register"
-                          className="btn btn-border w-100 f-14 "
-                        >
-                          ثبت نام
-                        </Nav.Link>
-                      </Col>
-                    ) : null}
+                        <Link href="/New">
+                          <a
+                            className="btn btn-border w-100 f-14 "
+                          >
+                            ثبت آگهی
+                          </a>
+                        </Link>
+                      </Nav.Link>
+                    </Col>
+
 
                     <Col
                       xl={10}
@@ -310,7 +336,7 @@ export default function Dashboard() {
                       <Nav.Link
                         eventKey="advertisements"
                         className="btn btn-border w-100 f-14 "
-                        onClick={()=>getAdvertising()}
+                        onClick={() => getAdvertising()}
                       >
                         آگهی های من
                       </Nav.Link>
@@ -325,7 +351,7 @@ export default function Dashboard() {
                       <Nav.Link
                         eventKey="note"
                         className="btn btn-border w-100 f-14"
-                        onClick={()=>getAdvertisingNotes()}
+                        onClick={() => getAdvertisingNotes()}
                       >
                         یادداشت‌ها
                       </Nav.Link>
@@ -339,9 +365,10 @@ export default function Dashboard() {
                     >
                       <Nav.Link
                         eventKey="saved"
-                        className="btn btn-border w-100 f-14 "
+                        className="btn btn-border w-100 f-14"
+                        onClick={() => getSaved()}
                       >
-                        ذخیره شده‌ها
+                        ذخیره شده ها
                       </Nav.Link>
                     </Col>
                     <Col
@@ -385,57 +412,57 @@ export default function Dashboard() {
                         </a>
                       </Link>
                     </Col>
-                  
-                      {role == "agencyOwner" ?(<>
-                      
-                        <Col
-                      xl={10}
-                      md={12}
-                      sm={6}
-                      xs={9}
-                      className="px-1 pt-3  mx-auto"
-                    >
+
+                    {role == "agencyOwner" ? (<>
+
+                      <Col
+                        xl={10}
+                        md={12}
+                        sm={6}
+                        xs={9}
+                        className="px-1 pt-3  mx-auto"
+                      >
 
                         <Nav.Link
-                        eventKey="invite"
-                        className="btn btn-border w-100 f-14 "
-                        onClick={()=>getAgentrequest()}
+                          eventKey="invite"
+                          className="btn btn-border w-100 f-14 "
+                          onClick={() => getAgentrequest()}
+                        >
+                          فرم دعوت به همکاری
+                        </Nav.Link>
+                      </Col>
+                      <Col
+                        xl={10}
+                        md={12}
+                        sm={6}
+                        xs={9}
+                        className="px-1 pt-3  mx-auto"
                       >
-                        فرم دعوت به همکاری
-                      </Nav.Link>
-                    </Col>
-                    <Col
-                      xl={10}
-                      md={12}
-                      sm={6}
-                      xs={9}
-                      className="px-1 pt-3  mx-auto"
-                    >
-                      <Nav.Link
-                        eventKey="experts"
-                        className="btn btn-border w-100 f-14 "
-                        onClick={()=>getAgent()}
+                        <Nav.Link
+                          eventKey="experts"
+                          className="btn btn-border w-100 f-14 "
+                          onClick={() => getAgent()}
+                        >
+                          مدیریت کارشناس‌ها
+                        </Nav.Link>
+                      </Col>
+                      <Col
+                        xl={10}
+                        md={12}
+                        sm={6}
+                        xs={9}
+                        className="px-1 pt-3  mx-auto"
                       >
-                        مدیریت کارشناس‌ها
-                      </Nav.Link>
-                    </Col>
-                    <Col
-                      xl={10}
-                      md={12}
-                      sm={6}
-                      xs={9}
-                      className="px-1 pt-3  mx-auto"
-                    >
-                      <Nav.Link
-                        eventKey="reports"
-                        className="btn btn-border w-100 f-14 "
-                      >
-                        دیدن گزارش‌ها
-                      </Nav.Link>
-                    </Col>
-                      
-                      </>): null }
-                    
+                        <Nav.Link
+                          eventKey="reports"
+                          className="btn btn-border w-100 f-14 "
+                        >
+                          دیدن گزارش‌ها
+                        </Nav.Link>
+                      </Col>
+
+                    </>) : null}
+
                   </Row>
                 </Col>
               </SideBar>
@@ -461,38 +488,50 @@ export default function Dashboard() {
 
                     <Tab.Pane eventKey="advertisements">
                       <Row>
-                      {advertisingList.map((data) => {
-              return (<Estate
-                key={data.id}
-                myClass=" p-3 my-lg-0  my-2 col-xl-5 col-lg-6 col-md-10 col-11 mx-auto"
-                img={data.estateImage}
-                title={(data.agency)? data.agency.name : "کاربر عادی" }
-                profile={(data.agency)? "/uploads/advertising/"+data.agency.agencyImage : "/img/avatar.jpeg" }
-                location={data.cityArea.name}
-                price={data.price.replace(/(\d)(?=(\d{3})+$)/g, '$1,')}
-                bed={room(data.roomCount)}
-                type={property(data.type)}
-                time={moment(data.createdAt, 'YYYY/MM/DD').locale('fa').format('YYYY/MM/DD')}
-                meter={meterage(data.meter)}
-                phoneNumber={data.phoneNumber}
-                to={data.id}
-                getId={getIdRealEstate}
-              />);
-              })}
+                        {advertisingList.map((data) => {
+                          return (<Estate
+                            key={data.id}
+                            myClass=" p-3 my-lg-0  my-2 col-xl-5 col-lg-6 col-md-10 col-11 mx-auto"
+                            img={data.estateImage}
+                            title={(data.agency) ? data.agency.name : "کاربر عادی"}
+                            profile={(data.agency) ? "/uploads/advertising/" + data.agency.agencyImage : "/img/avatar.jpeg"}
+                            location={data.cityArea.name}
+                            price={data.price.replace(/(\d)(?=(\d{3})+$)/g, '$1,')}
+                            bed={room(data.roomCount)}
+                            type={property(data.type)}
+                            time={moment(data.createdAt, 'YYYY/MM/DD').locale('fa').format('YYYY/MM/DD')}
+                            meter={meterage(data.meter)}
+                            phoneNumber={data.phoneNumber}
+                            to={data.id}
+                            getId={getIdRealEstate}
+                          />);
+                        })}
                       </Row>
                     </Tab.Pane>
                     <Tab.Pane eventKey="note">
                       <Row>
-                      {advertisingNotes.map((data) => {
-              return (<div>
-                
-                <Note title={data.note}   to={data.id}
-                getId={getIdRealEstate}/>
-              </div>
-              );
-              })}
+                        {advertisingNotes.map((data) => {
+                          return (<div>
+
+                            <Note title={data.note} to={data.realEstateId}
+                              getId={getIdRealEstate} />
+                          </div>
+                          );
+                        })}
                       </Row>
                     </Tab.Pane>
+                    <Tab.Pane eventKey="saved">
+                      <Row>
+                        {savedRealEstatesList.map((data) => {
+                          return (<div>
+                            <Note title={data.name + ' ' + data.description} to={data.id}
+                              getId={getIdRealEstate} />
+                          </div>
+                          );
+                        })}
+                      </Row>
+                    </Tab.Pane>
+
 
                     <Tab.Pane eventKey="transactions">
                       <Table borderless hover className="text-end">
@@ -521,71 +560,71 @@ export default function Dashboard() {
                       </Table>
                     </Tab.Pane>
 
-                    {role == "agencyOwner" ?(<>
+                    {role == "agencyOwner" ? (<>
 
                       <Tab.Pane eventKey="invite">
-                      <Row>
-                        <Col sm={12}>
-                        {agentrequest.map((data) => (
-                          <RequestCard
-                          key={data.id}
-                          name={data.firstName + data.lastName}
-                          address={data.address}
-                          number={data.phoneNumber}
-                          nCode={data.nationalCode}
-                          pCode={data.postalCode}
-                          img={data.userImage}
-                          to={data.id}
-                          getId={acceptRequest}
-                          deleteId={rejectRequest}
-                          />
-                        ))}
-                        </Col>
-                    
-                        
-                      </Row>
-                    </Tab.Pane>
-                    <Tab.Pane eventKey="experts">
-                      <Row>
-            
+                        <Row>
+                          <Col sm={12}>
+                            {agentrequest.map((data) => (
+                              <RequestCard
+                                key={data.id}
+                                name={data.firstName + data.lastName}
+                                address={data.address}
+                                number={data.phoneNumber}
+                                nCode={data.nationalCode}
+                                pCode={data.postalCode}
+                                img={data.userImage}
+                                to={data.id}
+                                getId={acceptRequest}
+                                deleteId={rejectRequest}
+                              />
+                            ))}
+                          </Col>
 
-<Col sm={12}>
-                        {agentrequest.map((data) => (
-                          <ExpertCard
-                          key={data.id}
-                          name={data.firstName + data.lastName}
-                          address={data.address}
-                          number={data.phoneNumber}
-                          nCode={data.nationalCode}
-                          pCode={data.postalCode}
-                          img={data.userImage}
-                          to={data.id}
-                          deleteId={rejectRequest}
-                          />
-                        ))}
+
+                        </Row>
+                      </Tab.Pane>
+                      <Tab.Pane eventKey="experts">
+                        <Row>
+
+
+                          <Col sm={12}>
+                            {agentrequest.map((data) => (
+                              <ExpertCard
+                                key={data.id}
+                                name={data.firstName + data.lastName}
+                                address={data.address}
+                                number={data.phoneNumber}
+                                nCode={data.nationalCode}
+                                pCode={data.postalCode}
+                                img={data.userImage}
+                                to={data.id}
+                                deleteId={rejectRequest}
+                              />
+                            ))}
+                          </Col>
+                        </Row>
+                      </Tab.Pane>
+                      <Tab.Pane eventKey="reports">
+                        <Col
+                          lg={12}
+                          className=" mt-2 shadow-es col-12 rounded-4 py-2 border text-secondary px-3 d-flex justify-content-between"
+                        >
+                          <span className="f-14">
+                            <FontAwesomeIcon
+                              icon={faPencil}
+                              className="text-gery ms-2"
+                            />
+                            این آگهی قیمت اشتباهی گزاشته داره بازار رو خراب میکنه
+                          </span>
+                          <Link href="#">
+                            <a className="text-decoration-none text-es f-14">
+                              مشاهده آگهی
+                            </a>
+                          </Link>
                         </Col>
-                      </Row>
-                    </Tab.Pane>
-                    <Tab.Pane eventKey="reports">
-                      <Col
-                        lg={12}
-                        className=" mt-2 shadow-es col-12 rounded-4 py-2 border text-secondary px-3 d-flex justify-content-between"
-                      >
-                        <span className="f-14">
-                          <FontAwesomeIcon
-                            icon={faPencil}
-                            className="text-gery ms-2"
-                          />
-                          این آگهی قیمت اشتباهی گزاشته داره بازار رو خراب میکنه
-                        </span>
-                        <Link href="#">
-                          <a className="text-decoration-none text-es f-14">
-                            مشاهده آگهی
-                          </a>
-                        </Link>
-                      </Col>
-                    </Tab.Pane>
-                    </>):null}
+                      </Tab.Pane>
+                    </>) : null}
 
 
 

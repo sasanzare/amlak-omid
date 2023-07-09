@@ -22,7 +22,7 @@ const Login = () => {
   useEffect(() => {
     let userData = localStorage.getItem('userData');
     if (userData) {
-      router.push('/dashboard')
+      router.push('/')
     }
   }, [])
   
@@ -80,7 +80,7 @@ const Login = () => {
         if(source != "/"){
           router.push(`/${source}`);
         }else{
-          router.push('/dashboard')
+          router.push('/')
         }
         localStorage.setItem("userData", JSON.stringify(res.data));
         setShowLoading(false);

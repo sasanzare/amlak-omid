@@ -1,6 +1,6 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { stdout } from 'process';
+import { env, stdout } from 'process';
 import prisma from '../../../lib/prisma';
 var jwt = require('jsonwebtoken');
 import initMiddleware from '../../../lib/init-middleware'
@@ -68,7 +68,7 @@ export default async function handler(
         phoneNumber,
         _id: user.id,
         role: user.role
-      }, String(process.env.JWT_SECRET));
+      }, String(env.JWT_SECRET));
     res.status(200).json({ token });
   }
 }

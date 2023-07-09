@@ -2,6 +2,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import prisma from "../../../lib/prisma";
 import { parseForm } from "../../../lib/parse-form";
 import { verify } from "../../../lib/jwt-provider";
+import { env } from "process";
 
 export default async function handler(
   req: NextApiRequest,
@@ -25,6 +26,16 @@ async function get(req, res) {
   let { number } = req.query;
   let obj = null;
   if (id) {
+    let isSaved
+    if (req.headers.authorization) {
+      const user = await verify(req, String(env.JWT_SECRET));
+      console.log(user)
+      isSaved = await prisma.save.findFirst({
+        where: { userId: user._id, realEstateId: id },
+      });
+      console.log(isSaved)
+      isSaved = isSaved ? true : false
+    }
     obj = await prisma.realEstate.findUnique({
       where: {
         id: id,
@@ -47,7 +58,7 @@ async function get(req, res) {
         AdStatus: true,
         cityArea: {
           select: {
-            id :true,
+            id: true,
             name: true,
           },
         },
@@ -65,6 +76,15 @@ async function get(req, res) {
         gallery: true
       },
     });
+    console.log(isSaved)
+    const myshit = { ...obj, isSaved }
+    console.log(myshit)
+    if (isSaved == true) {
+      res.status(200).json(myshit);
+    }
+    else {
+      res.status(200).json(obj);
+    }
   } else {
     obj = await prisma.realEstate.findMany({
       select: {
@@ -85,7 +105,7 @@ async function get(req, res) {
         AdStatus: true,
         cityArea: {
           select: {
-            id : true,
+            id: true,
             name: true,
           },
         },
@@ -108,8 +128,8 @@ async function get(req, res) {
       skip: 0,
       take: parseInt(number) ? parseInt(number) : 20,
     });
+    res.status(200).json(obj);
   }
-  res.status(200).json(obj);
 }
 
 async function remove(req, res) {

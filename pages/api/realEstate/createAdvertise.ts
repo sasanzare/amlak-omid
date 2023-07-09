@@ -15,7 +15,14 @@ export default async function handler(
   res: NextApiResponse
 ) {
   if (req.method === "POST") {
-    update(req, res);
+    try {
+      const obj = await update(req, res);
+      res.status(200).json(obj);
+    }
+    catch (error) {
+      console.log(error)
+      res.status(400).json(error)
+    }
   } else {
     throw new Error(
       `The HTTP ${req.method} method is not supported at this route.`
@@ -24,73 +31,71 @@ export default async function handler(
 }
 
 // async function createRealEstate (fields,user,estateImage) {
-async function createRealEstate (fields,estateImage) {
-  const estateId : string = String(fields.id) || '';
-    const realEstate = await prisma.realEstate.upsert({
-        // data: {
-        //     ...fields,
-        //     // userId :  user._id,
-        //     isActive : Boolean(fields.isActive),
-        //     estateImage : estateImage
-    
-        // },
+async function createRealEstate(user, fields, estateImage) {
 
-        where: {
-          id: estateId,
-      },
-      update: {
-          ...fields,
-          isActive : Boolean(fields.isActive),
-          estateImage : estateImage
-      },
-      create: {
-          ...fields,
-          isActive : Boolean(fields.isActive),
-          estateImage : estateImage
-      },
-      })
-    return realEstate.id;
-  }
+  const estateId: string = String(fields.id) || '';
+  const realEstate = await prisma.realEstate.upsert({
+    where: {
+      id: estateId,
+    },
+    update: {
+      ...fields,
+      isActive: Boolean(fields.isActive),
+      estateImage: estateImage
+    },
+    create: {
+      ...fields,
+      userId: user._id,
+      isActive: Boolean(fields.isActive),
+      estateImage: estateImage
+    },
+  })
+  console.log(realEstate)
+  return realEstate.id;
+}
 
-async function createGallery (data) {
-    const createGallery = await prisma.gallery.createMany({
-        data: data,
-      });
-    return createGallery;
-  }
+async function createGallery(data) {
+  const createGallery = await prisma.gallery.createMany({
+    data: data,
+  });
+  return createGallery;
+}
 
 
 async function update(req: NextApiRequest, res: NextApiResponse) {
+  const user = await verify(req, String(env.JWT_SECRET));
   const uploadDirCategory = "advertising";
   const { fields, files } = await parseForm(req, uploadDirCategory);
-    let estateImage = null;
-    let data = new Array();
-    // const user = await verify(req, String(env.JWT_SECRET));
-    let isActive = fields.isActive
-    if(files.media.length == undefined){
-         estateImage = JSON.stringify(files.media.filepath).split("advertising/")[1].replace('"', "");
-        // const realEstate = createRealEstate(fields,user,estateImage);
-        const realEstate = createRealEstate(fields,estateImage);
-        res.status(200).json(realEstate);
-    }else{
-         estateImage = JSON.stringify(files.media[0].filepath).split("advertising/")[1].replace('"', "");
-        // createRealEstate(fields,user,estateImage).then((id) => {
-        createRealEstate(fields,estateImage).then((id) => {
-            console.log(`New post created with ID: ${id}`)
-            for (let i = 1; i < files.media.length; i++) {
-                data[i] = { "realEstateId": id, "Photos": JSON.stringify(files.media[i].filepath).split("advertising/")[1].replace('"', "") };
-                
-             }
-             const gallery = createGallery(data)
-             res.status(200).json(gallery);
+  let estateImage = null;
+  let data = new Array();
+  // const user = await verify(req, String(env.JWT_SECRET));
+  let isActive = fields.isActive
+  if (files.media.length == undefined) {
+    estateImage = JSON.stringify(files.media.filepath).split("advertising/")[1].replace('"', "");
+    // const realEstate = createRealEstate(fields,user,estateImage);
+    const realEstate = createRealEstate(user, fields, estateImage);
+    console.log(await realEstate)
+    console.log('here')
+    return realEstate
+  } else {
+    estateImage = JSON.stringify(files.media[0].filepath).split("advertising/")[1].replace('"', "");
+    // createRealEstate(fields,user,estateImage).then((id) => {
+    return createRealEstate(user, fields, estateImage).then((id) => {
+      console.log(`New post created with ID: ${id}`)
+      for (let i = 1; i < files.media.length; i++) {
+        data[i] = { "realEstateId": id, "Photos": JSON.stringify(files.media[i].filepath).split("advertising/")[1].replace('"', "") };
 
-          }).catch((err) => {
-            console.error(err)
-            res.status(200).json(err);
+      }
+      const gallery = createGallery(data)
+      return id
 
-          })
+    }).catch((err) => {
+      console.error(err)
+      throw error
 
-    } 
+    })
+
+  }
 }
 
 

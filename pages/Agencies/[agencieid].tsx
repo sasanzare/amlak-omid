@@ -11,6 +11,7 @@ import SearchCase from "../../blocks/SearchCase";
 import { useEffect, useContext, useState } from "react";
 import { context } from "../../context";
 import {
+
   getUniqueRealEstate,
   getAgencyById,
   getAgentsAgency,
@@ -160,30 +161,30 @@ export default function AgencieId() {
       });
   }
 
-  function search(e){
+  function search(e) {
     e.preventDefault();
     let object = {
-    cityId :city,
-    cityAreaId : cityArea,
-    type : type,
-    roomCount : roomCount,
-    meter: meter ,
-    assignmentType : assignmentType,
-    price : price,
-    agencyManagerId: agencyManagerId,
+      cityId: city,
+      cityAreaId: cityArea,
+      type: type,
+      roomCount: roomCount,
+      meter: meter,
+      assignmentType: assignmentType,
+      price: price,
+      agencyManagerId: agencyManagerId,
     }
 
-  
+
     setShowLoading(true);
     axios
       .post(searchUnique, object)
       .then((res) => {
-       
+
         if (res.status === 200) {
           setAdvertisingList(res.data);
           console.log(res.data);
           setShowLoading(false);
-        
+
         }
       })
       .catch((err) => {
@@ -212,14 +213,14 @@ export default function AgencieId() {
     { val: "five", title: "5" },
   ];
 
-  const meterList =[
+  const meterList = [
     { title: "10 تا 90 متر", val: "m10" },
     { title: "90 تا 150 متر", val: "m90" },
     { title: "150 تا 220 متر", val: "m150" },
     { title: "220 به بالا", val: "m220" },
   ]
 
-  const assignmentTypeList =[
+  const assignmentTypeList = [
     { title: "رهن و اجاره", val: "rental" },
     { title: "خرید", val: "forSale" },
     { title: "فروش فوری ملک", val: "fastSale" },
@@ -254,7 +255,7 @@ export default function AgencieId() {
               title={agency?.name}
               manager={
                 agency?.owner?.firstName != undefined ||
-                agency?.owner?.lastName != undefined
+                  agency?.owner?.lastName != undefined
                   ? agency?.owner?.firstName + " " + agency?.owner?.lastName
                   : null
               }
@@ -354,7 +355,7 @@ export default function AgencieId() {
                           </option>
                         );
                       })}
-       
+
                     </Form.Select>
                   </Form.Group>
                   <Form.Group className="col-xl-3 col-sm-6  col-11 mx-auto px-xl-1 mb-3">
@@ -371,7 +372,7 @@ export default function AgencieId() {
                           </option>
                         );
                       })}
-       
+
                     </Form.Select>
                   </Form.Group>
                   <Form.Group className="col-xl-3 col-sm-6  col-11 mx-auto px-xl-1 mb-3">
@@ -388,7 +389,7 @@ export default function AgencieId() {
                           </option>
                         );
                       })}
-       
+
                     </Form.Select>
                   </Form.Group>
                   <Form.Group className="col-xl-3 col-sm-6  col-11 mx-auto px-xl-1 mb-3">
@@ -405,7 +406,7 @@ export default function AgencieId() {
                           </option>
                         );
                       })}
-       
+
                     </Form.Select>
                   </Form.Group>
                   <Form.Group className="col-xl-3 col-sm-6  col-11 mx-auto px-xl-1 mb-3">
@@ -422,14 +423,14 @@ export default function AgencieId() {
                           </option>
                         );
                       })}
-       
+
                     </Form.Select>
                   </Form.Group>
 
-           
+
                   <div className="mb-3 col-xl-3 col-sm-6 col-5 mx-auto px-xl-1 text-center">
                     <button
-                      onClick={(e)=>search(e)}
+                      onClick={(e) => search(e)}
                       className="btn mx-auto btn-es shadow-es w-100"
                     >
                       جستجو

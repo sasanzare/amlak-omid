@@ -17,7 +17,7 @@ function Header() {
   function logOut() {
     setUserData(null);
     localStorage.clear("userData");
-    location.replace("/signin?goTo=/")
+    location.replace("/")
   }
   return (
     <div className="Header position-fixed w-100">
@@ -31,11 +31,11 @@ function Header() {
         expand="lg"
       >
         <Container fluid>
-          <Link href="/New">
+          {/* <Link href="/New">
             <a className="btn btn-es fw-bold col-xl-1 col-lg-2 col-md-2 col-sm-3 col-4 mt-1">
               ثبت آگهی
             </a>
-          </Link>
+          </Link> */}
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Container fluid className="pt-2">
@@ -86,7 +86,7 @@ function Header() {
                     // </Dropdown>
                     <Link href="/signin?goTo=/">
                       <a className="btn btn-border fw-bold col-xxl-7 col-xl-9 col-lg-12 mt-1">
-                        ثبت نام 
+                        ثبت نام
                       </a>
                     </Link>
                   )}

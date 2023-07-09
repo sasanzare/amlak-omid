@@ -46,7 +46,7 @@ export default async function handler(
     }
     try {
       const smsProvider = new SmsProvider()
-      smsProvider.sendMessage(`کد تایید با موفقیت ارسال شد ! ${verificationCode}`, [phoneNumber])
+      smsProvider.sendMessage(`کد تایید با موفقیت ارسال شد ! ${verificationCode}`, phoneNumber)
     }
     catch (error) {
       console.log(error)

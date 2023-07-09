@@ -8,12 +8,12 @@ import { context } from "../../context/index";
 import { useForm } from "react-hook-form";
 import { RealStateRegistrationApi } from "../../api/index";
 import LoginTypes from "../../components/LoginTypes";
-import { getCityApi, getCityAreaByIdApi,createAgency } from "../../api";
+import { getCityApi, getCityAreaByIdApi, createAgency } from "../../api";
 import { useRouter } from 'next/router'
 export default function RealStateRegistration() {
   const navigate = useRouter()
   ///context
-  
+
   const { setShowLoading } = useContext(context);
 
   //state
@@ -152,9 +152,8 @@ export default function RealStateRegistration() {
     axios
       .post(createAgency, AgencyRegistration, {
         headers: {
-          Authorization: `${
-            JSON.parse(localStorage.getItem("userData")).token
-          }`,
+          Authorization: `${JSON.parse(localStorage.getItem("userData")).token
+            }`,
           "Content-Type": "multipart/form-data",
         },
       })
@@ -164,8 +163,8 @@ export default function RealStateRegistration() {
           setShowLoading(false);
           toast.success("حساب شما با موفقیت ساخته شد");
         }
-        // setTimeout(function(){ navigate.push("/dashboard") }, 3000);
-        navigate.replace("/dashboard");
+        // setTimeout(function(){ navigate.push("/") }, 3000);
+        navigate.replace("/");
       })
       .catch((err) => {
         if (err.response) {
@@ -179,7 +178,7 @@ export default function RealStateRegistration() {
   }
 
 
-  function formReset(){ 
+  function formReset() {
     setFirstName("");
     setLastName("");
     setName("");
@@ -188,17 +187,17 @@ export default function RealStateRegistration() {
     setPhoneNumber("");
     setNationalCode("");
     setPostalCode("");
-   setaddress("");
-   setBusinessId("");
-   setNationalImage("");
-   setUserImage("");
-   setAgencyImage("");
-   setBusinessIdImage("");
-  setSelectedNationalImage("");
-   setSelectedUserImage("");
-   setSelectedBusinessIdImage("");
-   setselectedAgencyImage("");
- }
+    setaddress("");
+    setBusinessId("");
+    setNationalImage("");
+    setUserImage("");
+    setAgencyImage("");
+    setBusinessIdImage("");
+    setSelectedNationalImage("");
+    setSelectedUserImage("");
+    setSelectedBusinessIdImage("");
+    setselectedAgencyImage("");
+  }
 
   return (
     <Container className="pt-5 mt-5">
@@ -261,7 +260,7 @@ export default function RealStateRegistration() {
                 </Form.Group>
 
                 <Form.Group className="col-lg-6  col-11 mx-auto mb-4 ">
-         
+
 
                   <Form.Select className=" shadow-es py-1 border-0 rounded-3 color-select"
                     onChange={(e) => setCity(e.target.value)}

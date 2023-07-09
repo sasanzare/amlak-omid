@@ -62,7 +62,7 @@ export default function AdvisorRegistration() {
       });
   }
 
- 
+
 
   function creteAgent(e) {
     e.preventDefault();
@@ -91,22 +91,21 @@ export default function AdvisorRegistration() {
       return toast.error("لطفا عکس پرسنلی را آپلود کنید!");
     }
 
-      const AdvisorRegistration = new FormData();
-      AdvisorRegistration.append("firstName", firstName);
-      AdvisorRegistration.append("lastName", lastName);
-      AdvisorRegistration.append("nationalCode", nationalCode);
-      AdvisorRegistration.append("postalCode", postalCode);
-      AdvisorRegistration.append("address", address);
-      AdvisorRegistration.append("media", nationalImage);
-      AdvisorRegistration.append("media", userImage);
-      AdvisorRegistration.append("agentOf", agency);
+    const AdvisorRegistration = new FormData();
+    AdvisorRegistration.append("firstName", firstName);
+    AdvisorRegistration.append("lastName", lastName);
+    AdvisorRegistration.append("nationalCode", nationalCode);
+    AdvisorRegistration.append("postalCode", postalCode);
+    AdvisorRegistration.append("address", address);
+    AdvisorRegistration.append("media", nationalImage);
+    AdvisorRegistration.append("media", userImage);
+    AdvisorRegistration.append("agentOf", agency);
     setShowLoading(true);
     axios
       .post(createAgencyAgent, AdvisorRegistration, {
         headers: {
-          Authorization: `${
-            JSON.parse(localStorage.getItem("userData")).token
-          }`,
+          Authorization: `${JSON.parse(localStorage.getItem("userData")).token
+            }`,
           "Content-Type": "multipart/form-data",
         },
       })
@@ -114,12 +113,12 @@ export default function AdvisorRegistration() {
         if (res.status === 200) {
           formReset();
           setShowLoading(false);
-                toast.success("حساب شما با موفقیت ساخته شد");
-                
-              }
-              // setTimeout(function(){ navigate.push("/dashboard") }, 3000);
-              navigate.replace("/dashboard");
-        
+          toast.success("حساب شما با موفقیت ساخته شد");
+
+        }
+        // setTimeout(function(){ navigate.push("/dashboard") }, 3000);
+        navigate.replace("/");
+
       })
       .catch((err) => {
         if (err.response) {
@@ -129,129 +128,117 @@ export default function AdvisorRegistration() {
         } else {
           toast.error("مشکلی پیش آمده است !");
         }
-        
+
       });
   }
 
- function formReset(){ 
-     setFirstName("");
-     setLastName("");
-     setNationalCode("");
-     setPostalCode("");
+  function formReset() {
+    setFirstName("");
+    setLastName("");
+    setNationalCode("");
+    setPostalCode("");
     setaddress("");
     setNationalImage("");
     setUserImage("");
-   setSelectedNationalImage("");
+    setSelectedNationalImage("");
     setSelectedUserImage("");
     setAgency("")
   }
 
   return (
-      <Container className="pt-5 mt-5">
-        <Row className="justify-content-center">
-          <Col sm={12} md={9}>
-            <LoginTypes />
+    <Container className="pt-5 mt-5">
+      <Row className="justify-content-center">
+        <Col sm={12} md={9}>
+          <LoginTypes />
 
-            <div className="shadow-sm rounded-3   px-3 mt-3 pb-4 text-center title-text border">
-              <Title title="دعوت به همکاری" />
+          <div className="shadow-sm rounded-3   px-3 mt-3 pb-4 text-center title-text border">
+            <Title title="دعوت به همکاری" />
 
-              <Col xl={8} md={9} xs={10} className="mx-auto pt-4">
-                <Form  className="row">
-                  <Form.Group className="col-lg-6  col-11 mx-auto mb-4 ">
-                    <Form.Control
-                      className=" shadow-es py-2 border-0 rounded-3 "
-                      type="text"
-                      onChange={(e) => setFirstName(e.target.value)}
-                      value={firstName}
-                      placeholder="نام"
-                    />
-                  </Form.Group>
-                  <Form.Group className="col-lg-6  col-11 mx-auto mb-4 ">
-                    <Form.Control
-                      className=" shadow-es py-2 border-0 rounded-3 "
-                      type="text"
-                      onChange={(e) => setLastName(e.target.value)}
-                      value={lastName}
-                      placeholder="نام خانوادگی"
-                    />
-                  </Form.Group>
-                  <Form.Group className="col-lg-6  col-11 mx-auto mb-4 ">
-                    <Form.Control
-                      className=" shadow-es py-2 border-0 rounded-3"
-                      type="number"
-                      placeholder="کد ملی"
-                      onChange={(e) => setNationalCode(e.target.value)}
-                      value={nationalCode}
-                    />
-                  </Form.Group>
-                  <Form.Group className="col-lg-6 col-11 mx-auto mb-4 ">
-                    <Form.Control
-                      className=" shadow-es py-2 border-0 rounded-3"
-                      type="number"
-                      placeholder="کد پستی"
-                      onChange={(e) => setPostalCode(e.target.value)}
-                      value={postalCode}
-                    />
-                  </Form.Group>
-                  <Form.Group className="col-lg-12 col-11 mx-auto mb-4 ">
-                    <Form.Control
-                      className=" shadow-es py-2 border-0 rounded-3"
-                      as="textarea"
-                      rows={3}
-                      placeholder="آدرس"
-                      onChange={(e) => setaddress(e.target.value)}
-                      value={address}
-                    />
-                  </Form.Group>
-                  <Form.Group className="col-lg-7 col-11 mx-auto mb-4 " >
-                       <p className="f-14 text-right pe-1 mb-2">دفتر مشاوره املاک</p>
+            <Col xl={8} md={9} xs={10} className="mx-auto pt-4">
+              <Form className="row">
+                <Form.Group className="col-lg-6  col-11 mx-auto mb-4 ">
+                  <Form.Control
+                    className=" shadow-es py-2 border-0 rounded-3 "
+                    type="text"
+                    onChange={(e) => setFirstName(e.target.value)}
+                    value={firstName}
+                    placeholder="نام"
+                  />
+                </Form.Group>
+                <Form.Group className="col-lg-6  col-11 mx-auto mb-4 ">
+                  <Form.Control
+                    className=" shadow-es py-2 border-0 rounded-3 "
+                    type="text"
+                    onChange={(e) => setLastName(e.target.value)}
+                    value={lastName}
+                    placeholder="نام خانوادگی"
+                  />
+                </Form.Group>
+                <Form.Group className="col-lg-6  col-11 mx-auto mb-4 ">
+                  <Form.Control
+                    className=" shadow-es py-2 border-0 rounded-3"
+                    type="number"
+                    placeholder="کد ملی"
+                    onChange={(e) => setNationalCode(e.target.value)}
+                    value={nationalCode}
+                  />
+                </Form.Group>
+                <Form.Group className="col-lg-6 col-11 mx-auto mb-4 ">
+                  <Form.Control
+                    className=" shadow-es py-2 border-0 rounded-3"
+                    type="number"
+                    placeholder="کد پستی"
+                    onChange={(e) => setPostalCode(e.target.value)}
+                    value={postalCode}
+                  />
+                </Form.Group>
+                <Form.Group className="col-lg-12 col-11 mx-auto mb-4 ">
+                  <Form.Control
+                    className=" shadow-es py-2 border-0 rounded-3"
+                    as="textarea"
+                    rows={3}
+                    placeholder="آدرس"
+                    onChange={(e) => setaddress(e.target.value)}
+                    value={address}
+                  />
+                </Form.Group>
+                <Form.Group className="col-lg-7 col-11 mx-auto mb-4 " >
+                  <p className="f-14 text-right pe-1 mb-2">دفتر مشاوره املاک</p>
 
-                    <Form.Select multiple  value={agency}
+                  <Form.Select multiple value={agency}
                     onChange={e => setAgency([].slice.call(e.target.selectedOptions).map(item => item.value))}
                     className="shadow-es  border-0 rounded-3 py-1">
                     <option>---
-                          </option>
-                      {agencyList?.map((data, i) => {
-                        return (
-                          <option key={data.id} value={data.id}>
-                            {data.name}
-                          </option>
-                        );
-                      })}
-                    </Form.Select>
-                  </Form.Group>
-                  <Form.Group className="col-lg-6 col-11 mx-auto mb-4">
-                    <p className="f-14 pe-1 mb-2"> عکس کارت ملی</p>
-                    <Form.Label className="w-100">
-                      <Form.Control
-                        onChange={({ target }) => {
-                          if (target.files) {
-                            const file = target.files[0];
-                            setSelectedNationalImage(URL.createObjectURL(file));
-                            setNationalImage(file);
-                          }
-                        }}
-                        multiple
-                        accept="image/*"
-                        type="file"
-                        hidden={true}
-                      />
+                    </option>
+                    {agencyList?.map((data, i) => {
+                      return (
+                        <option key={data.id} value={data.id}>
+                          {data.name}
+                        </option>
+                      );
+                    })}
+                  </Form.Select>
+                </Form.Group>
+                <Form.Group className="col-lg-6 col-11 mx-auto mb-4">
+                  <p className="f-14 pe-1 mb-2"> عکس کارت ملی</p>
+                  <Form.Label className="w-100">
+                    <Form.Control
+                      onChange={({ target }) => {
+                        if (target.files) {
+                          const file = target.files[0];
+                          setSelectedNationalImage(URL.createObjectURL(file));
+                          setNationalImage(file);
+                        }
+                      }}
+                      multiple
+                      accept="image/*"
+                      type="file"
+                      hidden={true}
+                    />
 
-                      <div className="">
-                        {!nationalImage ? (
-                          selectedNationalImage ? (
-                            <img
-                              src={selectedNationalImage}
-                              value={selectedNationalImage}
-                              height={150}
-                              className="w-100 rounded-3"
-                            />
-                          ) : (
-                            <div className="shadow-es rounded-3 border-upload h-150 d-flex justify-content-center align-items-center">
-                              <span>آپلود عکس</span>
-                            </div>
-                          )
-                        ) : selectedNationalImage ? (
+                    <div className="">
+                      {!nationalImage ? (
+                        selectedNationalImage ? (
                           <img
                             src={selectedNationalImage}
                             value={selectedNationalImage}
@@ -259,48 +246,48 @@ export default function AdvisorRegistration() {
                             className="w-100 rounded-3"
                           />
                         ) : (
-                          <img
-                            src={"/uploads/articles/" + nationalImage}
-                            value={selectedNationalImage}
-                            height={150}
-                            className="w-100 rounded-3"
-                          />
-                        )}
-                      </div>
-                    </Form.Label>
-                  </Form.Group>
-                  <Form.Group className="col-lg-6 col-11 mx-auto mb-4">
-                    <p className="f-14 text-right pe-1 mb-2"> عکس پرسنلی</p>
-                    <Form.Label className="w-100">
-                      <Form.Control
-                        onChange={({ target }) => {
-                          if (target.files) {
-                            const file = target.files[0];
-                            setSelectedUserImage(URL.createObjectURL(file));
-                            setUserImage(file);
-                          }
-                        }}
-                        multiple
-                        accept="image/*"
-                        type="file"
-                        hidden={true}
-                      />
+                          <div className="shadow-es rounded-3 border-upload h-150 d-flex justify-content-center align-items-center">
+                            <span>آپلود عکس</span>
+                          </div>
+                        )
+                      ) : selectedNationalImage ? (
+                        <img
+                          src={selectedNationalImage}
+                          value={selectedNationalImage}
+                          height={150}
+                          className="w-100 rounded-3"
+                        />
+                      ) : (
+                        <img
+                          src={"/uploads/articles/" + nationalImage}
+                          value={selectedNationalImage}
+                          height={150}
+                          className="w-100 rounded-3"
+                        />
+                      )}
+                    </div>
+                  </Form.Label>
+                </Form.Group>
+                <Form.Group className="col-lg-6 col-11 mx-auto mb-4">
+                  <p className="f-14 text-right pe-1 mb-2"> عکس پرسنلی</p>
+                  <Form.Label className="w-100">
+                    <Form.Control
+                      onChange={({ target }) => {
+                        if (target.files) {
+                          const file = target.files[0];
+                          setSelectedUserImage(URL.createObjectURL(file));
+                          setUserImage(file);
+                        }
+                      }}
+                      multiple
+                      accept="image/*"
+                      type="file"
+                      hidden={true}
+                    />
 
-                      <div className="">
-                        {!userImage ? (
-                          selectedUserImage ? (
-                            <img
-                              src={selectedUserImage}
-                              value={selectedUserImage}
-                              height={150}
-                              className="w-100 rounded-3"
-                            />
-                          ) : (
-                            <div className="rounded-3 shadow-es border-upload h-150 d-flex justify-content-center align-items-center">
-                              <span>آپلود عکس</span>
-                            </div>
-                          )
-                        ) : selectedUserImage ? (
+                    <div className="">
+                      {!userImage ? (
+                        selectedUserImage ? (
                           <img
                             src={selectedUserImage}
                             value={selectedUserImage}
@@ -308,29 +295,41 @@ export default function AdvisorRegistration() {
                             className="w-100 rounded-3"
                           />
                         ) : (
-                          <img
-                            src={"/uploads/users/" + userImage}
-                            value={selectedUserImage}
-                            height={150}
-                            className="w-100 rounded-3"
-                          />
-                        )}
-                      </div>
-                    </Form.Label>
-                  </Form.Group>
-                  <button
-                    onClick={(e) => creteAgent(e)}
-                    className="btn fw-bold btn btn-es col-xl-3 col-lg-4 col-md-5 col-sm-5  col-10 mx-auto mb-3"
-                  >
-                    ثبت نام
-                  </button>
-                </Form>
-              </Col>
-            </div>
-          </Col>
+                          <div className="rounded-3 shadow-es border-upload h-150 d-flex justify-content-center align-items-center">
+                            <span>آپلود عکس</span>
+                          </div>
+                        )
+                      ) : selectedUserImage ? (
+                        <img
+                          src={selectedUserImage}
+                          value={selectedUserImage}
+                          height={150}
+                          className="w-100 rounded-3"
+                        />
+                      ) : (
+                        <img
+                          src={"/uploads/users/" + userImage}
+                          value={selectedUserImage}
+                          height={150}
+                          className="w-100 rounded-3"
+                        />
+                      )}
+                    </div>
+                  </Form.Label>
+                </Form.Group>
+                <button
+                  onClick={(e) => creteAgent(e)}
+                  className="btn fw-bold btn btn-es col-xl-3 col-lg-4 col-md-5 col-sm-5  col-10 mx-auto mb-3"
+                >
+                  ثبت نام
+                </button>
+              </Form>
+            </Col>
+          </div>
+        </Col>
 
-          <ToastContainer position="top-left" rtl={true} theme="colored" />
-        </Row>
-      </Container>
+        <ToastContainer position="top-left" rtl={true} theme="colored" />
+      </Row>
+    </Container>
   );
 }

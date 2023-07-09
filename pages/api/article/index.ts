@@ -66,7 +66,7 @@ async function upsert(req: NextApiRequest, res: NextApiResponse) {
     .split("articles/")[1]
     .replace('"', "");
 
-  const user = await verify(req, String(env.JWT_SECRET));
+  const user = await verify(req, String(env.jwt_secret));
 
   const articleId: string = String(fields.id) || "";
   delete fields.id;

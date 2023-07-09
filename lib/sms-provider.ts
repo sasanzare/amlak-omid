@@ -1,42 +1,23 @@
-import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
+
+// Create an instance of KavenegarApi with your API key
+
+import { KavenegarApi } from 'kavenegar';
 import { env } from 'process';
 export class SmsProvider {
-    apiKey: string = String(env.SMS_API_KEY)
-    defaultSenderPhoneNumber: string = String(env.SMS_DEFAULT_NUMBER)
-    baseUrl: string = "https://api2.ippanel.com/api/v1";
-    axiosInstance: AxiosInstance
-
+    private apiKey: string = String(env.SMS_API_KEY)
+    private defaultSenderPhoneNumber: string = String(env.SMS_DEFAULT_NUMBER)
+    private api
     constructor() {
-        this.axiosInstance = axios.create({
-            headers: {
-                "Content-Type": "application/json",
-                "Accept": "application/json",
-                "apikey": this.apiKey,
-            },
+        this.api = KavenegarApi({
+            apikey: this.apiKey,
         });
-        this.axiosInstance.interceptors.response.use(
-            (response) => {
-                return response;
-            },
-            (error) => {
-                return Promise.reject(error);
-            }
-        );
-
     }
-    public async request(config: AxiosRequestConfig) {
-        return this.axiosInstance.request(config)
-    }
-    public async sendMessage(message: string, recipients: string[]) {
-        const response = await this.request({
-            url: `/sms/send/webservice/single`,
-            method: "POST",
-            data: {
-                "sender": this.defaultSenderPhoneNumber,
-                "recipient": recipients,
-                "message": message,
-            },
+    public async sendMessage(message: string, receptor: string) {
+        this.api.Send({
+            receptor, message, sender: this.defaultSenderPhoneNumber
+        }, function (response, status) {
+            console.log(response);
+            console.log(status);
         });
-        return response;
     }
 }

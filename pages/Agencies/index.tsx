@@ -30,6 +30,7 @@ export default function Agencies() {
     setShowLoading(true);
     try {
       const resp = await axios.get(getAllAgency);
+      console.log(resp)
       if (resp.status === 200) {
         setShowLoading(false);
         setAgencyList(resp.data);
@@ -63,7 +64,7 @@ export default function Agencies() {
       const resp = await axios.post(findAgency, { name: search });
       if (resp.status === 200) {
         setShowLoading(false);
-        if(resp.data.length == 0){
+        if (resp.data.length == 0) {
           setSearch("");
           return toast.error("متاسفانه آژانسی با این نام پیدا نشد!")
         }
@@ -78,7 +79,7 @@ export default function Agencies() {
 
   function closeDialoge() {
     setModalShow(false);
-    
+
   }
   return (
     <div className="About mt-5">
@@ -140,7 +141,7 @@ export default function Agencies() {
         title="نتیجه جستجو"
       >
         <Row className="justify-content-center">
-        {searchAgencyList.map((office) => (
+          {searchAgencyList.map((office) => (
             <Card
               key={office.id}
               img={"/uploads/agency/" + office.agencyImage}
@@ -151,7 +152,7 @@ export default function Agencies() {
             />
           ))}
         </Row>
-      
+
       </SearchModel>
       <ToastContainer
         position="top-left"

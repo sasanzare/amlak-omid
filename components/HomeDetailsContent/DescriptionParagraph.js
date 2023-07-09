@@ -6,7 +6,7 @@ const DescriptionParagraph = ({discriptionParagraph}) => {
         <h3 className="text-es f-16 fw-bold">توضیحات تکمیلی</h3>
 
 
-            <p className="f-18 title-text description-paragraph">{discriptionParagraph}</p>
+            <p className="f-18 title-text description-paragraph">{discriptionParagraph !== null ? discriptionParagraph:''}</p>
         </>
 
      );
