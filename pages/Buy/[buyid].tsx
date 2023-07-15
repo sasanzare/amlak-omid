@@ -18,7 +18,7 @@ import Estate from "../../components/Estate";
 import axios from "axios";
 import { context } from "../../context";
 import { ToastContainer, toast } from "react-toastify";
-import { getRealEstateApi, createNote, getBuyRealEstate, save } from "../../api";
+import { getRealEstateApi, createNote, getBuyRealEstate, save, getReportApi } from "../../api";
 import { property, room, meterage, assignment } from "../../lib/enum-converter";
 import moment from "jalali-moment";
 
@@ -106,20 +106,58 @@ export default function RentId() {
     setShowLoading(true);
     const { realEstateId } = router.query;
     try {
-      const resp = await axios.get(save + "?id=" + realEstateId,
-        {
-          headers: {
-            Authorization: `${JSON.parse(String(localStorage.getItem("userData")?.token))}`,
-          },
+      const user = JSON.parse(String(localStorage.getItem("userData")))
+      if (user) {
+        console.log(user)
+        const resp = await axios.get(save + "?id=" + realEstateId,
+          {
+            headers: {
+              Authorization: `${JSON.parse(String(localStorage.getItem("userData")?.token))}`,
+            },
+          }
+        );
+        if (resp.status === 200) {
+          setShowLoading(false);
+          setNote("");
+          toast.success("یادداشت شما با موفقیت ذخیره گرددید.")
         }
-      );
-
-      if (resp.status === 200) {
+      }
+      else {
+        toast.error("برای ذخیره کردن آگهی لطفا وارد شوید");
         setShowLoading(false);
-        setNote("");
-        toast.success("یادداشت شما با موفقیت ذخیره گرددید.")
       }
     } catch (err) {
+      toast.error("مشکلی پیش آمده است !");
+      setShowLoading(false);
+    }
+  }
+  const handleReport = async () => {
+    setShowLoading(true);
+    const { realEstateId } = router.query;
+    try {
+      const user = JSON.parse(String(localStorage.getItem("userData")))
+      if (user) {
+        console.log(user)
+        const resp = await axios.get(getReportApi + "?id=" + realEstateId,
+          {
+            headers: {
+              Authorization: user.token,
+            },
+          }
+        );
+        if (resp.status === 200) {
+          setShowLoading(false);
+          setNote("");
+          toast.success("آگهی با موفقیت گزارش داده شده")
+        }
+      }
+      else {
+        toast.error("برای گزارش دادن آگهی لطفا وارد شوید");
+        setShowLoading(false);
+      }
+
+    } catch (err) {
+      console.log(err)
       toast.error("مشکلی پیش آمده است !");
       setShowLoading(false);
     }
@@ -214,7 +252,7 @@ export default function RentId() {
                   <FontAwesomeIcon icon={faShareNodes} className=" ms-2" />
                   ارسال آگهی
                 </button>
-                <button className="btn btn-border mt-3">
+                <button className="btn btn-border mt-3" onClick={handleReport}>
                   <FontAwesomeIcon
                     icon={faTriangleExclamation}
                     className=" ms-2"

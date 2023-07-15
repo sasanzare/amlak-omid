@@ -3,6 +3,7 @@ import { env } from 'process';
 import prisma from '../../../lib/prisma';
 import { parseForm } from "../../../lib/parse-form";
 import { verify } from '../../../lib/jwt-provider';
+import { DateObject } from 'react-multi-date-picker';
 
 
 export const config = {
@@ -17,9 +18,12 @@ export default async function upsert(
 ) {
  if (req.method === "POST") {
     // console.log(typeof req.body.isActive)
+    console.log('fuck')
     const uploadDirCategory = 'advertising';
 
     const { fields, files } = await parseForm(req, uploadDirCategory);
+    console.log(fields)
+    new DateObject(fields?.expirationDate).toJulianDay();
     const media = JSON.stringify(files.media.filepath).split("advertising/")[1].replace('"','');
     // const photo = JSON.stringify(files.photo.filepath).split("advertising/")[1].replace('"','');
     const user = await verify(req, String(env.JWT_SECRET));

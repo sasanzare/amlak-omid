@@ -82,6 +82,7 @@ async function get(req, res) {
         createdAt: true,
         isActive: true,
         AdStatus: true,
+        expirationDate:true,
         cityArea: {
           select: {
             id : true,

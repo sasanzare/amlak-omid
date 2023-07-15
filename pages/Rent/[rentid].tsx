@@ -18,9 +18,11 @@ import Estate from "../../components/Estate";
 import axios from "axios";
 import { context } from "../../context";
 import { ToastContainer, toast } from "react-toastify";
-import { getRealEstateApi, createNote, save } from "./../../api";
+import { getRealEstateApi, createNote, save, getReportApi } from "./../../api";
 import { property, room, meterage, assignment } from "./../../lib/enum-converter";
 import moment from "jalali-moment";
+import Aframe360Viewer from "../../components/VR/aframe";
+
 
 
 export default function RentId() {
@@ -83,6 +85,7 @@ export default function RentId() {
       if (resp.status === 200) {
         setShowLoading(false);
         setRealEstate(resp.data);
+        console.log(realEstate)
         setTime(resp.data.createdAt)
         const items = createGallery(resp.data.gallery, resp.data.name, resp.data.estateImage);
         setGallery(items);
@@ -121,34 +124,29 @@ export default function RentId() {
     return data;
   }
   const handleSave = async () => {
-    console.log('fucking here')
     const { rentid } = router.query;
-    console.log(router.query)
-    const user = localStorage.getItem("userData")
-    if (!user) {
-      toast.error('لطفا وارد شوید')
-      return
-    }
-    const token = `${JSON.parse(user).token}`;
     setShowLoading(true);
-    if (!token) {
-      toast.success('لطفا وارد شوید')
-    }
     try {
-      const resp = await axios.get(save + "?rentid=" + rentid,
-        {
-          headers: {
-            Authorization: token
-          },
-        }
-      );
+      const user = JSON.parse(localStorage.getItem("userData"))
+      if (user) {
+        const resp = await axios.get(save + "?rentid=" + rentid,
+          {
+            headers: {
+              Authorization: user.token
+            },
+          }
+        );
 
-      if (resp.status === 200) {
+        if (resp.status === 200) {
+          setShowLoading(false);
+          setNote("");
+          toast.success("یادداشت شما با موفقیت ذخیره گرددید.")
+          realEstate.isSaved = resp.data.isSaved
+        }
+      }
+      else {
+        toast.error("برای ذخیره کردن آگهی لطفا وارد شوید");
         setShowLoading(false);
-        setNote("");
-        console.log(resp)
-        toast.success(resp.data.message)
-        realEstate.isSaved = resp.data.isSaved
       }
     } catch (err) {
       console.log(err.request)
@@ -158,6 +156,39 @@ export default function RentId() {
       else {
         toast.error("مشکلی پیش آمده است !");
       }
+      setShowLoading(false);
+    }
+  }
+  const handleReport = async () => {
+    setShowLoading(true);
+    const { realEstateId } = router.query;
+    try {
+      const user = JSON.parse(String(localStorage.getItem("userData")))
+      if (user) {
+        console.log(user)
+        const resp = await axios.get(getReportApi + "?id=" + realEstateId,
+          {
+            headers: {
+              Authorization: user.token,
+            },
+          }
+        );
+        console.log(resp)
+
+        if (resp.status === 200) {
+          setShowLoading(false);
+          setNote("");
+          toast.success("آگهی با موفقیت گزارش داده شده")
+        }
+      }
+      else {
+        toast.error("برای گزارش دادن آگهی لطفا وارد شوید");
+        setShowLoading(false);
+      }
+
+    } catch (err) {
+      console.log(err)
+      toast.error("مشکلی پیش آمده است !");
       setShowLoading(false);
     }
   }
@@ -243,6 +274,7 @@ export default function RentId() {
                 lazyLoad={true}
                 showFullscreenButton={false}
               />
+              <Aframe360Viewer />
 
               <div className="col-xl-7 col-md-12 col-sm-11 col-7 mx-auto d-flex flex-sm-row flex-column justify-content-around">
                 <button className="btn btn-border mt-3" onClick={handleSave}>
@@ -256,7 +288,7 @@ export default function RentId() {
                   <FontAwesomeIcon icon={faShareNodes} className=" ms-2" />
                   ارسال اگهی
                 </button>
-                <button className="btn btn-border mt-3">
+                <button className="btn btn-border mt-3" onClick={handleReport}>
                   <FontAwesomeIcon
                     icon={faTriangleExclamation}
                     className=" ms-2"
@@ -277,20 +309,24 @@ export default function RentId() {
           </Row>
         </Col>
         <Col lg={3} md={4} xs={11} className="ps-0 pe-md-3 pe-0 mx-auto mt-md-0 mt-4">
-          <SideBar>
-            <RentSidebarDetails
-              name={realEstate?.name}
-              img={null}
-              time={moment(time, 'YYYY/MM/DD').locale('fa').format('YYYY/MM/DD')}
-              type={property(realEstate?.type)}
-              location={realEstate?.cityArea?.name}
-              bed={room(realEstate?.roomCount)}
-              meter={meterage(realEstate?.meter)}
-              price={realEstate?.price?.replace(/(\d)(?=(\d{3})+$)/g, "$1,")}
-              virtual="#"
-              phone={realEstate?.phoneNumber}
-            />
-          </SideBar>
+          {realEstate !== null && (
+            <SideBar>
+              <RentSidebarDetails
+                name={realEstate?.name}
+                img={null}
+                time={moment(time, 'YYYY/MM/DD').locale('fa').format('YYYY/MM/DD')}
+                type={property(realEstate?.type)}
+                location={realEstate?.cityArea?.name}
+                bed={room(realEstate?.roomCount)}
+                meter={meterage(realEstate?.meter)}
+                price={realEstate?.price?.replace(/(\d)(?=(\d{3})+$)/g, "$1,")}
+                virtual="#"
+                phone={realEstate?.phoneNumber}
+                expirationDate={realEstate.expirationDate}
+                assignmentType={realEstate?.assignmentType}
+              />
+            </SideBar>
+          )}
           <textarea
             className="w-100 mt-3 rounded-3 border-es border-2"
             rows="5"

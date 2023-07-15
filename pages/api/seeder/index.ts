@@ -25,8 +25,7 @@ export default async function handler(
 }
 const userSeeder = async () => {
     function generateUser() {
-        // const roleOptions: role[] = ['agencyAgent', 'agencyOwner', 'normal', 'admin'];
-        const roleOptions: role[] = ['admin'];
+        const roleOptions: role[] = ['agencyAgent', 'agencyOwner', 'normal', 'admin'];
         const role = roleOptions[Math.floor(Math.random() * roleOptions.length)];
 
         return {
@@ -42,8 +41,6 @@ const userSeeder = async () => {
         await prisma.user.createMany({
             data: users
         });
-        // console.log(user)
-        console.log('Users seeded successfully.');
         return users
     } catch (error) {
         return false
@@ -149,7 +146,6 @@ async function seedAgencies() {
         await prisma.agency.createMany({
             data: agencies,
         });
-        // console.log(agencies)
 
         console.log('Agencies seeded successfully.');
         return true
@@ -170,6 +166,10 @@ const seedRealEstates = async () => {
         const meter = meterOptions[Math.floor(Math.random() * meterOptions.length)];
         const assignmentTypeOptions: assignmentType[] = ['rental', 'forSale', 'fastSale', 'special'];
         const type = assignmentTypeOptions[Math.floor(Math.random() * assignmentTypeOptions.length)];
+        let expirationDate
+        if(type=='fastSale'){
+            expirationDate = new Date(Date.now() + 1000*3600*24*12)
+        }
         const propertyTypeOptions: propertyType[] = ['c', 'v', 'a', 'l', 'i'];
         const propertyType = propertyTypeOptions[Math.floor(Math.random() * propertyTypeOptions.length)];
         const adStatusOptions: AdStatus[] = ['awaitingConfirmation', 'awaitingPayment', 'Deleted', 'active', 'expired'];
@@ -194,6 +194,7 @@ const seedRealEstates = async () => {
             longitude: String(faker.location.longitude()),
             isActive: faker.datatype.boolean(),
             AdStatus: adStatus,
+            expirationDate
         };
     }
     try {
@@ -282,15 +283,14 @@ async function seedFAQs() {
 
 async function seed() {
     try {
-        // const cities = await seedCities()
-        // const cityAreas = await seedCityAreas()
+        const cities = await seedCities()
+        const cityAreas = await seedCityAreas()
         const users = await userSeeder()
-        // const agencies = await seedAgencies()
-        // const realEstates = await seedRealEstates()
-        // const contact = await seedContactForms();
-        // const faq = await seedFAQs();
-        return { users }
-        // return { users, cities, cityAreas, agencies, realEstates, faq, contact }
+        const agencies = await seedAgencies()
+        const realEstates = await seedRealEstates()
+        const contact = await seedContactForms();
+        const faq = await seedFAQs();
+        return { users, cities, cityAreas, agencies, realEstates, faq, contact }
     } catch (error) {
         console.error('Error seeding data:', error);
     } finally {

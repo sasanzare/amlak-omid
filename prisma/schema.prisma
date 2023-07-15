@@ -21,6 +21,10 @@ enum requestStatus {
   pending
   denied
 }
+enum RealEstateType {
+  specialSale
+  common
+}
 
 enum role {
   admin
@@ -196,6 +200,8 @@ model realEstate {
   save           save[]
   report         report[]
   gallery        gallery[]
+  expirationDate DateTime?       @default(now())
+  realEstateType RealEstateType @default(common)
   // @@index([cityName, areaName, roomCount, price(sort: Asc), type, createdAt(sort: Asc)])
 }
 
@@ -263,4 +269,32 @@ model gallery {
   realEstate   realEstate? @relation(fields: [realEstateId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   realEstateId String?
   createdAt    DateTime    @default(now())
+}
+
+model setting {
+  id                                    String @id @unique @default(cuid())
+  priceFilters                          priceFilter[]
+  surfaceFilters                        surfaceFilter[]
+  message                               String?
+  maximumDailyRealEstatesForClient      Int?
+  maximumDailyRealEstatesForAgency      Int?
+  maximumDailyRealEstatesForAgentOfAgencies Int?
+  createdAt                             DateTime @default(now())
+}
+
+model surfaceFilter {
+  id              String @id @unique @default(cuid())
+  minValue        Int
+  maxValue        Int
+  setting         setting @relation(fields: [settingId], references: [id])
+  settingId       String
+  createdAt       DateTime @default(now())
+}
+model priceFilter {
+  id              String @id @unique @default(cuid())
+  minValue        Int
+  maxValue        Int
+  setting         setting @relation(fields: [settingId], references: [id])
+  settingId       String
+  createdAt       DateTime @default(now())
 }

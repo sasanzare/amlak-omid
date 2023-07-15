@@ -86,6 +86,7 @@ export default function Dashboard() {
         toast.success("خوش آمدید");
       }
     } catch (err) {
+      setShowLoading(false)
       if (err.response) {
         toast.error("مشکلی پیش آمده است !");
         console.log(err.response);

@@ -529,6 +529,21 @@
           "items": {
             "$ref": "#/definitions/gallery"
           }
+        },
+        "expirationDate": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
+        },
+        "realEstateType": {
+          "type": "string",
+          "default": "common",
+          "enum": [
+            "specialSale",
+            "common"
+          ]
         }
       }
     },
@@ -722,6 +737,96 @@
           "format": "date-time"
         }
       }
+    },
+    "setting": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "priceFilters": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/priceFilter"
+          }
+        },
+        "surfaceFilters": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/surfaceFilter"
+          }
+        },
+        "message": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "maximumDailyRealEstatesForClient": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "maximumDailyRealEstatesForAgency": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "maximumDailyRealEstatesForAgentOfAgencies": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "surfaceFilter": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "minValue": {
+          "type": "integer"
+        },
+        "maxValue": {
+          "type": "integer"
+        },
+        "setting": {
+          "$ref": "#/definitions/setting"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "priceFilter": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "minValue": {
+          "type": "integer"
+        },
+        "maxValue": {
+          "type": "integer"
+        },
+        "setting": {
+          "$ref": "#/definitions/setting"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
     }
   },
   "type": "object",
@@ -770,6 +875,15 @@
     },
     "gallery": {
       "$ref": "#/definitions/gallery"
+    },
+    "setting": {
+      "$ref": "#/definitions/setting"
+    },
+    "surfaceFilter": {
+      "$ref": "#/definitions/surfaceFilter"
+    },
+    "priceFilter": {
+      "$ref": "#/definitions/priceFilter"
     }
   }
 }

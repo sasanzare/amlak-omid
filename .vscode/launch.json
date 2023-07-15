@@ -1,0 +1,18 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Next.js",
+      "type": "pwa-node",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "runtimeExecutable": "yarn",
+      "runtimeArgs": ["dev"],
+      "port": 3000,
+      "console": "integratedTerminal",
+      "protocol": "inspector",
+      "restart": true,
+      "outputCapture": "std"
+    }
+  ]
+}

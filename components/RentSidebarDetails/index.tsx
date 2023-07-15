@@ -1,5 +1,6 @@
 // import { Row } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Container, Row, Col, Carousel } from "react-bootstrap";
 import {
   faHome,
   faBed,
@@ -11,7 +12,50 @@ import {
   faPhoneFlip
 } from "@fortawesome/free-solid-svg-icons";
 import Link from "next/link";
+import { useEffect, useState } from "react";
+import { digitsEnToFa, addCommas } from "@persian-tools/persian-tools";
+import Aframe360Viewer from '../VR/aframe'
 export default function RentSidebarDetails(props) {
+  const [time, setTime] = useState(props.createdAt);
+  const [expirationDate, setExpirationDate] = useState(props.expirationDate);
+  const [timeCounter, setTimeCounter] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
+  useEffect(() => {
+
+    const interval = setInterval(() => {
+      counter(time);
+    }, 1000);
+    return () => clearInterval(interval);
+  }, [time]);
+
+  function counter(time: string) {
+    let counter
+    setExpirationDate(props.expirationDate)
+    if (expirationDate) {
+      console.log(expirationDate)
+      const initialDate = new Date("2023-07-12T16:36:38.787Z")
+      console.log(initialDate)
+      const differenceInMilliseconds = (new Date(initialDate.toISOString())) - (new Date());
+      counter = {
+        days: Math.floor(differenceInMilliseconds / (1000 * 60 * 60 * 24)),
+        hours: Math.floor(differenceInMilliseconds / (1000 * 60 * 60)) % 24,
+        minutes: Math.floor(differenceInMilliseconds / (1000 * 60)) % 60,
+        seconds: Math.floor(differenceInMilliseconds / 1000) % 60
+      };
+    }
+    else {
+
+      counter = {
+        days: 0,
+        hours: 0,
+        minutes: 0,
+        seconds: 0
+      };
+    }
+
+    setTimeCounter(counter);
+    // return counter;
+  }
+
   return (
     <div className="px-4">
       <div>
@@ -25,9 +69,9 @@ export default function RentSidebarDetails(props) {
         {/* <small>کاربر </small> */}
         <small><FontAwesomeIcon icon={faClock} className=" ms-1" /> </small>
         <div>
-        <small>{props.time}</small>
-          
-          
+          <small>{props.time}</small>
+
+
         </div>
       </div>
       <h6 className="pt-4 fw-bold">{props.name}</h6>
@@ -64,7 +108,7 @@ export default function RentSidebarDetails(props) {
           <FontAwesomeIcon icon={faMoneyBill1Wave} className="ms-1" />
           <small>قیمت</small>
         </div>
-        <small className="f-auto">{props.price}</small>
+        <small className="f-auto">{digitsEnToFa(addCommas(props.price))}</small>
       </div>
       {/* <div className="border-bottom py-3 text-secondary opacity-75 ">
         <Link href={props.virtual}>
@@ -76,14 +120,46 @@ export default function RentSidebarDetails(props) {
         </Link>
       </div> */}
       <div className="pt-3 text-secondary col-md-12 col-sm-6 col-8 mx-auto">
-        <Link href={"tel:" +props.phone+""}>
+        <Link href={"tel:" + props.phone + ""}>
           <a className=" px-2 py-1 rounded-3 text-decoration-none border btn-es col-10 d-flex justify-content-between mx-auto">
-          <FontAwesomeIcon icon={faPhoneFlip} className="ms-1 mt-1" />
+            <FontAwesomeIcon icon={faPhoneFlip} className="ms-1 mt-1" />
             تماس با آگهی دهنده
-            
+
           </a>
         </Link>
       </div>
+
+      {props.assignmentType === 'fastSale' && props.expirationDate && (
+        <Col className="rounded-3 mt-4 overflow-hidden">
+          <Row>
+            <Col lg={4} className="text-center py-4 pe-3 ps-1 bg-light">
+              <h5 className="pt-1">زمان باقی‌مانده درفروش فوری</h5>
+              <div className="d-flex flex-column justify-content-between h-100 pt-3 pb-4">
+                <div className="d-flex justify-content-between">
+                  <Col>
+                    <div className="btn btn-es col-9">
+                      <span className="d-block h3">{timeCounter.minutes}</span>
+                      <span className="h5">دقیقه</span>
+                    </div>
+                  </Col>
+                  <Col>
+                    <div className="btn btn-es col-9">
+                      <span className="d-block h3">{timeCounter.hours}</span>
+                      <span className="h5">ساعت</span>
+                    </div>
+                  </Col>
+                  <Col>
+                    <div className="btn btn-es col-9">
+                      <span className="d-block h3">{timeCounter.days}</span>
+                      <span className="h5">روز</span>
+                    </div>
+                  </Col>
+                </div>
+              </div>
+            </Col>
+          </Row>
+        </Col>
+      )}
 
 
     </div>

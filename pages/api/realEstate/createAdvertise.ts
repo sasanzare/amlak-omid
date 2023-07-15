@@ -3,6 +3,7 @@ import { env } from "process";
 import prisma from "../../../lib/prisma";
 import { parseForm } from "../../../lib/parse-form";
 import { verify } from "../../../lib/jwt-provider";
+import moment from 'jalali-moment';
 
 export const config = {
   api: {
@@ -17,6 +18,7 @@ export default async function handler(
   if (req.method === "POST") {
     try {
       const obj = await update(req, res);
+      console.log(obj)
       res.status(200).json(obj);
     }
     catch (error) {
@@ -32,6 +34,10 @@ export default async function handler(
 
 // async function createRealEstate (fields,user,estateImage) {
 async function createRealEstate(user, fields, estateImage) {
+    console.log(fields)
+    // var date = new DateObject({date:fields?.expirationDate,calendar:persian,locale:persian_en});
+    const date = moment(fields.expirationDate, 'jYYYY/jMM/jDD').toDate();
+    console.log(date)
 
   const estateId: string = String(fields.id) || '';
   const realEstate = await prisma.realEstate.upsert({
@@ -40,11 +46,13 @@ async function createRealEstate(user, fields, estateImage) {
     },
     update: {
       ...fields,
+      expirationDate:date,
       isActive: Boolean(fields.isActive),
       estateImage: estateImage
     },
     create: {
       ...fields,
+      expirationDate:date,
       userId: user._id,
       isActive: Boolean(fields.isActive),
       estateImage: estateImage

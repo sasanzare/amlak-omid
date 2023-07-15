@@ -73,7 +73,8 @@ async function get(req, res) {
             agencyImage: true,
           },
         },
-        gallery: true
+        gallery: true,
+        expirationDate: true,
       },
     });
     console.log(isSaved)

@@ -67,6 +67,15 @@ export default function RealStateRegistration() {
       });
   }
 
+  const handleKeyPress = (event) => {
+    const keyCode = event.keyCode || event.which;
+    const keyValue = String.fromCharCode(keyCode);
+    const numericRegex = /^[0-9]*$/;
+    if (!numericRegex.test(keyValue)) {
+      event.preventDefault();
+      alert("لطفا عدد انگلیسی وارد کنید!");
+    }
+  };
   function getCityArea() {
     setShowLoading(true);
     axios
@@ -247,13 +256,15 @@ export default function RealStateRegistration() {
                     onChange={(e) => setPhoneNumber(e.target.value)}
                     value={phoneNumber}
                     placeholder="شماره تماس ثابت"
+                    onKeyPress={handleKeyPress}
                   />
                 </Form.Group>
                 <Form.Group className="col-lg-6  col-11 mx-auto mb-4 ">
                   <Form.Control
                     className=" shadow-es py-2 border-0 rounded-3 "
-                    type="number"
+                    type="text"
                     onChange={(e) => setNationalCode(e.target.value)}
+                    onKeyPress={handleKeyPress}
                     value={nationalCode}
                     placeholder="کدملی"
                   />
@@ -295,9 +306,10 @@ export default function RealStateRegistration() {
                 <Form.Group className="col-lg-6  col-11 mx-auto mb-4 ">
                   <Form.Control
                     className=" shadow-es py-2 border-0 rounded-3 "
-                    type="number"
+                    type="text"
                     onChange={(e) => setPostalCode(e.target.value)}
                     value={postalCode}
+                    onKeyPress={handleKeyPress}
                     placeholder="کدپستی"
                   />
                 </Form.Group>
@@ -318,6 +330,7 @@ export default function RealStateRegistration() {
                     type="text"
                     onChange={(e) => setBusinessId(e.target.value)}
                     value={businessId}
+                    onKeyPress={handleKeyPress}
                     placeholder="کد پروانه کسب"
                   />
                 </Form.Group>
