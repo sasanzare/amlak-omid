@@ -180,7 +180,7 @@ const seedRealEstates = async () => {
             userId: userId, // Replace with the user ID if applicable
             name: faker.company.name(),
             phoneNumber: faker.phone.number('+9871########'),
-            description: faker.lorem.sentence(),
+            description: persianLoremIpsum(),
             address: faker.location.streetAddress(),
             roomCount: room,
             meter: faker.datatype.number({ min: 10, max: 100000 }),
@@ -226,7 +226,7 @@ async function seedContactForms() {
                 fullName: faker.person.fullName(),
                 email: faker.internet.email(),
                 title: faker.lorem.words(3),
-                description: faker.lorem.paragraph(),
+                description: persianLoremIpsum(),
             };
 
             contactFormsData.push(formData);
@@ -281,6 +281,68 @@ async function seedFAQs() {
 
 
 
+const seedArticles = async () => {
+    try {
+        const users = await prisma.user.findMany({
+            where: {
+                role: 'admin'
+            }
+        });
+
+        const articles = users.map(user => ({
+            userId: user.id,
+            title: persianLoremIpsum(),
+            summary: persianLoremIpsum(),
+            text: persianLoremIpsum(),
+            normalName: faker.lorem.slug(),
+            articleImage: '/img/profile2.png'
+        }));
+
+        await prisma.article.createMany({
+            data: articles,
+        });
+
+        return true;
+    } catch (error) {
+        console.error(error);
+        return false;
+    } finally {
+        await prisma.$disconnect();
+    }
+};
+const persianLoremIpsum = (numSentences = 15) => {
+    const words = [
+        'پرشین',
+        'لورم',
+        'ایپسوم',
+        'متنی',
+        'برای',
+        'تست',
+        'طراحی',
+        'صفحات',
+        'وب',
+        'تولید',
+        'شده',
+        'است',
+    ];
+
+    let result = '';
+    for (let i = 0; i < numSentences; i++) {
+        let sentence = '';
+        const numWords = Math.floor(Math.random() * 5) + 1; // Generate a random number of words per sentence
+        for (let j = 0; j < numWords; j++) {
+            const randomIndex = Math.floor(Math.random() * words.length);
+            const word = words[randomIndex];
+            sentence += word + ' ';
+        }
+        result += sentence.trim() + '. ';
+    }
+
+    return result.trim();
+};
+
+
+
 async function seed() {
     try {
         const cities = await seedCities()
@@ -289,8 +351,9 @@ async function seed() {
         const agencies = await seedAgencies()
         const realEstates = await seedRealEstates()
         const contact = await seedContactForms();
+        const articles = await seedArticles()
         const faq = await seedFAQs();
-        return { users, cities, cityAreas, agencies, realEstates, faq, contact }
+        return { users, cities, cityAreas, agencies, realEstates, faq, contact, articles }
     } catch (error) {
         console.error('Error seeding data:', error);
     } finally {
