@@ -26,11 +26,17 @@ export default async function handler(
 async function drop() {
     // Generate fake data
     try {
-        await prisma.realEstate.deleteMany({})
-        await prisma.agency.deleteMany({})
-        await prisma.user.deleteMany({})
+        await prisma.$queryRaw`SET CONSTRAINTS ALL DEFERRED`;
         await prisma.city.deleteMany({})
         await prisma.cityArea.deleteMany({})
+        await prisma.article.deleteMany({})
+        await prisma.contactFrom.deleteMany({})
+        await prisma.faq.deleteMany({})
+        await prisma.user.deleteMany({})
+        await prisma.agency.deleteMany({})
+        await prisma.agentInterface.deleteMany({})
+        await prisma.realEstate.deleteMany({})
+        await prisma.$queryRaw`SET CONSTRAINTS ALL IMMEDIATE`;
         await console.log('All models dropped successfully!');
     } catch (error) {
         console.error('Error droping data:', error);

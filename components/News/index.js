@@ -25,6 +25,10 @@ import { Calendar } from "react-multi-date-picker";
 import persian from "react-date-object/calendars/persian";
 import persian_en from "react-date-object/locales/persian_en";
 import { removeCommas, addCommas } from "@persian-tools/persian-tools";
+import {
+  convertToEnglishDigits,
+  convertToPersianDigitsWithComma,
+} from "../../lib/number-converter";
 
 export default () => {
   const navigate = useRouter();
@@ -157,8 +161,8 @@ export default () => {
       RealStateRegistration.append("cityId", city);
       RealStateRegistration.append("cityAreaId", area);
       RealStateRegistration.append("type", type);
-      RealStateRegistration.append("price", price);
-      RealStateRegistration.append("meter", metrage);
+      RealStateRegistration.append("price", parseInt(price));
+      RealStateRegistration.append("meter", parseInt(metrage));
       RealStateRegistration.append("assignmentType", assignmentType);
       RealStateRegistration.append("roomCount", bedRooms);
       RealStateRegistration.append("phoneNumber", phoneNumber);
@@ -281,17 +285,15 @@ export default () => {
       </Form.Group>
 
       <Form.Group className="mb-3">
-        <Form.Select
+        <Form.Control
           className="border-0 shadow-es"
-          onChange={(e) => setMetrage(e.target.value)}
-          value={metrage}
-        >
-          <option>متراژ</option>
-          <option value="m10">۱۰ تا ۹۰ متر</option>
-          <option value="m90">۹۰ تا ۱۵۰ متر</option>
-          <option value="m150">۱۵۰ تا ۲۲۰ متر</option>
-          <option value="m220">۲۲۰ متر به بالا</option>
-        </Form.Select>
+          onChange={(e) =>
+            setMetrage(removeCommas(convertToEnglishDigits(e.target.value)))
+          }
+          value={convertToPersianDigitsWithComma(metrage)}
+          onKeyPress={handleKeyPress}
+          placeholder="قیمت برحسب تومان"
+        />
       </Form.Group>
 
       <Form.Group className="mb-3">

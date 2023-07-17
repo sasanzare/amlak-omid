@@ -29,8 +29,8 @@ const userSeeder = async () => {
         const role = roleOptions[Math.floor(Math.random() * roleOptions.length)];
 
         return {
-            firstName: faker.name.firstName(),
-            lastName: faker.name.lastName(),
+            firstName: `${role}:${faker.name.firstName()}`,
+            lastName: `${role}:${faker.name.lastName()}`,
             phoneNumber: faker.phone.number("09#########"),
             role,
             userImage: '/img/profile2.png'
@@ -342,6 +342,59 @@ const persianLoremIpsum = (numSentences = 15) => {
 };
 
 
+const seedAgentInterfaces = async () => {
+    try {
+        // Find users with the role 'agencyAgent'
+        const agentUsers = await prisma.user.findMany({
+            where: {
+                role: 'agencyAgent',
+            },
+        });
+
+        // Find agencies
+        const agencies = await prisma.agency.findMany();
+
+        const agentInterfaces = [];
+
+        // Assign 5 random agents to each agency
+        for (const agency of agencies) {
+            const randomAgents = getRandomElements(agentUsers, 5);
+            for (const agent of randomAgents) {
+                const agentInterface = {
+                    userId: agent.id,
+                    agencyId: agency.id,
+                };
+                agentInterfaces.push(agentInterface);
+            }
+        }
+
+        await prisma.agentInterface.createMany({
+            data: agentInterfaces,
+        });
+
+        return true;
+    } catch (error) {
+        console.log(error);
+        return false;
+    } finally {
+        await prisma.$disconnect();
+    }
+};
+
+// Helper function to get random elements from an array
+const getRandomElements = (array, count) => {
+    const shuffled = array.slice();
+    let i = array.length;
+    let temp, index;
+    while (i--) {
+        index = Math.floor((i + 1) * Math.random());
+        temp = shuffled[index];
+        shuffled[index] = shuffled[i];
+        shuffled[i] = temp;
+    }
+    return shuffled.slice(0, count);
+};
+
 
 async function seed() {
     try {
@@ -352,8 +405,9 @@ async function seed() {
         const realEstates = await seedRealEstates()
         const contact = await seedContactForms();
         const articles = await seedArticles()
+        const agents = await seedAgentInterfaces()
         const faq = await seedFAQs();
-        return { users, cities, cityAreas, agencies, realEstates, faq, contact, articles }
+        return { users, cities, cityAreas, agencies, realEstates, faq, contact, articles, agents }
     } catch (error) {
         console.error('Error seeding data:', error);
     } finally {
