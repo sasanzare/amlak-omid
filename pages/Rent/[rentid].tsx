@@ -274,7 +274,7 @@ export default function RentId() {
                 lazyLoad={true}
                 showFullscreenButton={false}
               />
-              <Aframe360Viewer />
+              {/* <Aframe360Viewer /> */}
 
               <div className="col-xl-7 col-md-12 col-sm-11 col-7 mx-auto d-flex flex-sm-row flex-column justify-content-around">
                 <button className="btn btn-border mt-3" onClick={handleSave}>
@@ -318,8 +318,8 @@ export default function RentId() {
                 type={property(realEstate?.type)}
                 location={realEstate?.cityArea?.name}
                 bed={room(realEstate?.roomCount)}
-                meter={meterage(realEstate?.meter)}
-                price={realEstate?.price?.replace(/(\d)(?=(\d{3})+$)/g, "$1,")}
+                meter={realEstate?.meter}
+                price={realEstate?.price}
                 virtual="#"
                 phone={realEstate?.phoneNumber}
                 expirationDate={realEstate.expirationDate}
@@ -359,13 +359,13 @@ export default function RentId() {
                   : "/img/avatar.jpeg"
               }
               location={data.cityArea.name}
-              price={data.price.replace(/(\d)(?=(\d{3})+$)/g, "$1,")}
+              price={data.price}
               bed={room(data.roomCount)}
               type={property(data.type)}
               time={moment(data.createdAt, "YYYY/MM/DD")
                 .locale("fa")
                 .format("YYYY/MM/DD")}
-              meter={meterage(data.meter)}
+              meter={data.meter}
               phoneNumber={data.phoneNumber}
               to={data.id}
               getId={getIdRealEstate}

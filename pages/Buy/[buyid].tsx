@@ -49,8 +49,12 @@ export default function RentId() {
       const resp = await axios.get(getBuyRealEstate + "?number=4");
       if (resp.status === 200) {
         setShowLoading(false);
+        setRealEstateList(resp.data.realEstates);
       }
-      setRealEstateList(resp.data);
+      else {
+        toast.error("مشکلی پیش آمده است !");
+
+      }
     } catch (err) {
       toast.error("مشکلی پیش آمده است !");
       setShowLoading(false);
@@ -279,8 +283,8 @@ export default function RentId() {
               type={property(realEstate?.type)}
               location={realEstate?.cityArea?.name}
               bed={room(realEstate?.roomCount)}
-              meter={meterage(realEstate?.meter)}
-              price={realEstate?.price?.replace(/(\d)(?=(\d{3})+$)/g, "$1,")}
+              meter={realEstate?.meter}
+              price={realEstate?.price}
               virtual="#"
               phone={realEstate?.phoneNumber}
             />
@@ -317,13 +321,13 @@ export default function RentId() {
                   : "/img/avatar.jpeg"
               }
               location={data.cityArea.name}
-              price={data.price.replace(/(\d)(?=(\d{3})+$)/g, "$1,")}
+              price={data.price}
               bed={room(data.roomCount)}
               type={property(data.type)}
               time={moment(data.createdAt, "YYYY/MM/DD")
                 .locale("fa")
                 .format("YYYY/MM/DD")}
-              meter={meterage(data.meter)}
+              meter={data.meter}
               phoneNumber={data.phoneNumber}
               to={data.id}
               getId={getIdRealEstate}

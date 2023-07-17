@@ -22,7 +22,7 @@ export default async function handler(
 
 ) {
   try {
-    await validateBody(req, res)
+    // await validateBody(req, res)
     const errors = validationResult(req)
     if (!errors.isEmpty()) {
       return res.status(422).json({ errors: errors.array() })

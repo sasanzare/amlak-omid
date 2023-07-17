@@ -6,7 +6,7 @@ import PaginationPage from '../../components/PaginationPage';
 import { ToastContainer, toast } from "react-toastify";
 import axios from "axios";
 import Estate from "../../components/Estate";
-import { PropertiesApi, STATICS,searchRealEstateApi,getRealEstateApi } from "../../api";
+import { PropertiesApi, STATICS, searchRealEstateApi, getRealEstateApi } from "../../api";
 import { context } from '../../context/index';
 // import ReactPaginate from 'react-paginate';
 import { useRouter } from 'next/router'
@@ -23,7 +23,7 @@ export async function getServerSideProps(context: any) {
   return {
     props: {}, // will be passed to the page component as props
   }
-} 
+}
 const Buy = (props: any) => {
   const router = useRouter()
   // var { pageNumber, location, price } = router.query
@@ -52,10 +52,9 @@ const Buy = (props: any) => {
     axios
       .post(searchRealEstateApi, router.query)
       .then((res) => {
-        setRealEstateList(res.data);
         if (res.status === 200) {
           setShowLoading(false);
-        
+          setRealEstateList(res.data.realEstates);
         }
       })
       .catch((err) => {
@@ -103,52 +102,52 @@ const Buy = (props: any) => {
 
   const getIdRealEstate = (e) => {
     router.push(`/Rent/${e.target.getAttribute("data-reactid")}`)
-};
+  };
 
   return (
     <Container className="Home pt-5 mt-5 pb-4">
-      
+
       {/* <Row>
         <Col lg={12} sm={12} className='mx-auto'><BuySearch onChange={(e) => { }} /></Col>
       </Row> */}
 
       {/* <SugessBox properties={properties} /> */}
-<Row>
+      <Row>
 
 
-{realEstateList.length > 0 ? (
-      realEstateList.map((data) => {
-        return (<Estate
-          key={data.id}
-          myClass="p-sm-2 p-3 my-lg-0  my-2 col-lg-3 col-md-6 col-11 mx-auto"
-          img={data.estateImage}
-          title={(data.agency)? data.agency.name : "کاربر عادی" }
-          profile={(data.agency)? "/uploads/advertising/"+data.agency.agencyImage : "/img/avatar.jpeg" }
-          location={data?.cityArea?.name}
-          price={data.price.replace(/(\d)(?=(\d{3})+$)/g, '$1,')}
-          bed={room(data.roomCount)}
-          type={property(data.type)}
-          time={moment(data.createdAt, 'YYYY/MM/DD').locale('fa').format('YYYY/MM/DD')}
-          meter={meterage(data.meter)}
-          phoneNumber={data.phoneNumber}
-          to={data.id}
-          getId={getIdRealEstate}
-        />);
-        })
-      ) : (
-        <div className='col-12 d-flex justify-content-center align-items-center vh-80'>
+        {realEstateList.length > 0 ? (
+          realEstateList.map((data) => {
+            return (<Estate
+              key={data.id}
+              myClass="p-sm-2 p-3 my-lg-0  my-2 col-lg-3 col-md-6 col-11 mx-auto"
+              img={data.estateImage}
+              title={(data.agency) ? data.agency.name : "کاربر عادی"}
+              profile={(data.agency) ? "/uploads/advertising/" + data.agency.agencyImage : "/img/avatar.jpeg"}
+              location={data?.cityArea?.name}
+              price={data.price}
+              bed={room(data.roomCount)}
+              type={property(data.type)}
+              time={moment(data.createdAt, 'YYYY/MM/DD').locale('fa').format('YYYY/MM/DD')}
+              meter={data.meter}
+              phoneNumber={data.phoneNumber}
+              to={data.id}
+              getId={getIdRealEstate}
+            />);
+          })
+        ) : (
+          <div className='col-12 d-flex justify-content-center align-items-center vh-80'>
             <div className='text-center'>
-            <h1 className='h4 text-es text-center'>متاسفانه آگهی با فیلتر‌های مدنظر شما پیدا نشد!</h1>
-          <Link href="/">
-                  <a className="btn btn-es col-md-6 col-sm-7 col-9 rounded-3 mt-5 he-fit">
-                    بازگشت به خانه
-                  </a>
-                </Link>
+              <h1 className='h4 text-es text-center'>متاسفانه آگهی با فیلتر‌های مدنظر شما پیدا نشد!</h1>
+              <Link href="/">
+                <a className="btn btn-es col-md-6 col-sm-7 col-9 rounded-3 mt-5 he-fit">
+                  بازگشت به خانه
+                </a>
+              </Link>
             </div>
-        </div>
-      )}
+          </div>
+        )}
 
-</Row>
+      </Row>
 
       {/* <ReactPaginate
         breakLabel="..."

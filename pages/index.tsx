@@ -12,9 +12,9 @@ import { context } from "../context";
 import { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
-import { useRouter,Router } from 'next/router';
+import { useRouter, Router } from 'next/router';
 import {
-ArticlesApi,bestAgency,getFastRealEstate
+  ArticlesApi, bestAgency, getFastRealEstate
 } from "./../api";
 import {
   property,
@@ -44,15 +44,15 @@ function Home() {
   function getRealEstate() {
     setShowLoading(true);
     axios
-      .get(getFastRealEstate+"?number=4")
+      .get(getFastRealEstate + "?number=4")
       .then((res) => {
-       
+
         if (res.status === 200) {
           setShowLoading(false);
           setRealEstateList(res.data);
           console.log(res.data);
-          
-       
+
+
         }
       })
       .catch((err) => {
@@ -67,7 +67,7 @@ function Home() {
   function get() {
     setShowLoading(true);
     axios
-      .get(ArticlesApi+"?number=3")
+      .get(ArticlesApi + "?number=3")
       .then((res) => {
         setArticleList(res.data);
         if (res.status === 200) {
@@ -100,11 +100,11 @@ function Home() {
   };
 
   const getIdArticle = (e) => {
-      router.push(`/Articles/${e.target.getAttribute("data-reactid")}`)
-    
+    router.push(`/Articles/${e.target.getAttribute("data-reactid")}`)
+
   };
   const getIdRealEstate = (e) => {
-      router.push(`/Rent/${e.target.getAttribute("data-reactid")}`)
+    router.push(`/Rent/${e.target.getAttribute("data-reactid")}`)
   };
   return (
     <Container className="Home pt-5 mt-5 pb-4">
@@ -129,15 +129,15 @@ function Home() {
               </Link>
             </div>
             {bestAgencyList.map((office) => (
-            <Card
-              key={office.id}
-              img={"/uploads/agency/" + office.agencyImage}
-              title={office.name}
-              myclass="p-sm-2 p-3 col-xl-2 col-sm-4 col-6"
-              to={office.id}
-              rate={office.rate}
-            />
-          ))}
+              <Card
+                key={office.id}
+                img={"/uploads/agency/" + office.agencyImage}
+                title={office.name}
+                myclass="p-sm-2 p-3 col-xl-2 col-sm-4 col-6"
+                to={office.id}
+                rate={office.rate}
+              />
+            ))}
           </Row>
         </Col>
         <Title title="ملک فروش فوری" />
@@ -160,19 +160,19 @@ function Home() {
                 key={data.id}
                 myClass="p-sm-2 p-3 my-lg-0  my-2 col-lg-3 col-md-6 col-11 mx-auto"
                 img={data.estateImage}
-                title={(data?.agency?.name)? data?.agency?.name : "املاک" }
-                profile={(data?.agency?.agencyImage)? "/uploads/agency/"+data.agency.agencyImage : "/img/avatar.jpeg" }
+                title={(data?.agency?.name) ? data?.agency?.name : "املاک"}
+                profile={(data?.agency?.agencyImage) ? "/uploads/agency/" + data.agency.agencyImage : "/img/avatar.jpeg"}
                 location={data?.cityArea?.name}
-                price={data.price.replace(/(\d)(?=(\d{3})+$)/g, '$1,')}
+                price={data.price}
                 bed={room(data.roomCount)}
                 type={property(data.type)}
                 time={moment(data.createdAt, 'YYYY/MM/DD').locale('fa').format('YYYY/MM/DD')}
-                meter={meterage(data.meter)}
+                meter={data.meter}
                 phoneNumber={data.phoneNumber}
                 to={data.id}
                 getId={getIdRealEstate}
               />);
-              })}
+            })}
           </Row>
         </Col>
         <Title title="ورود و ثبت‌نام" />

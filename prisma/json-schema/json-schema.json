@@ -426,14 +426,7 @@
           ]
         },
         "meter": {
-          "type": "string",
-          "default": "m10",
-          "enum": [
-            "m10",
-            "m90",
-            "m150",
-            "m220"
-          ]
+          "type": "integer"
         },
         "estateImage": {
           "type": [
@@ -463,7 +456,7 @@
           ]
         },
         "price": {
-          "type": "string"
+          "type": "integer"
         },
         "city": {
           "$ref": "#/definitions/city"
@@ -779,6 +772,13 @@
             "integer",
             "null"
           ]
+        },
+        "maximumNumberOfRooms": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "default": 5
         },
         "createdAt": {
           "type": "string",

@@ -61,7 +61,7 @@ function Estate(
           </div>
           <div>
             <FontAwesomeIcon icon={faColumns} className="text-gery ms-1" />
-            <span>{props.meter}</span>
+            <span>{props.meter} متر</span>
           </div>
         </div>
         <div className="d-flex justify-content-between px-2 pt-1 mt-4 dir-r f-13">

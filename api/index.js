@@ -1,3 +1,8 @@
+BigInt.prototype.toJSON = function () {
+  const int = Number.parseInt(this.toString());
+  return int ?? this.toString();
+};
+
 export const STATICS = `api/static/uploads/`;
 export const AdvisorRegistreApi = `api/auth/register/moshaver`;
 export const RealStateRegistrationApi = `api/auth/register/amlak`;
@@ -58,4 +63,14 @@ export const getAgentsAgency = "/api/agentInterface/getAgentsAgency";
 export const changeAgencyRating =
   "/api/agencyRatingInterface/changeAgencyRating";
 export const getSettingsApi = "/api/admin/settings";
+export const getPriceFiltersApi = "/api/admin/settings/priceFilters";
+export const addPriceFilterApi = "/api/admin/settings/priceFilters";
+export const createPriceFilterApi = "/api/admin/settings/priceFilters";
+export const deletePriceFilterApi = "/api/admin/settings/priceFilters";
+export const updatePriceFilterApi = "/api/admin/settings/priceFilters";
+export const getSurfaceFiltersApi = "/api/admin/settings/surfaceFilters";
+export const addSurfaceFilterApi = "/api/admin/settings/surfaceFilters";
+export const createSurfaceFilterApi = "/api/admin/settings/surfaceFilters";
+export const deleteSurfaceFilterApi = "/api/admin/settings/surfaceFilters";
+export const updateSurfaceFilterApi = "/api/admin/settings/surfaceFilters";
 export const JWT_SECRET = "secret_j_secret_w_secrt_t";

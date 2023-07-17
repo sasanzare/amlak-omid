@@ -4,24 +4,34 @@ import { useRouter } from "next/router";
 import { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import {
-    getCityApi,
-
-    getCityAreaByIdApi,
-
-  } from "./../../api";
-  import { context } from "../../context";
+  getCityApi,
+  getCityAreaByIdApi,
+  getSurfaceFiltersApi,
+  getPriceFiltersApi,
+  getSettingsApi,
+} from "./../../api";
+import { context } from "../../context";
+import {
+  convertToPersianDigits,
+  convertToPersianDigitsWithComma,
+} from "../../lib/number-converter";
 
 export default function Search() {
-    const { setShowLoading } = useContext(context);
-    const [city, setCity] = useState("");
-    const [area, setArea] = useState("");
-    const [cityList, setCityList] = useState([]);
-    const [cityAreaList, setCityAreaList] = useState([]);
+  const { setShowLoading } = useContext(context);
+  const [city, setCity] = useState("");
+  const [area, setArea] = useState("");
+  const [cityList, setCityList] = useState([]);
+  const [cityAreaList, setCityAreaList] = useState([]);
+  const [priceFilters, setPriceFilters] = useState([]);
+  const [surfaceFilters, setSurfaceFilters] = useState([]);
+  const [settings, setSettings] = useState([]);
 
   const navigate = useRouter();
 
   useEffect(() => {
     getCity();
+    getSurfaceFilters();
+    getPriceFilters();
   }, []);
 
   useEffect(() => {
@@ -31,7 +41,7 @@ export default function Search() {
   function pushUrl() {
     let form = document.forms.namedItem("searchForm");
     navigate.push(
-      `/Search?pageNumber=1&pageSize=8&cityId=${city}&type=${form.type.value}&cityAreaId=${area}&roomCount=${form.roomCount.value}&meter=${form.meter.value}&assignmentType=${form.assignmentType.value}&price=${form.price.value}`
+      `/Search?pageNumber=1&pageSize=8&cityId=${city}&type=${form.type.value}&cityAreaId=${area}&roomCount=${form.roomCount.value}&surface=${form.surface.value}&assignmentType=${form.assignmentType.value}&price=${form.price.value}`
     );
   }
 
@@ -74,7 +84,64 @@ export default function Search() {
         setShowLoading(false);
       });
   }
+  function getSurfaceFilters() {
+    setShowLoading(true);
+    axios
+      .get(getSurfaceFiltersApi)
+      .then((res) => {
+        setSurfaceFilters(res.data);
+        if (res.status === 200) {
+          setShowLoading(false);
+        }
+      })
+      .catch((err) => {
+        if (err.response?.data) {
+          err?.response?.data?.errors?.map((issue) => toast.error(issue));
+        } else {
+          toast.error("مشکلی پیش آمده است !");
+        }
+        setShowLoading(false);
+      });
+  }
+  function getSettings() {
+    setShowLoading(true);
+    axios
+      .get(getSettings)
+      .then((res) => {
+        setSettings(res.data);
+        if (res.status === 200) {
+          setShowLoading(false);
+        }
+      })
+      .catch((err) => {
+        if (err.response?.data) {
+          err?.response?.data?.errors?.map((issue) => toast.error(issue));
+        } else {
+          toast.error("مشکلی پیش آمده است !");
+        }
+        setShowLoading(false);
+      });
+  }
 
+  function getPriceFilters() {
+    setShowLoading(true);
+    axios
+      .get(getPriceFiltersApi)
+      .then((res) => {
+        setPriceFilters(res.data);
+        if (res.status === 200) {
+          setShowLoading(false);
+        }
+      })
+      .catch((err) => {
+        if (err.response?.data) {
+          err?.response?.data?.errors?.map((issue) => toast.error(issue));
+        } else {
+          toast.error("مشکلی پیش آمده است !");
+        }
+        setShowLoading(false);
+      });
+  }
   return (
     <Form className="Search row pt-4" id="searchForm">
       {/* <SingleSelect
@@ -84,9 +151,7 @@ export default function Search() {
         myClass="col-sm-6 col-11 mx-auto"
       /> */}
 
-
-
-{/* <Form.Group className="SingleSelect mb-3 col-sm-6 col-11 mx-auto" >
+      {/* <Form.Group className="SingleSelect mb-3 col-sm-6 col-11 mx-auto" >
             <Form.Select onChange={onChange} name={cityId} className='border-0 shadow-es'>
                 <option  value=''>{title} - (انتخاب نشده)</option>
                 {val.map((value, index) => {
@@ -98,38 +163,41 @@ export default function Search() {
             </Form.Select>
         </Form.Group> */}
 
-        <Form.Group className="SingleSelect mb-3 col-sm-6 col-11 mx-auto" >
-            <Form.Select onChange={(e) => setCity(e.target.value)} value={city} className='border-0 shadow-es'>
-            <option>شهر
-                  </option>
-              {cityList?.map((data, i) => {
-                return (
-                  <option key={data.id} value={data.id}>
-                    {data.name}
-                  </option>
-                );
-              })}
-            </Form.Select>
-            </Form.Group>
+      <Form.Group className="SingleSelect mb-3 col-sm-6 col-11 mx-auto">
+        <Form.Select
+          onChange={(e) => setCity(e.target.value)}
+          value={city}
+          className="border-0 shadow-es"
+        >
+          <option>شهر</option>
+          {cityList?.map((data, i) => {
+            return (
+              <option key={data.id} value={data.id}>
+                {data.name}
+              </option>
+            );
+          })}
+        </Form.Select>
+      </Form.Group>
 
+      <Form.Group className="SingleSelect mb-3 col-sm-6 col-11 mx-auto">
+        <Form.Select
+          onChange={(e) => setArea(e.target.value)}
+          value={area}
+          className="border-0 shadow-es"
+        >
+          <option>محدوده</option>
+          {cityAreaList?.map((data, i) => {
+            return (
+              <option key={data.id} value={data.id}>
+                {data.name}
+              </option>
+            );
+          })}
+        </Form.Select>
+      </Form.Group>
 
-
-            <Form.Group className="SingleSelect mb-3 col-sm-6 col-11 mx-auto">
-        
-
-            <Form.Select onChange={(e) => setArea(e.target.value)} value={area} className='border-0 shadow-es'>
-              <option>محدوده</option>
-              {cityAreaList?.map((data, i) => {
-                return (
-                  <option key={data.id} value={data.id}>
-                    {data.name}
-                  </option>
-                );
-              })}
-            </Form.Select>
-          </Form.Group>
-
-{/* 
+      {/* 
       <SingleSelect
         val={[
           "آب جوار",
@@ -313,8 +381,6 @@ export default function Search() {
         myClass="col-sm-6 col-11 mx-auto"
       /> */}
 
-
-
       <SingleSelect
         val={[
           { title: "اداری / تجاری", val: "c" },
@@ -340,13 +406,13 @@ export default function Search() {
         myClass="col-sm-4 col-11 mx-auto"
       />
       <SingleSelect
-        val={[
-          { title: "10 تا 90 متر", val: "m10" },
-          { title: "90 تا 150 متر", val: "m90" },
-          { title: "150 تا 220 متر", val: "m150" },
-          { title: "220 به بالا", val: "m220" },
-        ]}
-        name="meter"
+        val={surfaceFilters.map((filter) => ({
+          title: `از ${convertToPersianDigitsWithComma(
+            filter.minValue
+          )} تا ${convertToPersianDigitsWithComma(filter.maxValue)} متر`,
+          val: filter.id,
+        }))}
+        name="surface"
         title="متراژ"
         myClass="col-sm-4 col-11 mx-auto"
       />
@@ -362,25 +428,12 @@ export default function Search() {
       />
 
       <SingleSelect
-        val={[
-          {
-            title: "100,000,000 تا 500,000,000 تومان",
-            val: "100000000-500000000",
-          },
-          {
-            title: "500,000,000 تا 1,500,000,000 تومان",
-            val: "500000000-1500000000",
-          },
-          {
-            title: "1,500,000,000 تا 3,500,000,000 تومان",
-            val: "1500000000-3500000000",
-          },
-          {
-            title: "3,500,000,000 تا 5,000,000,000 تومان",
-            val: "3500000000-5000000000",
-          },
-          { title: "5,000,000,000 به بالا", val: "5000000000" },
-        ]}
+        val={priceFilters.map((filter) => ({
+          title: `از ${convertToPersianDigitsWithComma(
+            filter.minValue
+          )} تا ${convertToPersianDigitsWithComma(filter.maxValue)} تومان`,
+          val: filter.id,
+        }))}
         name="price"
         title="قیمت"
         myClass="col-sm-6 col-11 mx-auto"

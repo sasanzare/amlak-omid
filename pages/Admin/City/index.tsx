@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext,useCallback } from "react";
+import { useState, useEffect, useContext, useCallback } from "react";
 import { AdminLayout } from "../../../layout";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
@@ -12,7 +12,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 
-import { getCityApi,  } from "../../../api";
+import { getCityApi, } from "../../../api";
 
 
 export default () => {
@@ -20,7 +20,7 @@ export default () => {
 
 
 
- 
+
 
   const { setShowLoading } = useContext(context);
   const [cityList, setCityList] = useState([]);
@@ -63,18 +63,18 @@ export default () => {
     if (name == "") {
       return toast.error("لطفا نام شهر را وارد کنید!");
     }
-      let object = {
-       name
-      };
-      if (idC != 0) {
-        object = { ...object, id: idC };
-      }
-      axios.post(getCityApi, object).then((res) => {
-        setModalShow(false);
-        getCity();
-        reset();
-      });
-    
+    let object = {
+      name
+    };
+    if (idC != 0) {
+      object = { ...object, id: idC };
+    }
+    axios.post(getCityApi, object).then((res) => {
+      setModalShow(false);
+      getCity();
+      reset();
+    });
+
   }
 
   function reset() {
@@ -99,7 +99,7 @@ export default () => {
     <AdminLayout>
       <div className="p-2 pt-5">
         <h2>
-         شهرها
+          شهرها
           <button
             className="btn btn-success me-3 f-20 fw-bold"
             onClick={() => openDialoge()}
@@ -136,10 +136,10 @@ export default () => {
                   <thead className="table-light fw-semibold">
                     <tr className="align-middle">
                       <th className="text-center">
-                       
+
                       </th>
                       <th>نام شهر</th>
-                    
+
                       <th>زمان ایجاد</th>
                       <th className="text-start ps-3">اقدامات</th>
                     </tr>

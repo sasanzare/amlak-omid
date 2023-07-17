@@ -167,8 +167,8 @@ const seedRealEstates = async () => {
         const assignmentTypeOptions: assignmentType[] = ['rental', 'forSale', 'fastSale', 'special'];
         const type = assignmentTypeOptions[Math.floor(Math.random() * assignmentTypeOptions.length)];
         let expirationDate
-        if(type=='fastSale'){
-            expirationDate = new Date(Date.now() + 1000*3600*24*12)
+        if (type == 'fastSale') {
+            expirationDate = new Date(Date.now() + 1000 * 3600 * 24 * 12)
         }
         const propertyTypeOptions: propertyType[] = ['c', 'v', 'a', 'l', 'i'];
         const propertyType = propertyTypeOptions[Math.floor(Math.random() * propertyTypeOptions.length)];
@@ -183,11 +183,11 @@ const seedRealEstates = async () => {
             description: faker.lorem.sentence(),
             address: faker.location.streetAddress(),
             roomCount: room,
-            meter: meter,
+            meter: faker.datatype.number({ min: 10, max: 100000 }),
             estateImage: 'img/realState/realStateBack.png',
             assignmentType: type,
             type: propertyType,
-            price: faker.datatype.number().toString(),
+            price: faker.datatype.number({ min: 1000000, max: 10000000000 }),
             cityId,
             cityAreaId,
             latitude: String(faker.location.latitude()),

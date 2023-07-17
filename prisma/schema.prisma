@@ -181,11 +181,11 @@ model realEstate {
   description    String
   address        String?
   roomCount      roomCount      @default(one)
-  meter          meter          @default(m10)
+  meter          Int          
   estateImage    String?
   assignmentType assignmentType @default(rental)
   type           propertyType   @default(c)
-  price          String
+  price          BigInt
   city           city           @relation(fields: [cityId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   cityId         String
   cityArea       cityArea       @relation(fields: [cityAreaId], references: [id], onDelete: Cascade, onUpdate: Cascade)
@@ -279,6 +279,7 @@ model setting {
   maximumDailyRealEstatesForClient      Int?
   maximumDailyRealEstatesForAgency      Int?
   maximumDailyRealEstatesForAgentOfAgencies Int?
+  maximumNumberOfRooms Int? @default(5)
   createdAt                             DateTime @default(now())
 }
 
@@ -292,8 +293,8 @@ model surfaceFilter {
 }
 model priceFilter {
   id              String @id @unique @default(cuid())
-  minValue        Int
-  maxValue        Int
+  minValue        BigInt
+  maxValue        BigInt
   setting         setting @relation(fields: [settingId], references: [id])
   settingId       String
   createdAt       DateTime @default(now())

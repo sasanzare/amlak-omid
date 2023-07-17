@@ -21,21 +21,21 @@ function SpecialSale() {
   const [special, setSpecial] = useState([]);
   const { setShowLoading } = useContext(context);
   const [time, setTime] = useState("2002-06-08T18:45:23.961Z");
-  const [timeCounter, setTimeCounter] = useState({days: 0, hours: 0, minutes: 0, seconds: 0});
-  
+  const [timeCounter, setTimeCounter] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
+
   useEffect(() => {
     getSpecialReal();
     getRealEstate();
   }, []);
-  
+
   useEffect(() => {
     const interval = setInterval(() => {
       counter(time);
     }, 1000);
     return () => clearInterval(interval);
   }, [time]);
-  
-  function counter(time: string){
+
+  function counter(time: string) {
     const initialDate = new Date(time);
     const newDate = new Date(initialDate);
     newDate.setDate(initialDate.getDate() + 30);
@@ -50,7 +50,7 @@ function SpecialSale() {
     console.log(counter)
     // return counter;
   }
-  
+
   function getSpecialReal() {
     setShowLoading(true);
     axios
@@ -61,7 +61,7 @@ function SpecialSale() {
           setSpecial(res.data);
           setTime(res.data.createdAt)
           console.log(res.data.createdAt)
-         
+
         }
       })
       .catch((err) => {
@@ -73,7 +73,7 @@ function SpecialSale() {
         setShowLoading(false);
       });
   }
-  
+
   function getRealEstate() {
     setShowLoading(true);
     axios
@@ -95,7 +95,7 @@ function SpecialSale() {
   }
   const getIdRealEstate = (e) => {
     router.push(`/Rent/${e.target.getAttribute("data-reactid")}`)
-};
+  };
   return (
     <Container className="Home pt-5 mt-5 pb-4">
       <Title title="املاک فروش فوری" classes={undefined} />
@@ -125,7 +125,7 @@ function SpecialSale() {
                   </div>
                 </Col>
               </div>
-              <Link href={"/Rent/"+ special?.id}>
+              <Link href={"/Rent/" + special?.id}>
                 <a className="btn btn-es fw-bold col-11 mx-auto mb-3 py-2">
                   مشاهده جزییات ملک
                 </a>
@@ -134,25 +134,25 @@ function SpecialSale() {
           </Col>
           <Col lg={8} className="pe-0">
             <Carousel controls={false} fade>
-            <Carousel.Item interval={5000}>
+              <Carousel.Item interval={5000}>
                 <img
                   className="d-block w-100 h-330x"
-                  src={"/uploads/advertising/"+special?.estateImage}
+                  src={"/uploads/advertising/" + special?.estateImage}
                   alt={special?.name}
                 />
               </Carousel.Item>
-              {special?.gallery?.map((items)=>{
-                return(
+              {special?.gallery?.map((items) => {
+                return (
                   <Carousel.Item interval={5000} key={items.id}>
-                  <img
-                    className="d-block w-100 h-330x"
-                    src={"/uploads/advertising/"+items.Photos}
-                    alt={items?.id}
-                  />
+                    <img
+                      className="d-block w-100 h-330x"
+                      src={"/uploads/advertising/" + items.Photos}
+                      alt={items?.id}
+                    />
                   </Carousel.Item>
                 )
               })}
-        
+
             </Carousel>
           </Col>
         </Row>
@@ -161,24 +161,24 @@ function SpecialSale() {
       <Title title="لیست تمامی املاک فروش فوری" classes="mt-5" />
 
       <Row className="mt-4">
-      {realEstateList.map((data) => {
-              return (<Estate
-                key={data.id}
-                myClass="p-sm-2 p-3 my-lg-0  my-2 col-lg-3 col-md-6 col-11 mx-auto"
-                img={data.estateImage}
-                title={(data?.agency?.name)? data?.agency?.name : "املاک" }
-                profile={(data?.agency?.agencyImage)? "/uploads/agency/"+data.agency.agencyImage : "/img/avatar.jpeg" }
-                location={data?.cityArea?.name}
-                price={data.price.replace(/(\d)(?=(\d{3})+$)/g, '$1,')}
-                bed={room(data.roomCount)}
-                type={property(data.type)}
-                time={moment(data.createdAt, 'YYYY/MM/DD').locale('fa').format('YYYY/MM/DD')}
-                meter={meterage(data.meter)}
-                phoneNumber={data.phoneNumber}
-                to={data.id}
-                getId={getIdRealEstate}
-              />);
-              })}
+        {realEstateList.map((data) => {
+          return (<Estate
+            key={data.id}
+            myClass="p-sm-2 p-3 my-lg-0  my-2 col-lg-3 col-md-6 col-11 mx-auto"
+            img={data.estateImage}
+            title={(data?.agency?.name) ? data?.agency?.name : "املاک"}
+            profile={(data?.agency?.agencyImage) ? "/uploads/agency/" + data.agency.agencyImage : "/img/avatar.jpeg"}
+            location={data?.cityArea?.name}
+            price={data.price}
+            bed={room(data.roomCount)}
+            type={property(data.type)}
+            time={moment(data.createdAt, 'YYYY/MM/DD').locale('fa').format('YYYY/MM/DD')}
+            meter={data.meter}
+            phoneNumber={data.phoneNumber}
+            to={data.id}
+            getId={getIdRealEstate}
+          />);
+        })}
       </Row>
     </Container>
   );

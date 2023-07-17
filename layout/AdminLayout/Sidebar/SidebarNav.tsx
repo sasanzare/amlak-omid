@@ -160,17 +160,17 @@ export default function SidebarNav() {
 
 
 
-    
-  
+
+
       <SidebarNavTitle>دسترسی سریع</SidebarNavTitle>
       <SidebarNavGroup toggleIcon={faUser} toggleText="کاربران">
         <SidebarNavItem href="/Admin/Users">
-           کاربرها 
+          کاربرها
         </SidebarNavItem>
       </SidebarNavGroup>
       <SidebarNavGroup toggleIcon={faCalculator} toggleText="املاک‌">
         <SidebarNavItem href="/Admin/Agency">
-          آژانس‌های املاک 
+          آژانس‌های املاک
         </SidebarNavItem>
       </SidebarNavGroup>
       <SidebarNavGroup toggleIcon={faPuzzlePiece} toggleText="آگهی ها">
@@ -190,52 +190,63 @@ export default function SidebarNav() {
           مقاله‌ها
         </SidebarNavItem>
       </SidebarNavGroup>
-    
+
       <SidebarNavGroup toggleIcon={faMessage} toggleText="ارتباط‌باما">
         <SidebarNavItem href="/Admin/Contact">
           فرم ارتباط‌‌باما
         </SidebarNavItem>
       </SidebarNavGroup>
-     <SidebarNavGroup toggleIcon={faQuestionCircle} toggleText="سوالات متداول">
+      <SidebarNavGroup toggleIcon={faQuestionCircle} toggleText="سوالات متداول">
         <SidebarNavItem href="/Admin/Faq">
           سوالات
         </SidebarNavItem>
       </SidebarNavGroup>
-    
+
       <SidebarNavGroup toggleIcon={faEarth} toggleText="شهر ها">
         <SidebarNavItem href="/Admin/City">
-           شهر
+          شهر
         </SidebarNavItem>
         <SidebarNavItem href="/Admin/City/area">
-           محله
+          محله
         </SidebarNavItem>
       </SidebarNavGroup>
       <SidebarNavGroup toggleIcon={faFileLines} toggleText="یادداشت ها">
         <SidebarNavItem href="/Admin/Note">
-           یادداشت
+          یادداشت
         </SidebarNavItem>
       </SidebarNavGroup>
       <SidebarNavGroup toggleIcon={faWarning} toggleText="گزارش‌ها">
         <SidebarNavItem href="/Admin/Report">
-           گزارش
+          گزارش
+        </SidebarNavItem>
+      </SidebarNavGroup>
+      <SidebarNavGroup toggleIcon={faWarning} toggleText="‌تنظیمات">
+        <SidebarNavItem href="/Admin/Settings">
+          تنظیمات کلی
+        </SidebarNavItem>
+        <SidebarNavItem href="/Admin/Settings/priceFilters">
+          فیلتر های قیمت
+        </SidebarNavItem>
+        <SidebarNavItem href="/Admin/Settings/surfaceFilters">
+          فیلتر های متراژ
         </SidebarNavItem>
       </SidebarNavGroup>
 
 
- 
-    
+
+
 
 
       <SidebarNavGroup toggleIcon={faBell} toggleText="Notifications">
 
       </SidebarNavGroup>
 
- 
+
 
       <SidebarNavTitle>Extras</SidebarNavTitle>
 
 
-      
+
       <SidebarNavItem icon={faLayerGroup} href="tel:+989059048626">
         پشتیبانی
       </SidebarNavItem>

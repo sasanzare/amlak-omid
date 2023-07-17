@@ -101,7 +101,7 @@ export default function RentSidebarDetails(props) {
           <FontAwesomeIcon icon={faColumns} className="ms-1" />
           <small>متراژ</small>
         </div>
-        <small>{props.meter}</small>
+        <small>{props.meter} متر</small>
       </div>
       <div className="d-flex justify-content-between  border-bottom pt-3 text-secondary">
         <div>

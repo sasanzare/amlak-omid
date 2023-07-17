@@ -497,11 +497,11 @@ export default function Dashboard() {
                             title={(data.agency) ? data.agency.name : "کاربر عادی"}
                             profile={(data.agency) ? "/uploads/advertising/" + data.agency.agencyImage : "/img/avatar.jpeg"}
                             location={data.cityArea.name}
-                            price={data.price.replace(/(\d)(?=(\d{3})+$)/g, '$1,')}
+                            price={data.price}
                             bed={room(data.roomCount)}
                             type={property(data.type)}
                             time={moment(data.createdAt, 'YYYY/MM/DD').locale('fa').format('YYYY/MM/DD')}
-                            meter={meterage(data.meter)}
+                            meter={data.meter}
                             phoneNumber={data.phoneNumber}
                             to={data.id}
                             getId={getIdRealEstate}

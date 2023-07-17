@@ -7,24 +7,24 @@ import { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import { useRouter } from 'next/router';
-import { property, room, meterage,assignment } from "./../../lib/enum-converter";
+import { property, room, meterage, assignment } from "./../../lib/enum-converter";
 import {
-    getRealEstateApi,getRealEstateByArea
-  } from "../../api";
-  import moment from "jalali-moment";
+  getRealEstateApi, getRealEstateByArea
+} from "../../api";
+import moment from "jalali-moment";
 
 
 
 
 export default () => {
-    const router = useRouter();
-    const { setShowLoading } = useContext(context);
-    const [realEstateList, setRealEstateList] = useState([]);
-    
-    useEffect(() => {
-        const { areaid } = router.query;
-        getRealEstate(areaid);
-      }, [router.query]);
+  const router = useRouter();
+  const { setShowLoading } = useContext(context);
+  const [realEstateList, setRealEstateList] = useState([]);
+
+  useEffect(() => {
+    const { areaid } = router.query;
+    getRealEstate(areaid);
+  }, [router.query]);
 
   function getRealEstate(cityArea) {
     setShowLoading(true);
@@ -33,18 +33,17 @@ export default () => {
         cityArea,
       }, {
         headers: {
-          Authorization: `${
-            JSON.parse(localStorage.getItem("userData")).token
-          }`,
+          Authorization: `${JSON.parse(localStorage.getItem("userData")).token
+            }`,
           "Content-Type": "multipart/form-data",
         },
       })
       .then((res) => {
-       
+
         if (res.status === 200) {
           setRealEstateList(res.data);
           setShowLoading(false);
-    
+
         }
       })
       .catch((err) => {
@@ -68,24 +67,24 @@ export default () => {
 
       <Container className="py-4 mt-5">
         <Row>
-        {realEstateList.map((data) => {
-              return (<Estate
-                key={data.id}
-                myClass="p-sm-2 p-3 my-lg-0  my-2 col-lg-3 col-md-6 col-11 mx-auto"
-                img={data.estateImage}
-                title={(data.agency)? data.agency.name : "کاربر عادی" }
-                profile={(data.agency)? "/uploads/advertising/"+data.agency.agencyImage : "/img/avatar.jpeg" }
-                location={data.cityArea.name}
-                price={data.price.replace(/(\d)(?=(\d{3})+$)/g, '$1,')}
-                bed={room(data.roomCount)}
-                type={property(data.type)}
-                time={moment(data.createdAt, 'YYYY/MM/DD').locale('fa').format('YYYY/MM/DD')}
-                meter={meterage(data.meter)}
-                phoneNumber={data.phoneNumber}
-                to={data.id}
-                getId={getIdRealEstate}
-              />);
-              })}
+          {realEstateList.map((data) => {
+            return (<Estate
+              key={data.id}
+              myClass="p-sm-2 p-3 my-lg-0  my-2 col-lg-3 col-md-6 col-11 mx-auto"
+              img={data.estateImage}
+              title={(data.agency) ? data.agency.name : "کاربر عادی"}
+              profile={(data.agency) ? "/uploads/advertising/" + data.agency.agencyImage : "/img/avatar.jpeg"}
+              location={data.cityArea.name}
+              price={data.price}
+              bed={room(data.roomCount)}
+              type={property(data.type)}
+              time={moment(data.createdAt, 'YYYY/MM/DD').locale('fa').format('YYYY/MM/DD')}
+              meter={data.meter}
+              phoneNumber={data.phoneNumber}
+              to={data.id}
+              getId={getIdRealEstate}
+            />);
+          })}
         </Row>
         <ToastContainer position="top-left" rtl={true} theme="colored" />
       </Container>
