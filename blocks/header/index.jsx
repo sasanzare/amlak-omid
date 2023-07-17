@@ -36,6 +36,17 @@ function Header() {
               ثبت آگهی
             </a>
           </Link> */}
+
+<Col lg={3}
+                  md={9}
+                  className="dir-r pt-1 fw-bold h3 d-none text-start  px-0 logo-tablet"
+                >
+                  <Link href="/">
+                    <a className="text-decoration-none text-es">
+                      <img src="/img/logo-melko.png" alt="logo melko" width={150} />
+                    </a>
+                  </Link>
+                </Col>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Container fluid className="pt-2">
@@ -123,10 +134,9 @@ function Header() {
                     </Nav.Item>
                   </Nav>
                 </Col>
-                <Col
-                  lg={3}
+                <Col lg={3}
                   md={12}
-                  className="dir-r pt-1 fw-bold h3 text-lg-end text-center px-0"
+                  className="dir-r pt-1 fw-bold h3 text-lg-end text-center px-0 logo-sub"
                 >
                   <Link href="/">
                     <a className="text-decoration-none text-es">

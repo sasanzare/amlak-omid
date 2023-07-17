@@ -208,6 +208,36 @@ export default function RentId() {
   return (
     <Container className="Home pt-5 mt-5 pb-4">
       <Row>
+      <Col lg={3} md={4} xs={11} className="pe-0 ps-md-3 ps-0 mx-auto mt-md-0 mt-4">
+          <SideBar>
+            <RentSidebarDetails
+              name={realEstate?.name}
+              img={null}
+              time={moment(time, 'YYYY/MM/DD').locale('fa').format('YYYY/MM/DD')}
+              type={property(realEstate?.type)}
+              location={realEstate?.cityArea?.name}
+              bed={room(realEstate?.roomCount)}
+              meter={realEstate?.meter}
+              price={realEstate?.price}
+              virtual="#"
+              phone={realEstate?.phoneNumber}
+            />
+          </SideBar>
+          <textarea
+            className="w-100 mt-3 rounded-3 border-es border-2"
+            rows="5"
+            onChange={(e) => setNote(e.target.value)}
+            value={note}
+            placeholder="یادداشت شما ..."
+          ></textarea>
+          <div className="  pt-2 ">
+            <button className="btn btn-es col f-12 col-12  me-1 "
+              onClick={sendNote}
+            >
+              ذخیره یادداشت
+            </button>
+          </div>
+        </Col>
         <Col lg={9} md={8} xs={11} className="mx-auto">
           <Row>
             <Col
@@ -274,37 +304,6 @@ export default function RentId() {
             </Col>
           </Row>
         </Col>
-        <Col lg={3} md={4} xs={11} className="ps-0 pe-md-3 pe-0 mx-auto mt-md-0 mt-4">
-          <SideBar>
-            <RentSidebarDetails
-              name={realEstate?.name}
-              img={null}
-              time={moment(time, 'YYYY/MM/DD').locale('fa').format('YYYY/MM/DD')}
-              type={property(realEstate?.type)}
-              location={realEstate?.cityArea?.name}
-              bed={room(realEstate?.roomCount)}
-              meter={realEstate?.meter}
-              price={realEstate?.price}
-              virtual="#"
-              phone={realEstate?.phoneNumber}
-            />
-          </SideBar>
-          <textarea
-            className="w-100 mt-3 rounded-3 border-es border-2"
-            rows="5"
-            onChange={(e) => setNote(e.target.value)}
-            value={note}
-            placeholder="یادداشت شما ..."
-          ></textarea>
-          <div className="  pt-2 ">
-            <button className="btn btn-es col f-12 col-12  me-1 "
-              onClick={sendNote}
-            >
-              ذخیره یادداشت
-            </button>
-          </div>
-        </Col>
-
         <h6 className="col-md-12 col-11 mx-auto pt-5 pb-4 fw-bold mt-4">
           آگهی های مشابه
         </h6>

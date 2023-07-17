@@ -415,3 +415,12 @@ a:hover {
 .shadow-sm {
   box-shadow: 0 0rem 1rem rgba(0, 0, 0, 0.075) !important;
 }
+
+@media (max-width: 991px) {
+  .logo-tablet {
+    display: block!important;
+  }
+  .logo-sub{
+    display: none;
+  }
+}
