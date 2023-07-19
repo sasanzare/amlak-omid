@@ -1,5 +1,5 @@
 import { Container, Row } from "react-bootstrap";
-import SearchRent from "../../blocks/searchRent";
+import SearchBuy from "../../blocks/searchBuy";
 import Link from "next/link";
 import Estate from "../../components/Estate";
 import { context } from "../../context";
@@ -26,7 +26,10 @@ export default () => {
   const getRealEstate = async () => {
     setShowLoading(true);
     try {
-      const resp = await axios.get(getBuyRealEstate);
+      const params = router.query; // Get the route parameters
+
+      const resp = await axios.get(getBuyRealEstate, { params });
+
 
       console.log('fuck')
       if (resp.status === 200) {
@@ -72,7 +75,7 @@ export default () => {
   return (
     <>
       <Container fluid className="bg-light pb-4">
-        <SearchRent />
+        <SearchBuy />
       </Container>
 
       <Container className="py-4 mt-4">

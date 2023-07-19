@@ -22,11 +22,20 @@ export default function Rent() {
   useEffect(() => {
     getRealEstate();
   }, []);
+  useEffect(() => {
+    if (router.asPath !== router.route) {
+      // Navigated to a different route, fetch real estate data again
+      getRealEstate();
+    }
+  }, [router]);
+
 
   const getRealEstate = async () => {
     setShowLoading(true);
     try {
-      const resp = await axios.get(getRentRealEstate);
+      const params = router.query; // Get the route parameters
+
+      const resp = await axios.get(getRentRealEstate, { params });
 
       if (resp.status === 200) {
         setShowLoading(false);

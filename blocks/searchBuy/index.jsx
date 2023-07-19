@@ -9,14 +9,14 @@ import {
   getSurfaceFiltersApi,
   getPriceFiltersApi,
   getSettingsApi,
-} from "./../../api";
+} from "../../api";
 import { context } from "../../context";
 import {
   convertToPersianDigits,
   convertToPersianDigitsWithComma,
 } from "../../lib/number-converter";
 
-export default function Search() {
+export default function SearchBuy() {
   const { setShowLoading } = useContext(context);
   const [city, setCity] = useState("");
   const [area, setArea] = useState("");
@@ -32,27 +32,17 @@ export default function Search() {
     getCity();
     getSurfaceFilters();
     getPriceFilters();
-    getSettings();
+    getSettings()
   }, []);
 
   useEffect(() => {
     getCityArea();
   }, [city]);
-  function generateRoomOptions() {
-    const roomOptions = [];
-
-    console.log(settings);
-    for (let i = 1; i <= settings.maximumNumberOfRooms; i++) {
-      roomOptions.push({ val: i, title: i.toString() });
-    }
-
-    return roomOptions;
-  }
 
   function pushUrl() {
     let form = document.forms.namedItem("searchForm");
     navigate.push(
-      `/Search?pageNumber=1&pageSize=8&cityId=${city}&type=${form.type.value}&cityAreaId=${area}&roomCount=${form.roomCount.value}&surface=${form.surface.value}&assignmentType=${form.assignmentType.value}&price=${form.price.value}`
+      `/Buy?pageNumber=1&pageSize=8&cityId=${city}&type=${form.type.value}&cityAreaId=${area}&roomCount=${form.roomCount.value}&surface=${form.surface.value}&assignmentType=${form.assignmentType.value}&price=${form.price.value}`
     );
   }
 
@@ -62,6 +52,7 @@ export default function Search() {
       .get(getCityApi)
       .then((res) => {
         setCityList(res.data);
+        console.log(cityList)
         if (res.status === 200) {
           setShowLoading(false);
         }
@@ -134,6 +125,18 @@ export default function Search() {
       });
   }
 
+  function generateRoomOptions() {
+    const roomOptions = [];
+
+    console.log(settings);
+    for (let i = 1; i <= settings.maximumNumberOfRooms; i++) {
+      roomOptions.push({ val: i, title: i.toString() });
+    }
+
+    return roomOptions;
+  }
+
+
   function getPriceFilters() {
     setShowLoading(true);
     axios
@@ -154,13 +157,7 @@ export default function Search() {
       });
   }
   return (
-    <Form className="Search row pt-4" id="searchForm">
-      {/* <SingleSelect
-        val={["شیراز"]}
-        name="city"
-        title="شهر"
-        myClass="col-sm-6 col-11 mx-auto"
-      /> */}
+    <Form className="Search row pt-5 mt-5 " id='searchForm' >
       <Form.Group className="SingleSelect mb-3 col-sm-6 col-11 mx-auto">
         <Form.Select
           onChange={(e) => setCity(e.target.value)}
@@ -226,7 +223,6 @@ export default function Search() {
       />
       <SingleSelect
         val={[
-          { title: "رهن و اجاره", val: "rental" },
           { title: "خرید", val: "forSale" },
           { title: "فروش فوری ملک", val: "fastSale" },
         ]}

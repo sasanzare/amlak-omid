@@ -63,7 +63,7 @@ export default async function handler(
 //       skip: 0,
 //       take: 20,
 //     });
-  
+
 //   res.status(200).json(obj);
 // }
 
@@ -71,13 +71,43 @@ export default async function handler(
 
 
 async function get(req, res) {
+  const { pageNumber, pageSize, cityId, type, cityAreaId, roomCount, meter, assignmentType, price } = req.query;
+  const whereClause: any = {
+    assignmentType: assignmentType,
+  };
+
+  if (cityId) {
+    whereClause.cityId = cityId;
+  }
+
+  if (type) {
+    whereClause.type = type;
+  }
+
+  if (cityAreaId) {
+    whereClause.cityAreaId = cityAreaId;
+  }
+
+  if (roomCount) {
+    whereClause.roomCount = roomCount;
+  }
+
+  if (meter) {
+    whereClause.meter = meter;
+  }
+
+  if (assignmentType) {
+    whereClause.assignmentType = assignmentType;
+  }
+
+  if (price) {
+    whereClause.price = price;
+  }
   let { number } = req.query;
   let obj = null;
- if (number) {
+  if (number) {
     obj = await prisma.realEstate.findMany({
-      where :{
-        assignmentType : "forSale",
-      },
+      where: whereClause,
       select: {
         id: true,
         name: true,
@@ -96,7 +126,7 @@ async function get(req, res) {
         AdStatus: true,
         cityArea: {
           select: {
-            id : true,
+            id: true,
             name: true,
           },
         },
@@ -119,11 +149,9 @@ async function get(req, res) {
       skip: 0,
       take: parseInt(number) ? parseInt(number) : 20,
     });
-  }  else {
+  } else {
     obj = await prisma.realEstate.findMany({
-      where: {
-        assignmentType : "forSale"
-      },
+      where: whereClause,
       select: {
         id: true,
         name: true,
@@ -142,7 +170,7 @@ async function get(req, res) {
         AdStatus: true,
         cityArea: {
           select: {
-            id :true,
+            id: true,
             name: true,
           },
         },

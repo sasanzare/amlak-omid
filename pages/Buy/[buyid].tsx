@@ -49,7 +49,7 @@ export default function RentId() {
       const resp = await axios.get(getBuyRealEstate + "?number=4");
       if (resp.status === 200) {
         setShowLoading(false);
-        setRealEstateList(resp.data.realEstates);
+        setRealEstateList(resp.data);
       }
       else {
         toast.error("مشکلی پیش آمده است !");
@@ -208,7 +208,7 @@ export default function RentId() {
   return (
     <Container className="Home pt-5 mt-5 pb-4">
       <Row>
-      <Col lg={3} md={4} xs={11} className="pe-0 ps-md-3 ps-0 mx-auto mt-md-0 mt-4">
+        <Col lg={3} md={4} xs={11} className="pe-0 ps-md-3 ps-0 mx-auto mt-md-0 mt-4">
           <SideBar>
             <RentSidebarDetails
               name={realEstate?.name}

@@ -18,7 +18,7 @@ import Estate from "../../components/Estate";
 import axios from "axios";
 import { context } from "../../context";
 import { ToastContainer, toast } from "react-toastify";
-import { getRealEstateApi, createNote, save, getReportApi } from "./../../api";
+import { getRealEstateApi, createNote, save, getReportApi, createRealEstateApi } from "./../../api";
 import { property, room, meterage, assignment } from "./../../lib/enum-converter";
 import moment from "jalali-moment";
 import Aframe360Viewer from "../../components/VR/aframe";
@@ -32,6 +32,8 @@ export default function RentId() {
   const [realEstate, setRealEstate] = useState([]);
   const [gallery, setGallery] = useState([]);
   const [time, setTime] = useState("2022-04-15T08:55:59.921Z");
+
+  const [user, setUser] = useState({})
   const [note, setNote] = useState("");
 
   useEffect(() => {
@@ -42,7 +44,39 @@ export default function RentId() {
     const { rentid } = router.query;
     console.log(router)
     getRealEstateId(rentid);
+    const user = localStorage.getItem("userData")
+    if (user) {
+      setUser(JSON.parse(user))
+    }
   }, [router.query]);
+
+  const updateRealEstate = async () => {
+    try {
+      const { rentid } = router.query;
+      const resp = await axios.put(
+        createRealEstateApi + "?id=" + rentid,
+        {
+          // Update the fields you want to modify
+          // For example:
+          // name: "New Name",
+          // price: 1000,
+        },
+        {
+          headers: {
+            Authorization: user.token,
+          },
+        }
+      );
+
+      if (resp.status === 200) {
+        toast.success("Real estate updated successfully");
+      }
+    } catch (err) {
+      console.log(err);
+      toast.error("Failed to update real estate");
+    }
+  };
+
 
 
   const getRealEstate = async () => {
@@ -64,15 +98,13 @@ export default function RentId() {
   const getRealEstateId = async (realEstateId) => {
     setShowLoading(true);
     console.log(realEstateId)
-    const user = localStorage.getItem("userData")
     try {
       let resp
       if (user) {
-        const token = `${JSON.parse(String(user)).token}`
         resp = await axios.get(getRealEstateApi + "?id=" + realEstateId,
           {
             headers: {
-              Authorization: token
+              Authorization: user.token
               ,
             },
           }
@@ -127,7 +159,6 @@ export default function RentId() {
     const { rentid } = router.query;
     setShowLoading(true);
     try {
-      const user = JSON.parse(localStorage.getItem("userData"))
       if (user) {
         const resp = await axios.get(save + "?rentid=" + rentid,
           {
@@ -236,7 +267,7 @@ export default function RentId() {
   return (
     <Container className="Home pt-5 mt-5 pb-4">
       <Row>
-      <Col lg={3} md={4} xs={11} className="pe-0 ps-md-3 ps-0 mx-auto mt-md-0 mt-4">
+        <Col lg={3} md={4} xs={11} className="pe-0 ps-md-3 ps-0 mx-auto mt-md-0 mt-4">
           {realEstate !== null && (
             <SideBar>
               <RentSidebarDetails
@@ -268,6 +299,14 @@ export default function RentId() {
             >
               ذخیره یادداشت
             </button>
+          </div>
+          <div className="  pt-2 ">
+            {
+              user && user.id === realEstate.userId && (
+                <button className="btn btn-es col f-12 col-12  me-1 " onClick={updateRealEstate}>
+                  ویرایش
+                </button>
+              )}
           </div>
         </Col>
         <Col lg={9} md={8} xs={11} className="mx-auto">
@@ -308,7 +347,6 @@ export default function RentId() {
                 lazyLoad={true}
                 showFullscreenButton={false}
               />
-              {/* <Aframe360Viewer /> */}
 
               <div className="col-xl-7 col-md-12 col-sm-11 col-7 mx-auto d-flex flex-sm-row flex-column justify-content-around">
                 <button className="btn btn-border mt-3" onClick={handleSave}>
@@ -342,7 +380,7 @@ export default function RentId() {
             </Col>
           </Row>
         </Col>
-       
+
 
         <h6 className="col-md-12 col-11 mx-auto pt-5 pb-4 fw-bold mt-4">
           آگهی های مشابه

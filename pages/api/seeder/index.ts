@@ -23,21 +23,22 @@ export default async function handler(
         )
     }
 }
-const userSeeder = async () => {
+const userSeeder = async (length: number) => {
     function generateUser() {
         const roleOptions: role[] = ['agencyAgent', 'agencyOwner', 'normal', 'admin'];
         const role = roleOptions[Math.floor(Math.random() * roleOptions.length)];
+        const { firstName, lastName } = generateRandomPersianName()
 
         return {
-            firstName: `${role}:${faker.name.firstName()}`,
-            lastName: `${role}:${faker.name.lastName()}`,
+            firstName: `${role}:${firstName}`,
+            lastName: `${role}:${lastName}`,
             phoneNumber: faker.phone.number("09#########"),
             role,
             userImage: '/img/profile2.png'
         };
     }
     try {
-        const users = Array.from({ length: 10 }, generateUser)
+        const users = Array.from({ length }, generateUser)
         await prisma.user.createMany({
             data: users
         });
@@ -59,7 +60,14 @@ async function seedCities() {
 
     try {
 
-        const cities = Array.from({ length: 10 }, generateCity);
+        const cities = [
+            { name: 'تهران' },
+            { name: 'شیراز' },
+            { name: 'اهواز' },
+            { name: 'مشهد' },
+        ];
+
+
         await prisma.city.createMany({
             data: cities,
         });
@@ -82,12 +90,190 @@ async function seedCityAreas() {
     try {
         const cities = await prisma.city.findMany();
 
-        const cityAreas = cities.flatMap((city) =>
-            Array.from({ length: 5 }, () => generateCityArea(city.id))
+        const cityAreas = [
+            "آب جوار",
+            "آبیاری",
+            "آرامستان دارالرحمه",
+            "ابونصر",
+            "ابیوردی",
+            "احمدآباد",
+            "احمدی",
+            "ارم",
+            "اسحاق بیگ",
+            "اصلاح‌نژاد",
+            "اطلسی",
+            "امام حسین",
+            "بازار",
+            "باغ تخت",
+            "بالا کفت",
+            "بریجستون",
+            "بعثت",
+            "بنکداران",
+            "پارک آزادی",
+            "پانصد دستگاه (بلوار رحمت)",
+            "پای کتا",
+            "پردیس ارم",
+            "پودنک",
+            "تاچارا",
+            "تپه تلویزیون",
+            "تحولی",
+            "ترکان",
+            "ترمینال باربری",
+            "تل حسین‌آباد",
+            "تلخ داش",
+            "تندگویان",
+            "جانبازان",
+            "جمهوری",
+            "جوادیه",
+            "چغا",
+            "چنچنه",
+            "چو گیاه",
+            "حافظیه",
+            "حسین‌آباد",
+            "خلدبرین",
+            "خلیلی",
+            "دانشگاه شهید باهنر",
+            "دباغ خانه",
+            "دروازه اصفهان",
+            "دروازه کازرون",
+            "دست خضر",
+            "دشت چنار",
+            "دوکوهک",
+            "ده پیاله",
+            "دینکان",
+            "رحمت‌آباد",
+            "رضوان",
+            "رکن‌آباد",
+            "ریشمک",
+            "زرگری",
+            "زرهی",
+            "زند",
+            "زیباشهر",
+            "سامان",
+            "سایت اداری",
+            "ستارخان",
+            "سجاد (بنی هاشم)",
+            "سر باغ",
+            "سعدیه",
+            "سهل‌آباد",
+            "سیلو",
+            "سینما سعدی",
+            "شاه قلی بیگی",
+            "شریف‌آباد",
+            "شهر صدرا",
+            "شهرک آرین",
+            "شهرک امام حسین",
+            "شهرک امام رضا (فرگاز)",
+            "شهرک امیر کبیر",
+            "شهرک ایثار",
+            "شهرک باهنر",
+            "شهرک برق",
+            "شهرک بزین",
+            "شهرک بوتان",
+            "شهرک پردیس",
+            "شهرک پرواز",
+            "شهرک جماران",
+            "شهرک حجت‌آباد",
+            "شهرک دارائی",
+            "شهرک سجادیه",
+            "شهرک سراج",
+            "شهرک سعدی",
+            "شهرک شهید بهشتی",
+            "شهرک شهید مطهری",
+            "شهرک عرفان",
+            "شهرک فجر",
+            "شهرک قصر قمشه",
+            "شهرک کوشکک",
+            "شهرک گلستان",
+            "شهرک گلستان شمالی",
+            "شهرک گلها",
+            "شهرک مخابرات",
+            "شهرک مدرس",
+            "شهرک مهدی‌آباد",
+            "شهرک مهرگان",
+            "شهرک نصر",
+            "شهرک نواب صفوی",
+            "شهرک نیروی انتظامی",
+            "شهرک والفجر",
+            "شهرک ولیعصر",
+            "شهید بهنام امیری",
+            "شیخ علی چوپان",
+            "شیشه‌گری",
+            "صاحب الزمان",
+            "صاحب دیوان",
+            "عادل‌آباد (بلوار عدالت)",
+            "عفیف‌آباد",
+            "علی‌آباد",
+            "فرزانگان",
+            "فرهنگ شهر",
+            "فرهنگیان",
+            "فضل‌آباد",
+            "فضیلت",
+            "قدوسی شرقی",
+            "قدوسی غربی",
+            "قصرالدشت",
+            "قلعه شاهزاده بیگم",
+            "قلعه قبله",
+            "قلعه نو",
+            "کاراندیش",
+            "کفترک",
+            "کوزه‌گری",
+            "کوی آزادی",
+            "کوی زهرا",
+            "کوی فرهنگیان",
+            "کوی قضات",
+            "کوی ولیعصر",
+            "کوی یاس",
+            "کیان شهر",
+            "گلدشت",
+            "گلدشت حافظ",
+            "گلدشت محمدی",
+            "گلدشت معالی‌آباد",
+            "گلشن",
+            "گلکوب",
+            "گود عربان",
+            "گویم",
+            "لاله",
+            "لب آب",
+            "لشکری",
+            "ماه فیروزان",
+            "محراب",
+            "محله انجیر (کلبه)",
+            "محله سر دزک",
+            "محله سنگ سیاه",
+            "محله طلاب (نیستان)",
+            "محمدیه",
+            "محمودیه",
+            "مسلم",
+            "مشیر غربی",
+            "معالی‌آباد",
+            "مقر",
+            "ملاصدرا",
+            "منصورآباد",
+            "منطقه هوایی دوران",
+            "مهدی‌آباد",
+            "مهدیه",
+            "میانرود",
+            "میدان شاه",
+            "نارنجستان",
+            "نشاط",
+            "نصرآباد",
+            "نیایش",
+            "وحدت (بلوار مدرس)",
+            "وزیرآباد",
+            "وصال",
+            "ویلاشهر کیمیا",
+            "هفت تنان",
+            "هویزه"
+        ];
+        const dbCityAreas = cities.flatMap((city) =>
+            cityAreas.map(cityArea => {
+                return { name: cityArea, cityId: city.id }
+            })
         );
 
         await prisma.cityArea.createMany({
-            data: cityAreas,
+            data: dbCityAreas,
         });
 
         console.log('City Areas seeded successfully.');
@@ -100,12 +286,13 @@ async function seedCityAreas() {
         await prisma.$disconnect();
     }
 }
-async function seedAgencies() {
+async function seedAgencies(length: number) {
     function generateAgency(cityId: string, cityAreaId: string, ownerId: string) {
         const statusOptions: requestStatus[] = ['accepted', 'pending', 'denied'];
         const status = statusOptions[Math.floor(Math.random() * statusOptions.length)];
+        const agencyName = generateRandomAgencyName()
         return {
-            name: faker.company.name(),
+            name: agencyName,
             agencyImage: '/img/realState/realStateBack.png',
             businessIdImage: faker.image.url(),
             ownerId: ownerId, // Replace 'user-id' with the actual user ID for the owner
@@ -140,7 +327,10 @@ async function seedAgencies() {
             });
             const ownerIds = agencyOwnerUsers.map((user) => user.id);
             const ownerId = ownerIds[Math.floor(Math.random() * ownerIds.length)];
-            agencies.push(generateAgency(city.id, cityArea.id, ownerId));
+            for (let i = 0; i < length; i++) {
+                agencies.push(generateAgency(city.id, cityArea.id, ownerId));
+
+            }
         }
         // return agencies
         await prisma.agency.createMany({
@@ -157,7 +347,7 @@ async function seedAgencies() {
     }
 }
 
-const seedRealEstates = async () => {
+const seedRealEstates = async (length = 5) => {
     // Find all cities
     function generateRealEstate(cityId: string, cityAreaId: string, userId: string, agencyId: string) {
         const roomCountOptions: roomCount[] = ['one', 'two', 'three', 'four', 'five'];
@@ -184,7 +374,7 @@ const seedRealEstates = async () => {
             address: faker.location.streetAddress(),
             roomCount: room,
             meter: faker.datatype.number({ min: 10, max: 100000 }),
-            estateImage: 'img/realState/realStateBack.png',
+            estateImage: '/img/realState/realStateBack.png',
             assignmentType: type,
             type: propertyType,
             price: faker.datatype.number({ min: 1000000, max: 10000000000 }),
@@ -201,7 +391,9 @@ const seedRealEstates = async () => {
         const agencies = await prisma.agency.findMany();
         const realEstates = []
         for (const agency of agencies) {
-            realEstates.push(generateRealEstate(agency.cityId, agency.cityAreaId, agency.ownerId, agency.id))
+            for (let i = 0; i < length; i++) {
+                realEstates.push(generateRealEstate(agency.cityId, agency.cityAreaId, agency.ownerId, agency.id))
+            }
         }
         await prisma.realEstate.createMany({
             data: realEstates
@@ -394,15 +586,100 @@ const getRandomElements = (array, count) => {
     }
     return shuffled.slice(0, count);
 };
+function generateRandomPersianName() {
+    const firstNameWords = [
+        'علی',
+        'محمد',
+        'زهرا',
+        'فاطمه',
+        'حسین',
+        'سارا',
+        'رضا',
+        'نیلوفر',
+        'امیر',
+        'مهدی',
+        'سحر',
+        'علیرضا',
+        'محبوبه',
+        'رامین',
+        'نادیا',
+    ];
+
+    const lastNameWords = [
+        'احمدی',
+        'رحمانی',
+        'کریمی',
+        'میرزایی',
+        'صادقی',
+        'محمدیان',
+        'جعفری',
+        'مصدقی',
+        'حسینی',
+        'رضایی',
+        'نوروزی',
+        'معماری',
+        'فرشادی',
+        'خسروی',
+        'رحیمی',
+    ];
+
+    const randomFirstNameIndex = Math.floor(Math.random() * firstNameWords.length);
+    const randomLastNameIndex = Math.floor(Math.random() * lastNameWords.length);
+
+    const firstName = firstNameWords[randomFirstNameIndex];
+    const lastName = lastNameWords[randomLastNameIndex];
+
+    return {
+        firstName,
+        lastName,
+    };
+}
+
+function generateRandomAgencyName() {
+    const agencyNameWords = [
+        'پردیس',
+        'آرین',
+        'باران',
+        'نگار',
+        'مهرگان',
+        'نور',
+        'پویا',
+        'شکوفه',
+        'پیشرو',
+        'آتیه',
+        'سپیده',
+        'راهنما',
+        'شهرزاد',
+        'آتشین',
+        'درخشان',
+    ];
+
+    const randomIndex = Math.floor(Math.random() * agencyNameWords.length);
+    const agencyName = agencyNameWords[randomIndex];
+
+    return agencyName;
+}
+
+async function seedSeeting() {
+    prisma.setting.create({
+        data: {
+            maximumDailyRealEstatesForAgency: 10,
+            maximumNumberOfRooms: 20,
+            maximumDailyRealEstatesForClient: 3,
+            maximumDailyRealEstatesForAgentOfAgencies: 5,
+
+        }
+    })
+}
 
 
 async function seed() {
     try {
         const cities = await seedCities()
         const cityAreas = await seedCityAreas()
-        const users = await userSeeder()
-        const agencies = await seedAgencies()
-        const realEstates = await seedRealEstates()
+        const users = await userSeeder(100)
+        const agencies = await seedAgencies(3)
+        const realEstates = await seedRealEstates(3)
         const contact = await seedContactForms();
         const articles = await seedArticles()
         const agents = await seedAgentInterfaces()

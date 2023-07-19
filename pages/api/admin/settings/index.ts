@@ -8,6 +8,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         // Handle GET request to fetch settings
         try {
             const settings = await prisma.setting.findFirst();
+            if (!settings) {
+                const setting = await prisma.setting.create({ data: {} });
+                res.status(200).json(setting);
+            }
             res.status(200).json(settings);
         } catch (error) {
             console.error(error);

@@ -415,15 +415,8 @@
           ]
         },
         "roomCount": {
-          "type": "string",
-          "default": "one",
-          "enum": [
-            "one",
-            "two",
-            "three",
-            "four",
-            "five"
-          ]
+          "type": "integer",
+          "default": 1
         },
         "meter": {
           "type": "integer"

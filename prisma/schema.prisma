@@ -180,7 +180,7 @@ model realEstate {
   phoneNumber    String
   description    String
   address        String?
-  roomCount      roomCount      @default(one)
+  roomCount      Int      @default(1)
   meter          Int          
   estateImage    String?
   assignmentType assignmentType @default(rental)
