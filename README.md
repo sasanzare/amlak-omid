@@ -416,6 +416,3 @@ The repository is a strong full-stack portfolio project, and these are the natur
 
 Repository: <https://github.com/sasanzare/amlak-omid>
 
----
-
-This README was prepared as a portfolio-grade project document based on the public repository structure, `package.json`, Prisma schema, API routes, UI pages, and supporting configuration reviewed on May 31, 2026.
